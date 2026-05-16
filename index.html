@@ -1962,7 +1962,8 @@
       setText("setupPreviewNote", t("setupPreviewNote"));
       setText("setupIncomeLabel", t("setupIncomeLabel"));
       setText("setupSubmitBtn", t("setupSubmitBtn"));
-      document.getElementById("setupMonthlyIncome").placeholder = t("setupPlaceholder");
+      const setupInput = document.getElementById("setupMonthlyIncome");
+      if (setupInput) setupInput.placeholder = t("setupPlaceholder");
       setText("brandSubtitle", t("brandSubtitle"));
       document.getElementById("headerSettingsBtn").setAttribute("aria-label", t("settingsAria"));
       setText("todayIncomeTitle", t("todayIncomeTitle"));
@@ -1991,8 +1992,10 @@
       setText("monthlyIncomeLabel", t("monthlyIncomeLabel"));
       setText("saveIncomeBtn", t("saveIncomeBtn"));
       setText("cancelIncomeBtn", t("cancel"));
-      document.getElementById("extraAmount").placeholder = t("extraAmountPlaceholder");
-      document.getElementById("extraNote").placeholder = t("extraNotePlaceholder");
+      const ea = document.getElementById("extraAmount");
+      if (ea) ea.placeholder = t("extraAmountPlaceholder");
+      const en = document.getElementById("extraNote");
+      if (en) en.placeholder = t("extraNotePlaceholder");
       document.querySelectorAll("#extraType option").forEach((option) => {
         option.textContent = t("eventTypes")[option.value] || option.textContent;
       });
