@@ -165,12 +165,13 @@
 
     /* ═══════════════ Header ═══════════════ */
 
+    /* ═══════════════ Header ═══════════════ */
+
     .app-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      margin: 4px 0 16px;
+      padding: 8px 0 12px;
       position: relative;
       z-index: 2;
     }
@@ -179,89 +180,93 @@
 
     .brand h1 {
       margin: 0;
-      font-size: clamp(1.8rem, 7.5vw, 2.4rem);
-      line-height: 1.02;
-      color: #fff;
+      font-size: 1.5rem;
+      line-height: 1.1;
       font-weight: 800;
       letter-spacing: -0.03em;
-      background: linear-gradient(135deg, #fff 40%, rgba(255,255,255,0.7));
+      background: linear-gradient(135deg, #fff 55%, rgba(255,255,255,0.55));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
 
-    .brand p {
-      margin: 6px 0 0;
-      color: rgba(255, 255, 255, 0.45);
-      font-size: 0.82rem;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-    }
-
     .header-actions {
-      flex: 0 0 auto;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
+      flex-shrink: 0;
     }
 
-    .language-select {
-      width: 62px;
-      min-height: 34px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 999px;
-      padding: 0 8px;
-      color: rgba(255, 255, 255, 0.8);
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(12px);
-      box-shadow: var(--inset);
-      outline: 0;
+    /* ── Time display ── */
+    .header-time {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      line-height: 1.2;
+      min-width: 0;
+    }
+
+    .header-clock {
+      font-size: 1.1rem;
       font-weight: 700;
-      font-size: 0.78rem;
-      cursor: pointer;
+      color: #fff;
+      letter-spacing: 0.02em;
+      font-variant-numeric: tabular-nums;
     }
 
+    .header-date {
+      font-size: 0.68rem;
+      color: rgba(255, 255, 255, 0.3);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      margin-top: 1px;
+    }
+
+    /* ── Language selector ── */
+    .language-select {
+      min-height: 30px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      padding: 0 10px;
+      color: rgba(255, 255, 255, 0.55);
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(8px);
+      outline: 0;
+      font-weight: 600;
+      font-size: 0.72rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .language-select:hover {
+      border-color: rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    /* ── Settings gear ── */
     .settings-button {
-      flex: 0 0 auto;
-      width: 68px;
-      min-height: 68px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      color: rgba(255, 255, 255, 0.4);
       display: grid;
       place-items: center;
-      text-align: center;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(16px);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3), var(--inset);
-      color: #fff;
+      cursor: pointer;
+      transition: all 0.2s ease;
       padding: 0;
-      transition: all 0.3s ease;
     }
 
     .settings-button:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(0, 229, 255, 0.3);
-      box-shadow: 0 12px 40px rgba(0, 229, 255, 0.15), var(--inset);
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border-color: rgba(0, 229, 255, 0.2);
     }
 
-    .settings-button strong {
-      display: block;
-      font-size: 1rem;
-      font-weight: 700;
-    }
-
-    .settings-button span {
-      display: block;
-      margin-top: 1px;
-      font-size: 0.65rem;
-      color: rgba(255, 255, 255, 0.5);
-      font-weight: 600;
-    }
-
-    .settings-button .gear {
-      margin-top: 2px;
-      font-size: 0.85rem;
-      opacity: 0.6;
+    .settings-button .ui-icon {
+      width: 1.1rem;
+      height: 1.1rem;
     }
 
     /* ═══════════════ Hero Card ═══════════════ */
@@ -1464,20 +1469,19 @@
   <main class="shell">
     <header class="app-header" id="home">
       <div class="brand">
-        <h1>On Duty<br>Income</h1>
-        <p id="brandSubtitle">Turn working hours into visible income.</p>
+        <h1>On Duty Income</h1>
       </div>
       <div class="header-actions">
+        <div class="header-time">
+          <span class="header-clock" id="clockText">--:--</span>
+          <span class="header-date" id="dateText">Today</span>
+        </div>
         <select class="language-select" id="languageSelect" aria-label="Language">
           <option value="en">EN</option>
           <option value="zh">中文</option>
         </select>
         <button class="settings-button" id="headerSettingsBtn" type="button" aria-label="Income settings">
-          <div>
-            <strong id="clockText">--:--</strong>
-            <span id="dateText">Today</span>
-            <span class="gear"><svg class="ui-icon"><use href="#icon-settings"></use></svg></span>
-          </div>
+          <svg class="ui-icon"><use href="#icon-settings"></use></svg>
         </button>
       </div>
     </header>
@@ -1964,7 +1968,6 @@
       setText("setupSubmitBtn", t("setupSubmitBtn"));
       const setupInput = document.getElementById("setupMonthlyIncome");
       if (setupInput) setupInput.placeholder = t("setupPlaceholder");
-      setText("brandSubtitle", t("brandSubtitle"));
       document.getElementById("headerSettingsBtn").setAttribute("aria-label", t("settingsAria"));
       setText("todayIncomeTitle", t("todayIncomeTitle"));
       setText("addIncomeBtn", t("addIncomeBtn"));
