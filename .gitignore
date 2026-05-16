@@ -1,0 +1,12 @@
+# Temp files
+*.bak
+flip-test.html
+test-improved.html
+test2.html
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/

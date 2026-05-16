@@ -1,0 +1,2489 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>On Duty Income · Luminous</title>
+  <style>
+    /* ═══════════════════════════════════════
+       LUMINOUS — Premium Dark Fintech Theme
+       ═══════════════════════════════════════ */
+
+    :root {
+      --page: #050b1a;
+      --panel: #0c1630;
+      --panel-green: #0f1f42;
+      --panel-soft: #182652;
+      --ink: #eef6ff;
+      --cream: #f0f6ff;
+      --muted: #7e9dd4;
+      --gold: #00e5ff;
+      --gold-soft: #7c3aed;
+      --clay: #6d28d9;
+      --moss: #22d3ee;
+      --blue: #38bdf8;
+
+      --accent-cyan: #00e5ff;
+      --accent-purple: #7c3aed;
+      --accent-gold: #fbbf24;
+      --accent-pink: #ec4899;
+
+      --shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+      --inset: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --radius-xl: 16px;
+
+      --font-display: Inter, ui-sans-serif, system-ui, -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: var(--font-display);
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(56, 189, 248, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 50%, rgba(124, 58, 237, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 0%, rgba(34, 211, 238, 0.06) 0%, transparent 40%),
+        linear-gradient(180deg, #0a1628 0%, #050b1a 100%);
+      background-attachment: fixed;
+      letter-spacing: 0;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 30% 20%, rgba(0, 229, 255, 0.03) 0%, transparent 40%),
+        radial-gradient(circle at 70% 80%, rgba(124, 58, 237, 0.03) 0%, transparent 40%),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 32px),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0 1px, transparent 1px 32px);
+      mix-blend-mode: screen;
+      opacity: 0.6;
+    }
+
+    /* Animated gradient overlay */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(125deg,
+        transparent 0%,
+        rgba(0, 229, 255, 0.015) 25%,
+        rgba(124, 58, 237, 0.015) 50%,
+        rgba(236, 72, 153, 0.01) 75%,
+        transparent 100%);
+      background-size: 200% 200%;
+      animation: aurora 12s ease-in-out infinite;
+      z-index: 0;
+    }
+
+    @keyframes aurora {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; border: 0; }
+
+    ::selection { background: rgba(0, 229, 255, 0.3); color: #fff; }
+
+    /* ═══════════════ Shell Layout ═══════════════ */
+
+    .shell {
+      width: min(100%, 480px);
+      margin: 0 auto;
+      min-height: 100vh;
+      padding: 20px 16px 120px;
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    /* ═══════════════ Ambient Orbs ═══════════════ */
+
+    .ambient-orbs {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.15;
+      animation: orbFloat 20s ease-in-out infinite;
+    }
+
+    .orb:nth-child(1) {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, #00e5ff, transparent);
+      top: -100px;
+      left: -100px;
+      animation-delay: 0s;
+      animation-duration: 25s;
+    }
+
+    .orb:nth-child(2) {
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, #7c3aed, transparent);
+      bottom: -80px;
+      right: -80px;
+      animation-delay: -8s;
+      animation-duration: 20s;
+    }
+
+    .orb:nth-child(3) {
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, #fbbf24, transparent);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation-delay: -14s;
+      animation-duration: 30s;
+      opacity: 0.06;
+    }
+
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(30px, -30px) scale(1.1); }
+      66% { transform: translate(-20px, 20px) scale(0.9); }
+    }
+
+    /* ═══════════════ Header ═══════════════ */
+
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 4px 0 16px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .brand { min-width: 0; }
+
+    .brand h1 {
+      margin: 0;
+      font-size: clamp(1.8rem, 7.5vw, 2.4rem);
+      line-height: 1.02;
+      color: #fff;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #fff 40%, rgba(255,255,255,0.7));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .brand p {
+      margin: 6px 0 0;
+      color: rgba(255, 255, 255, 0.45);
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .header-actions {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .language-select {
+      width: 62px;
+      min-height: 34px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+      padding: 0 8px;
+      color: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      box-shadow: var(--inset);
+      outline: 0;
+      font-weight: 700;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+
+    .settings-button {
+      flex: 0 0 auto;
+      width: 68px;
+      min-height: 68px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3), var(--inset);
+      color: #fff;
+      padding: 0;
+      transition: all 0.3s ease;
+    }
+
+    .settings-button:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(0, 229, 255, 0.3);
+      box-shadow: 0 12px 40px rgba(0, 229, 255, 0.15), var(--inset);
+    }
+
+    .settings-button strong {
+      display: block;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .settings-button span {
+      display: block;
+      margin-top: 1px;
+      font-size: 0.65rem;
+      color: rgba(255, 255, 255, 0.5);
+      font-weight: 600;
+    }
+
+    .settings-button .gear {
+      margin-top: 2px;
+      font-size: 0.85rem;
+      opacity: 0.6;
+    }
+
+    /* ═══════════════ Hero Card ═══════════════ */
+
+    .hero-card {
+      border-radius: var(--radius-xl);
+      padding: 24px;
+      min-height: 260px;
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 50%, rgba(255,255,255,0.04) 100%),
+        rgba(8, 20, 52, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.4),
+        0 0 40px rgba(0, 229, 255, 0.06),
+        inset 0 0 0 1px rgba(255,255,255,0.04),
+        var(--inset);
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      right: -30px;
+      top: -40px;
+      width: 180px;
+      height: 180px;
+      border-radius: 30px;
+      background: linear-gradient(145deg, rgba(0, 229, 255, 0.15), rgba(124, 58, 237, 0.2));
+      transform: rotate(30deg);
+      opacity: 0.5;
+      filter: blur(1px);
+      mix-blend-mode: screen;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      right: 40px;
+      top: 100px;
+      width: 100px;
+      height: 100px;
+      border-radius: 24px;
+      background: linear-gradient(145deg, rgba(124, 58, 237, 0.2), rgba(0, 229, 255, 0.15));
+      transform: rotate(-20deg);
+      opacity: 0.4;
+      box-shadow: 0 0 40px rgba(124, 58, 237, 0.1);
+      mix-blend-mode: screen;
+    }
+
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      position: relative;
+      z-index: 3;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(12px);
+      font-weight: 600;
+      white-space: nowrap;
+      max-width: 100%;
+      font-size: 0.82rem;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22d3ee;
+      box-shadow: 0 0 12px rgba(34, 211, 238, 0.6);
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(34, 211, 238, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0); }
+    }
+
+    .currency-tabs {
+      display: inline-flex;
+      padding: 3px;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 999px;
+      gap: 2px;
+    }
+
+    .currency-tabs button {
+      min-width: 40px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      color: rgba(255, 255, 255, 0.4);
+      background: transparent;
+      font-size: 0.75rem;
+      font-weight: 700;
+      transition: all 0.3s ease;
+    }
+
+    .currency-tabs button.active {
+      color: #050b1a;
+      background: linear-gradient(135deg, #00e5ff, #22d3ee);
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+    }
+
+    .currency-tabs button:hover:not(.active) {
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .income-title {
+      margin: 20px 0 4px;
+      color: rgba(255, 255, 255, 0.4);
+      font-weight: 600;
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 3;
+    }
+
+    .big-money {
+      margin: 0;
+      width: 100%;
+      max-width: 100%;
+      font-size: var(--money-font-size, clamp(2.5rem, 12vw, 4rem));
+      line-height: 1;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.03em;
+      position: relative;
+      z-index: 3;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: clip;
+    }
+
+    /* Earning rate display */
+    .earning-rate {
+      margin: 6px 0 0;
+      color: rgba(0, 229, 255, 0.7);
+      font-size: 0.85rem;
+      font-weight: 600;
+      position: relative;
+      z-index: 3;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .earning-rate .rate-value {
+      color: #00e5ff;
+      font-weight: 700;
+    }
+
+    /* Daily progress bar */
+    .daily-progress {
+      margin-top: 14px;
+      position: relative;
+      z-index: 3;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #00e5ff, #7c3aed);
+      transition: width 0.8s ease;
+      position: relative;
+    }
+
+    .progress-fill::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: -2px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #00e5ff;
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.6);
+    }
+
+    .progress-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 6px;
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.3);
+      font-weight: 500;
+    }
+
+    .subline {
+      margin: 10px 0 0;
+      color: rgba(255, 255, 255, 0.35);
+      font-weight: 500;
+      font-size: 0.82rem;
+      position: relative;
+      z-index: 3;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+      position: relative;
+      z-index: 4;
+    }
+
+    .primary-button, .secondary-button, .icon-button {
+      min-height: 46px;
+      border-radius: var(--radius);
+      font-weight: 700;
+      transition: all 0.25s ease;
+      font-size: 0.88rem;
+    }
+
+    .primary-button {
+      flex: 1;
+      color: #fff;
+      background: linear-gradient(135deg, #7c3aed, #6d28d9 50%, #00e5ff);
+      background-size: 200% 200%;
+      padding: 0 20px;
+      box-shadow: 0 12px 28px rgba(124, 58, 237, 0.3), 0 0 20px rgba(0, 229, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .primary-button:hover {
+      background-position: 100% 100%;
+      transform: translateY(-1px);
+      box-shadow: 0 16px 36px rgba(124, 58, 237, 0.35), 0 0 30px rgba(0, 229, 255, 0.15);
+    }
+
+    .primary-button::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(110deg, transparent 0 20%, rgba(255,255,255,0.15) 35%, transparent 50% 100%);
+      transform: translateX(-120%);
+      transition: transform 0.6s ease;
+    }
+
+    .primary-button:hover::after {
+      transform: translateX(120%);
+    }
+
+    .secondary-button {
+      color: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 0 16px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .secondary-button:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .icon-button {
+      width: 46px;
+      color: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      display: grid;
+      place-items: center;
+      font-size: 1.1rem;
+    }
+
+    .icon-button:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(0, 229, 255, 0.2);
+    }
+
+    .primary-button:active,
+    .secondary-button:active,
+    .icon-button:active {
+      transform: scale(0.97);
+    }
+
+    @media (max-width: 390px) {
+      .hero-card { padding: 18px; }
+      .big-money { font-size: clamp(2rem, 10vw, 3rem); }
+    }
+
+    /* ═══════════════ Stats Grid ═══════════════ */
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .card {
+      border-radius: var(--radius);
+      padding: 18px;
+      min-height: 96px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2), var(--inset);
+    }
+
+    .card.purple {
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(168, 85, 247, 0.04));
+      border-color: rgba(124, 58, 237, 0.12);
+    }
+
+    .card.cyan {
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.08), rgba(34, 211, 238, 0.04));
+      border-color: rgba(0, 229, 255, 0.12);
+    }
+
+    .card .label {
+      margin: 0;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 0.78rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .card .value {
+      margin: 10px 0 0;
+      font-size: 1.5rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      overflow-wrap: anywhere;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+
+    .card.purple .value { color: #c084fc; }
+    .card.cyan .value { color: #67e8f9; }
+
+    /* ═══════════════ Money Stage ═══════════════ */
+
+    .money-stage {
+      height: 220px;
+      margin-top: 12px;
+      border-radius: var(--radius);
+      position: relative;
+      overflow: hidden;
+      perspective: 900px;
+      background:
+        radial-gradient(circle at 30% 20%, rgba(0, 229, 255, 0.06), transparent 40%),
+        radial-gradient(circle at 70% 80%, rgba(124, 58, 237, 0.06), transparent 40%),
+        rgba(6, 14, 36, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3), var(--inset);
+    }
+
+    .money-stage::before {
+      content: "";
+      position: absolute;
+      left: -40px;
+      bottom: -100px;
+      width: 220px;
+      height: 180px;
+      border-radius: 30px;
+      background: linear-gradient(145deg, rgba(0, 229, 255, 0.08), rgba(124, 58, 237, 0.1));
+      transform: rotate(35deg);
+      opacity: 0.5;
+      mix-blend-mode: screen;
+    }
+
+    .stage-title {
+      position: absolute;
+      left: 16px;
+      top: 14px;
+      z-index: 7;
+      font-weight: 600;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.3);
+      letter-spacing: 0.03em;
+    }
+    /* ═══════════════ Realistic HKD Banknotes ═══════════════ */
+
+    /* ═══════════════ Realistic HKD Banknote Images ═══════════════ */
+
+    /* ── HK$10 Note ── */
+    .bill, .bundle {
+      position: absolute;
+      width: 90px;
+      height: 46px;
+      border-radius: 3px;
+      background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20180%2090%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22bg10%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20style%3D%22stop-color%3A%23d485b2%22/%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%2225%25%22%20style%3D%22stop-color%3A%23c470a5%22/%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%2250%25%22%20style%3D%22stop-color%3A%23b85a98%22/%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%2275%25%22%20style%3D%22stop-color%3A%23c87aaa%22/%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20style%3D%22stop-color%3A%23d890b8%22/%3E%0A%20%20%20%20%3C/linearGradient%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22wmark%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%220%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20style%3D%22stop-color%3Argba%28255%2C220%2C240%2C0.12%29%22/%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20style%3D%22stop-color%3Argba%28255%2C220%2C240%2C0.04%29%22/%3E%0A%20%20%20%20%3C/linearGradient%3E%0A%20%20%20%20%3Cpattern%20id%3D%22gui%22%20width%3D%226%22%20height%3D%226%22%20patternUnits%3D%22userSpaceOnUse%22%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M0%203%20L3%200%20L6%203%20L3%206%20Z%22%20fill%3D%22none%22%20stroke%3D%22rgba%28255%2C220%2C240%2C0.06%29%22%20stroke-width%3D%220.5%22/%3E%0A%20%20%20%20%3C/pattern%3E%0A%20%20%3C/defs%3E%0A%20%20%3C%21--%20Base%20--%3E%0A%20%20%3Crect%20width%3D%22180%22%20height%3D%2290%22%20rx%3D%225%22%20fill%3D%22url%28%23bg10%29%22/%3E%0A%20%20%3C%21--%20Guilloche%20pattern%20overlay%20--%3E%0A%20%20%3Crect%20width%3D%22180%22%20height%3D%2290%22%20rx%3D%225%22%20fill%3D%22url%28%23gui%29%22/%3E%0A%20%20%3C%21--%20Fine%20line%20border%20--%3E%0A%20%20%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22172%22%20height%3D%2282%22%20rx%3D%223%22%20fill%3D%22none%22%20stroke%3D%22rgba%28255%2C220%2C240%2C0.2%29%22%20stroke-width%3D%220.8%22/%3E%0A%20%20%3Crect%20x%3D%227%22%20y%3D%227%22%20width%3D%22166%22%20height%3D%2276%22%20rx%3D%222%22%20fill%3D%22none%22%20stroke%3D%22rgba%28255%2C220%2C240%2C0.1%29%22%20stroke-width%3D%220.4%22/%3E%0A%20%20%3C%21--%20Ornate%20corner%20patterns%20--%3E%0A%20%20%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%2218%22%20height%3D%2216%22%20rx%3D%222%22%20fill%3D%22none%22%20stroke%3D%22rgba%28255%2C220%2C240%2C0.2%29%22%20stroke-width%3D%220.6%22/%3E%0A%20%20%3Crect%20x%3D%22158%22%20y%3D%224%22%20width%3D%2218%22%20height%3D%2216%22%20rx%3D%222%22%20fill%3D%22none%22%20stroke%3D%22rgba%28255%2C220%2C240%2C0.2%29%22%20stroke-width%3D%220.6%22/%3E%0A%20%20%3Crect%20x%3D%224%22%20y%3D%2270%22%20width%3D%2218%22%20height%3D%2216%22%20rx%3D%222%22%20fill%3D%22none%22%20stroke%3D%22rgba%28255%2C220%2C240%2C0.2%29%22%20stroke-width%3D%220.6%22/%3E%0A%20%20%3Crect%20x%3D%22158%22%20y%3D%2270%22%20width%3D%2218%22%20height%3D%2216%22%20rx%3D%222%22%20fill%3D%22none%22%20stroke%3D%22rgba%28255%2C220%2C240%2C0.2%29%22%20stroke-width%3D%220.6%22/%3E%0A%20%20%3C%21--%20Watermark%20area%20%28right%20side%29%20--%3E%0A%20%20%3Crect%20x%3D%22130%22%20y%3D%2210%22%20width%3D%2242%22%20height%3D%2270%22%20rx%3D%222%22%20fill%3D%22url%28%23wmark%29%22/%3E%0A%20%20%3C%21--%20Large%20denomination%20--%3E%0A%20%20%3Ctext%20x%3D%2216%22%20y%3D%2224%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2228%22%20font-weight%3D%22bold%22%20fill%3D%22rgba%28255%2C220%2C240%2C0.55%29%22%20letter-spacing%3D%22-1%22%3E10%3C/text%3E%0A%20%20%3C%21--%20Hong%20Kong%20text%20--%3E%0A%20%20%3Ctext%20x%3D%2216%22%20y%3D%2240%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%226%22%20font-weight%3D%22600%22%20fill%3D%22rgba%28255%2C220%2C240%2C0.09%29%22%20letter-spacing%3D%222%22%3EHONG%20KONG%3C/text%3E%0A%20%20%3Ctext%20x%3D%2216%22%20y%3D%2247%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%225%22%20font-weight%3D%22600%22%20fill%3D%22rgba%28255%2C220%2C240%2C0.08%29%22%20letter-spacing%3D%221%22%3ESPECIAL%20ADMINISTRATIVE%3C/text%3E%0A%20%20%3Ctext%20x%3D%2216%22%20y%3D%2253%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%225%22%20font-weight%3D%22600%22%20fill%3D%22rgba%28255%2C220%2C240%2C0.08%29%22%20letter-spacing%3D%221%22%3EREGION%3C/text%3E%0A%20%20%3C%21--%20Chinese%20text%20--%3E%0A%20%20%3Ctext%20x%3D%2216%22%20y%3D%2266%22%20font-family%3D%22%27Microsoft%20YaHei%27%2C%27Noto%20Sans%20SC%27%2Csans-serif%22%20font-size%3D%227%22%20font-weight%3D%22400%22%20fill%3D%22rgba%28255%2C220%2C240%2C0.1%29%22%3E%E9%A6%99%E6%B8%AF%E7%89%B9%E5%88%A5%E8%A1%8C%E6%94%BF%E5%8D%80%3C/text%3E%0A%20%20%3C%21--%20Center%20large%20denomination%20--%3E%0A%20%20%3Ctext%20x%3D%2255%22%20y%3D%2252%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2232%22%20font-weight%3D%22bold%22%20fill%3D%22rgba%28255%2C220%2C240%2C0.15%29%22%20text-anchor%3D%22middle%22%3E10%3C/text%3E%0A%20%20%3C%21--%20Bottom%20right%20denomination%20--%3E%0A%20%20%3Ctext%20x%3D%22165%22%20y%3D%2280%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2216%22%20font-weight%3D%22bold%22%20fill%3D%22rgba%28255%2C220%2C240%2C0.35%29%22%20text-anchor%3D%22end%22%3E10%3C/text%3E%0A%20%20%3C%21--%20Bottom%20text%20--%3E%0A%20%20%3Ctext%20x%3D%2255%22%20y%3D%2278%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%225%22%20fill%3D%22rgba%28255%2C220%2C240%2C0.1%29%22%20text-anchor%3D%22middle%22%3ETEN%20HONG%20KONG%20DOLLARS%3C/text%3E%0A%20%20%3C%21--%20Chinese%20denomination%20--%3E%0A%20%20%3Ctext%20x%3D%2255%22%20y%3D%2284%22%20font-family%3D%22%27Microsoft%20YaHei%27%2C%27Noto%20Sans%20SC%27%2Csans-serif%22%20font-size%3D%225%22%20fill%3D%22rgba%28255%2C220%2C240%2C0.09%29%22%20text-anchor%3D%22middle%22%3E%E6%8B%BE%E5%9C%93%3C/text%3E%0A%20%20%3C%21--%20Serial%20number%20--%3E%0A%20%20%3Ctext%20x%3D%22135%22%20y%3D%2282%22%20font-family%3D%22%27Courier%20New%27%2Cmonospace%22%20font-size%3D%224%22%20fill%3D%22rgba%28255%2C220%2C240%2C0.12%29%22%3EAA%20000000%3C/text%3E%0A%20%20%3C%21--%20Latent%20image%20indicator%20--%3E%0A%20%20%3Ctext%20x%3D%22138%22%20y%3D%2224%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2210%22%20font-weight%3D%22bold%22%20fill%3D%22rgba%28255%2C220%2C240%2C0.06%29%22%3EHK%3C/text%3E%0A%3C/svg%3E");
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+      box-shadow: 0 4px 12px rgba(80, 20, 60, 0.2);
+      transform-style: preserve-3d;
+    }
+
+    .bill::before,
+    .bill::after {
+      display: none;
+    }
+
+    /* ── HK$100 Bundle ── */
+    .bundle {
+      width: 96px;
+      height: 50px;
+      background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20192%20100%22%3E%0A%20%20%3Cdefs%3E%0A%20%20%20%20%3ClinearGradient%20id%3D%22bg100%22%20x1%3D%220%25%22%20y1%3D%220%25%22%20x2%3D%22100%25%22%20y2%3D%22100%25%22%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%220%25%22%20style%3D%22stop-color%3A%23d47070%22/%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%2225%25%22%20style%3D%22stop-color%3A%23c45555%22/%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%2250%25%22%20style%3D%22stop-color%3A%23b84040%22/%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%2275%25%22%20style%3D%22stop-color%3A%23c86060%22/%3E%0A%20%20%20%20%20%20%3Cstop%20offset%3D%22100%25%22%20style%3D%22stop-color%3A%23d87878%22/%3E%0A%20%20%20%20%3C/linearGradient%3E%0A%20%20%20%20%3Cpattern%20id%3D%22gui100%22%20width%3D%226%22%20height%3D%226%22%20patternUnits%3D%22userSpaceOnUse%22%3E%0A%20%20%20%20%20%20%3Cpath%20d%3D%22M0%203%20L3%200%20L6%203%20L3%206%20Z%22%20fill%3D%22none%22%20stroke%3D%22rgba%28255%2C220%2C220%2C0.06%29%22%20stroke-width%3D%220.5%22/%3E%0A%20%20%20%20%3C/pattern%3E%0A%20%20%3C/defs%3E%0A%20%20%3Crect%20width%3D%22192%22%20height%3D%22100%22%20rx%3D%225%22%20fill%3D%22url%28%23bg100%29%22/%3E%0A%20%20%3Crect%20width%3D%22192%22%20height%3D%22100%22%20rx%3D%225%22%20fill%3D%22url%28%23gui100%29%22/%3E%0A%20%20%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22184%22%20height%3D%2292%22%20rx%3D%223%22%20fill%3D%22none%22%20stroke%3D%22rgba%28255%2C220%2C220%2C0.2%29%22%20stroke-width%3D%220.8%22/%3E%0A%20%20%3Crect%20x%3D%227%22%20y%3D%227%22%20width%3D%22178%22%20height%3D%2286%22%20rx%3D%222%22%20fill%3D%22none%22%20stroke%3D%22rgba%28255%2C220%2C220%2C0.1%29%22%20stroke-width%3D%220.4%22/%3E%0A%20%20%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%2220%22%20height%3D%2218%22%20rx%3D%222%22%20fill%3D%22none%22%20stroke%3D%22rgba%28255%2C220%2C220%2C0.2%29%22%20stroke-width%3D%220.6%22/%3E%0A%20%20%3Crect%20x%3D%22168%22%20y%3D%224%22%20width%3D%2220%22%20height%3D%2218%22%20rx%3D%222%22%20fill%3D%22none%22%20stroke%3D%22rgba%28255%2C220%2C220%2C0.2%29%22%20stroke-width%3D%220.6%22/%3E%0A%20%20%3Crect%20x%3D%224%22%20y%3D%2278%22%20width%3D%2220%22%20height%3D%2218%22%20rx%3D%222%22%20fill%3D%22none%22%20stroke%3D%22rgba%28255%2C220%2C220%2C0.2%29%22%20stroke-width%3D%220.6%22/%3E%0A%20%20%3Crect%20x%3D%22168%22%20y%3D%2278%22%20width%3D%2220%22%20height%3D%2218%22%20rx%3D%222%22%20fill%3D%22none%22%20stroke%3D%22rgba%28255%2C220%2C220%2C0.2%29%22%20stroke-width%3D%220.6%22/%3E%0A%20%20%3Ctext%20x%3D%2216%22%20y%3D%2226%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2230%22%20font-weight%3D%22bold%22%20fill%3D%22rgba%28255%2C220%2C220%2C0.55%29%22%20letter-spacing%3D%22-1%22%3E100%3C/text%3E%0A%20%20%3Ctext%20x%3D%2216%22%20y%3D%2244%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%226%22%20font-weight%3D%22600%22%20fill%3D%22rgba%28255%2C220%2C220%2C0.09%29%22%20letter-spacing%3D%222%22%3EHONG%20KONG%3C/text%3E%0A%20%20%3Ctext%20x%3D%2216%22%20y%3D%2251%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%225%22%20font-weight%3D%22600%22%20fill%3D%22rgba%28255%2C220%2C220%2C0.08%29%22%20letter-spacing%3D%221%22%3ESPECIAL%20ADMINISTRATIVE%3C/text%3E%0A%20%20%3Ctext%20x%3D%2216%22%20y%3D%2257%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%225%22%20font-weight%3D%22600%22%20fill%3D%22rgba%28255%2C220%2C220%2C0.08%29%22%20letter-spacing%3D%221%22%3EREGION%3C/text%3E%0A%20%20%3Ctext%20x%3D%2216%22%20y%3D%2272%22%20font-family%3D%22%27Microsoft%20YaHei%27%2C%27Noto%20Sans%20SC%27%2Csans-serif%22%20font-size%3D%227%22%20font-weight%3D%22400%22%20fill%3D%22rgba%28255%2C220%2C220%2C0.1%29%22%3E%E9%A6%99%E6%B8%AF%E7%89%B9%E5%88%A5%E8%A1%8C%E6%94%BF%E5%8D%80%3C/text%3E%0A%20%20%3Ctext%20x%3D%2260%22%20y%3D%2256%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2236%22%20font-weight%3D%22bold%22%20fill%3D%22rgba%28255%2C220%2C220%2C0.15%29%22%20text-anchor%3D%22middle%22%3E100%3C/text%3E%0A%20%20%3Ctext%20x%3D%22176%22%20y%3D%2288%22%20font-family%3D%22Georgia%2Cserif%22%20font-size%3D%2218%22%20font-weight%3D%22bold%22%20fill%3D%22rgba%28255%2C220%2C220%2C0.35%29%22%20text-anchor%3D%22end%22%3E100%3C/text%3E%0A%20%20%3Ctext%20x%3D%2260%22%20y%3D%2284%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%225%22%20fill%3D%22rgba%28255%2C220%2C220%2C0.1%29%22%20text-anchor%3D%22middle%22%3EONE%20HUNDRED%20HONG%20KONG%20DOLLARS%3C/text%3E%0A%20%20%3Ctext%20x%3D%2260%22%20y%3D%2291%22%20font-family%3D%22%27Microsoft%20YaHei%27%2C%27Noto%20Sans%20SC%27%2Csans-serif%22%20font-size%3D%225%22%20fill%3D%22rgba%28255%2C220%2C220%2C0.09%29%22%20text-anchor%3D%22middle%22%3E%E5%A3%B9%E4%BD%B0%E5%9C%93%3C/text%3E%0A%20%20%3Ctext%20x%3D%22144%22%20y%3D%2290%22%20font-family%3D%22%27Courier%20New%27%2Cmonospace%22%20font-size%3D%224%22%20fill%3D%22rgba%28255%2C220%2C220%2C0.12%29%22%3EAB%20000000%3C/text%3E%0A%3C/svg%3E");
+      box-shadow:
+        3px 1px 0 rgba(160, 70, 70, 0.15),
+        4px 2px 0 rgba(140, 50, 50, 0.1),
+        0 4px 12px rgba(80, 20, 60, 0.2);
+    }
+
+    .bundle::before,
+    .bundle::after {
+      display: none;
+    }
+
+    .falling {
+      top: -56px;
+      left: var(--left);
+      z-index: 3;
+      animation: fall var(--duration) cubic-bezier(.15,.68,.32,1) forwards;
+    }
+
+    @keyframes fall {
+      0% { transform: translate3d(0, -20px, 80px) rotateX(70deg) rotateZ(var(--spin)); opacity: 0; }
+      12% { opacity: 1; }
+      76% { transform: translate3d(var(--drift), 206px, 0) rotateX(18deg) rotateZ(calc(var(--spin) * -0.25)); opacity: 1; }
+      100% { transform: translate3d(var(--drift), 196px, 0) rotateX(0deg) rotateZ(0deg); opacity: 0; }
+    }
+
+    .bill-stack {
+      position: absolute;
+      left: 50%;
+      bottom: 30px;
+      width: 210px;
+      height: 82px;
+      transform: translateX(-50%);
+      z-index: 4;
+    }
+
+    .stack-note {
+      position: absolute;
+      left: var(--x);
+      bottom: var(--y);
+      transform: rotate(var(--r));
+      opacity: 0.9;
+    }
+
+    .burst {
+      animation: heroBurst 1.8s ease both;
+    }
+
+    @keyframes heroBurst {
+      0%, 100% { filter: brightness(1); transform: scale(1); }
+      25% { filter: brightness(1.3) saturate(1.2); transform: scale(1.015); }
+      48% { filter: brightness(1.08); transform: scale(1); }
+    }
+    @keyframes digitUp {
+      from { transform: translateY(0em); }
+      to { transform: translateY(-1em); }
+    }
+
+
+    /* ═══════════════ Sections ═══════════════ */
+
+    .section-title {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 28px 0 14px;
+    }
+
+    #home, #rewards, #calendar, #year {
+      scroll-margin-top: 18px;
+      scroll-margin-bottom: 110px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: 1.3rem;
+      line-height: 1.1;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+
+    .section-title span {
+      color: rgba(255, 255, 255, 0.3);
+      font-weight: 600;
+      font-size: 0.78rem;
+      text-align: right;
+    }
+
+    /* ═══════════════ Rewards ═══════════════ */
+
+    .reward-rail {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 72%;
+      gap: 12px;
+      overflow-x: auto;
+      padding: 2px 2px 12px;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .reward-rail::-webkit-scrollbar {
+      height: 3px;
+    }
+
+    .reward-rail::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 999px;
+    }
+
+    .reward-rail::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+    }
+
+    .reward-card {
+      scroll-snap-align: start;
+      border-radius: var(--radius);
+      overflow: hidden;
+      min-height: 190px;
+      display: grid;
+      grid-template-rows: 100px auto;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2), var(--inset);
+      transition: all 0.3s ease;
+    }
+
+    .reward-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(0, 229, 255, 0.15);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), 0 0 30px rgba(0, 229, 255, 0.05), var(--inset);
+    }
+
+    .reward-art {
+      display: grid;
+      place-items: center;
+      position: relative;
+      isolation: isolate;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.06), transparent),
+        linear-gradient(145deg, #0f1f42, #070e24);
+      color: #00e5ff;
+    }
+
+    .reward-art::before {
+      content: "";
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 229, 255, 0.1), transparent 60%);
+      z-index: -1;
+    }
+
+    .reward-card:nth-child(2n) .reward-art {
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.06), transparent),
+        linear-gradient(145deg, #1a0a3e, #070e24);
+    }
+
+    .reward-card:nth-child(2n) .reward-art::before {
+      background: radial-gradient(circle, rgba(124, 58, 237, 0.1), transparent 60%);
+    }
+
+    .reward-body {
+      padding: 14px;
+    }
+
+    .reward-body h3 {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.2;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .reward-body p {
+      margin: 6px 0 0;
+      color: rgba(255, 255, 255, 0.4);
+      font-weight: 500;
+      font-size: 0.82rem;
+    }
+
+    /* ═══════════════ Sheet / Calendar ═══════════════ */
+
+    .sheet {
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-top: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(16px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2), var(--inset);
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+    }
+
+    .weekday, .day-cell {
+      min-width: 0;
+      text-align: center;
+      border-radius: var(--radius-sm);
+    }
+
+    .weekday {
+      color: rgba(255, 255, 255, 0.25);
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 6px 0;
+    }
+
+    .day-cell {
+      min-height: 48px;
+      padding: 5px 2px;
+      background: rgba(255, 255, 255, 0.03);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2px;
+      transition: all 0.2s ease;
+    }
+
+    .day-cell.empty { background: transparent; }
+
+    .day-cell.today {
+      background: linear-gradient(145deg, rgba(0, 229, 255, 0.1), rgba(124, 58, 237, 0.1));
+      border: 1px solid rgba(0, 229, 255, 0.15);
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.08);
+    }
+
+    .day-cell .day-number {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .day-cell.today .day-number { color: #00e5ff; }
+
+    .day-cell .day-money {
+      font-size: 0.58rem;
+      color: rgba(255, 255, 255, 0.3);
+      font-weight: 600;
+      overflow-wrap: anywhere;
+    }
+
+    .day-cell.today .day-money { color: rgba(255, 255, 255, 0.6); }
+
+    .event-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #fbbf24;
+      box-shadow: 0 0 8px rgba(251, 191, 36, 0.4);
+      position: absolute;
+      right: 4px;
+      top: 4px;
+    }
+
+    .year-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .month-card {
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      min-height: 80px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    .month-card.active {
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.08), rgba(124, 58, 237, 0.08));
+      border-color: rgba(0, 229, 255, 0.12);
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.06);
+    }
+
+    .month-card h3 {
+      margin: 0;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.6);
+      font-weight: 600;
+    }
+
+    .month-card p {
+      margin: 8px 0 0;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 700;
+      font-size: 1.05rem;
+      overflow-wrap: anywhere;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .month-card.active p { color: #67e8f9; }
+
+    /* ═══════════════ Bottom Navigation ═══════════════ */
+
+    .bottom-nav {
+      position: fixed;
+      left: 50%;
+      bottom: 16px;
+      transform: translateX(-50%);
+      width: min(442px, calc(100% - 28px));
+      min-height: 66px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+      padding: 6px;
+      background: rgba(6, 14, 36, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius);
+      backdrop-filter: blur(24px);
+      box-shadow: 0 16px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 229, 255, 0.04), var(--inset);
+      z-index: 120;
+      pointer-events: auto;
+    }
+
+    .bottom-nav button, .bottom-nav a {
+      border-radius: var(--radius-sm);
+      background: transparent;
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 0.72rem;
+      font-weight: 600;
+      display: grid;
+      place-items: center;
+      gap: 2px;
+      min-width: 0;
+      pointer-events: auto;
+      touch-action: manipulation;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border: 0;
+    }
+
+    .bottom-nav button.active, .bottom-nav a.active {
+      color: #fff;
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(0, 229, 255, 0.1));
+      box-shadow: 0 0 20px rgba(124, 58, 237, 0.1);
+    }
+
+    .nav-icon {
+      width: 28px;
+      height: 22px;
+      display: grid;
+      place-items: center;
+      line-height: 1;
+    }
+
+    .ui-icon {
+      width: 1.15em;
+      height: 1.15em;
+      display: block;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .icon-button .ui-icon,
+    .settings-button .ui-icon,
+    .nav-icon .ui-icon {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+
+    .bottom-nav .nav-icon {
+      width: 32px;
+      height: 28px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .bottom-nav button.active .nav-icon,
+    .bottom-nav a.active .nav-icon {
+      background: rgba(0, 229, 255, 0.06);
+      border-color: rgba(0, 229, 255, 0.1);
+      box-shadow: 0 0 16px rgba(0, 229, 255, 0.06);
+    }
+
+    .lux-icon {
+      width: 56px;
+      height: 56px;
+      color: #00e5ff;
+      filter: drop-shadow(0 0 14px rgba(0, 229, 255, 0.25));
+    }
+
+    .reward-card:nth-child(2n) .lux-icon {
+      color: #a855f7;
+      filter: drop-shadow(0 0 14px rgba(168, 85, 247, 0.25));
+    }
+
+    /* ═══════════════ Dialogs ═══════════════ */
+
+    dialog {
+      border: 0;
+      border-radius: var(--radius-xl);
+      width: min(420px, calc(100% - 28px));
+      color: #fff;
+      background: rgba(8, 18, 46, 0.85);
+      backdrop-filter: blur(32px);
+      box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 229, 255, 0.06);
+      padding: 0;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    dialog::backdrop {
+      background: rgba(2, 6, 20, 0.7);
+      backdrop-filter: blur(8px);
+    }
+
+    .modal-body { padding: 24px; }
+
+    .modal-body h2 {
+      margin: 0 0 16px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .field { margin-top: 14px; }
+
+    .field label {
+      display: block;
+      margin-bottom: 6px;
+      color: rgba(255, 255, 255, 0.4);
+      font-weight: 600;
+      font-size: 0.82rem;
+    }
+
+    .field input, .field select, .field textarea {
+      width: 100%;
+      min-height: 44px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.04);
+      color: #fff;
+      padding: 10px 14px;
+      outline: 0;
+      font-weight: 500;
+      transition: border-color 0.2s ease;
+    }
+
+    .field input:focus, .field select:focus, .field textarea:focus {
+      border-color: rgba(0, 229, 255, 0.3);
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.05);
+    }
+
+    dialog .secondary-button {
+      color: rgba(255, 255, 255, 0.7);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .modal-actions .primary-button { min-height: 44px; }
+
+    /* ═══════════════ Events ═══════════════ */
+
+    .event-list { display: grid; gap: 8px; margin-top: 8px; }
+
+    .event-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .event-item strong {
+      display: block;
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .event-item span {
+      display: block;
+      margin-top: 3px;
+      color: rgba(255, 255, 255, 0.3);
+      font-size: 0.78rem;
+      font-weight: 500;
+    }
+
+    .event-item > strong:last-child {
+      color: #67e8f9;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    /* ═══════════════ Toast ═══════════════ */
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      top: 18px;
+      transform: translateX(-50%) translateY(-120%);
+      width: min(420px, calc(100% - 28px));
+      z-index: 60;
+      background: rgba(8, 18, 46, 0.85);
+      backdrop-filter: blur(24px);
+      border: 1px solid rgba(0, 229, 255, 0.1);
+      color: #fff;
+      padding: 14px 18px;
+      border-radius: var(--radius);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+      font-weight: 600;
+      transition: transform 0.35s cubic-bezier(.34,1.56,.64,1);
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ═══════════════ Celebrations ═══════════════ */
+
+    .celebration {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 50;
+    }
+
+    .celebration .bill { z-index: 51; }
+
+    .flash {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle, rgba(0, 229, 255, 0.15), rgba(124, 58, 237, 0.08), transparent 60%);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 49;
+    }
+
+    .flash.play { animation: flash 1.2s ease; }
+
+    @keyframes flash {
+      0%, 100% { opacity: 0; }
+      25% { opacity: 1; }
+    }
+
+    /* ═══════════════ Setup Screen ═══════════════ */
+
+    .setup-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 80;
+      background: rgba(2, 6, 20, 0.6);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 18px;
+      pointer-events: none;
+    }
+
+    .setup-screen.hidden { display: none; }
+
+    .setup-card {
+      width: min(430px, 100%);
+      border-radius: var(--radius-xl);
+      background: rgba(8, 18, 46, 0.85);
+      backdrop-filter: blur(32px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+      padding: 24px;
+      pointer-events: auto;
+    }
+
+    .setup-card h2 {
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: 700;
+      line-height: 1;
+      color: #fff;
+    }
+
+    .setup-card p {
+      margin: 12px 0 0;
+      color: rgba(255, 255, 255, 0.5);
+      font-weight: 500;
+      line-height: 1.5;
+      font-size: 0.9rem;
+    }
+
+    .setup-preview-note {
+      margin-top: 10px;
+      color: rgba(0, 229, 255, 0.6);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .hidden { display: none !important; }
+
+    /* ═══════════════ Responsive ═══════════════ */
+
+    @media (min-width: 760px) {
+      .shell {
+        width: min(1120px, 100%);
+        display: grid;
+        grid-template-columns: minmax(360px, 480px) minmax(320px, 1fr);
+        gap: 20px;
+        align-items: start;
+        padding-bottom: 36px;
+      }
+
+      .app-header, .hero-card, .stats-grid, .money-stage, .reward-section { grid-column: 1; }
+      .calendar-section, .year-section, .event-section { grid-column: 2; }
+
+      .calendar-section { grid-row: 1 / span 3; margin-top: 116px; }
+      .bottom-nav { display: none; }
+      .reward-rail { grid-auto-columns: 58%; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+      }
+    }
+
+    /* ═══════════════ Scrollbar ═══════════════ */
+
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.08); border-radius: 999px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.15); }
+
+    /* Responsive font for big money */
+    @media (max-width: 390px) {
+      .hero-card { padding: 18px; }
+      .big-money { font-size: clamp(2rem, 10vw, 3rem); }
+    }
+
+
+    /* ═══════════════ Smooth Scroll Counter ═══════════════ */
+
+
+    .scroll-money {
+      display: inline-flex;
+      align-items: center;
+      height: 1em;
+      line-height: 1;
+      position: relative;
+      z-index: 3;
+      letter-spacing: -0.01em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .scroll-prefix {
+      font-weight: 700;
+      color: rgba(0, 229, 255, 0.45);
+      font-size: 0.4em;
+      margin-right: 0.12em;
+      align-self: center;
+      letter-spacing: 0.02em;
+    }
+
+    .scroll-digit {
+      display: inline-block;
+      height: 1em;
+      overflow: hidden;
+      position: relative;
+      vertical-align: top;
+      width: 0.58em;
+      min-width: 0.58em;
+    }
+
+    .scroll-digit.sep {
+      width: 0.3em;
+      min-width: 0.3em;
+      overflow: visible;
+    }
+
+    .scroll-digit.dot {
+      width: 0.3em;
+      min-width: 0.3em;
+      overflow: visible;
+      color: #00e5ff;
+    }
+
+    .scroll-digit-inner {
+      display: flex;
+      flex-direction: column;
+      line-height: 1;
+      width: 100%;
+    }
+
+    .scroll-digit-inner > span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 1em;
+      min-height: 1em;
+      font-weight: 800;
+      color: #00e5ff;
+      width: 100%;
+      text-shadow: 0 0 14px rgba(0, 229, 255, 0.25);
+    }
+
+    .scroll-digit-inner.go {
+      animation: digitUp 0.4s cubic-bezier(0.22, 0.85, 0.35, 1) forwards;
+    }
+
+  </style>
+</head>
+<body>
+  <!-- Ambient animated orbs -->
+  <div class="ambient-orbs" aria-hidden="true">
+    <div class="orb"></div>
+    <div class="orb"></div>
+    <div class="orb"></div>
+  </div>
+
+  <svg width="0" height="0" style="position:absolute;visibility:hidden" aria-hidden="true" focusable="false">
+    <defs>
+      <symbol id="icon-settings" viewBox="0 0 24 24"><path d="M12 8.2a3.8 3.8 0 1 0 0 7.6 3.8 3.8 0 0 0 0-7.6Z"/><path d="M19.2 13.4v-2.8l-2.1-.5a6.8 6.8 0 0 0-.7-1.6l1.1-1.8-2-2-1.8 1.1c-.5-.3-1-.5-1.6-.7L11.6 3H8.8l-.5 2.1c-.6.2-1.1.4-1.6.7L4.9 4.7l-2 2L4 8.5c-.3.5-.5 1-.7 1.6l-2.1.5v2.8l2.1.5c.2.6.4 1.1.7 1.6l-1.1 1.8 2 2 1.8-1.1c.5.3 1 .5 1.6.7l.5 2.1h2.8l.5-2.1c.6-.2 1.1-.4 1.6-.7l1.8 1.1 2-2-1.1-1.8c.3-.5.5-1 .7-1.6l2.1-.5Z"/></symbol>
+      <symbol id="icon-refresh" viewBox="0 0 24 24"><path d="M19 8a7 7 0 0 0-12.1-2.7L5 7.2"/><path d="M5 3.5v3.7h3.7"/><path d="M5 16a7 7 0 0 0 12.1 2.7l1.9-1.9"/><path d="M19 20.5v-3.7h-3.7"/></symbol>
+      <symbol id="icon-home" viewBox="0 0 24 24"><path d="M4 11.2 12 4l8 7.2"/><path d="M6.4 10.2v9.1h11.2v-9.1"/><path d="M10 19.3v-5.1h4v5.1"/></symbol>
+      <symbol id="icon-diamond" viewBox="0 0 24 24"><path d="M12 3.5 20.5 12 12 20.5 3.5 12 12 3.5Z"/><path d="M8.5 12 12 7.7l3.5 4.3-3.5 4.3L8.5 12Z"/></symbol>
+      <symbol id="icon-calendar" viewBox="0 0 24 24"><path d="M5 6.5h14v13H5z"/><path d="M5 10h14"/><path d="M8 4.5v3"/><path d="M16 4.5v3"/><path d="M8.2 13.2h.1M12 13.2h.1M15.8 13.2h.1M8.2 16.4h.1M12 16.4h.1M15.8 16.4h.1"/></symbol>
+      <symbol id="icon-chart" viewBox="0 0 24 24"><path d="M5 19V5"/><path d="M5 19h14"/><path d="M8 16v-4"/><path d="M12 16V8"/><path d="M16 16v-6"/></symbol>
+      <symbol id="icon-coffee" viewBox="0 0 24 24"><path d="M6 8h10v5.3a4.2 4.2 0 0 1-4.2 4.2H10A4 4 0 0 1 6 13.5V8Z"/><path d="M16 9.2h1.4a2.4 2.4 0 1 1 0 4.8H16"/><path d="M8 5.3c.9-.7 1-1.4.3-2.2M12 5.3c.9-.7 1-1.4.3-2.2"/></symbol>
+      <symbol id="icon-burger" viewBox="0 0 24 24"><path d="M5 11.5c.5-3.4 3.3-5.5 7-5.5s6.5 2.1 7 5.5H5Z"/><path d="M5 14h14"/><path d="M6 17.5h12"/><path d="M8 11.5h.1M12 11.5h.1M16 11.5h.1"/></symbol>
+      <symbol id="icon-drink" viewBox="0 0 24 24"><path d="m7 6 1.4 14h7.2L17 6H7Z"/><path d="M6 6h12"/><path d="M10 3h5"/><path d="M12.5 3 11 6"/><path d="M8.2 10.5h7.6"/></symbol>
+      <symbol id="icon-candle" viewBox="0 0 24 24"><path d="M8 10h8v9H8z"/><path d="M12 10V7"/><path d="M12 3.2c1.5 1.4 1.8 2.7.1 3.8-1.2-.9-1.3-2.2-.1-3.8Z"/></symbol>
+      <symbol id="icon-sleep" viewBox="0 0 24 24"><path d="M5 13c2.3-4 5-6 7-6s4.7 2 7 6c-2.3 4-5 6-7 6s-4.7-2-7-6Z"/><path d="M9 13a3 3 0 0 0 6 0"/></symbol>
+      <symbol id="icon-sparkle" viewBox="0 0 24 24"><path d="M12 3 14.2 9.8 21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2L12 3Z"/><path d="M19 4.5v3M20.5 6h-3"/></symbol>
+      <symbol id="icon-earbuds" viewBox="0 0 24 24"><path d="M8 6.5a3 3 0 0 0-3 3v1.8a2.7 2.7 0 0 0 2.7 2.7H9V9.5a3 3 0 0 0-1-2.2Z"/><path d="M16 6.5a3 3 0 0 1 3 3v1.8a2.7 2.7 0 0 1-2.7 2.7H15V9.5a3 3 0 0 1 1-2.2Z"/><path d="M9 14v5M15 14v5"/></symbol>
+      <symbol id="icon-bag" viewBox="0 0 24 24"><path d="M6.5 8h11l1 12h-13l1-12Z"/><path d="M9 8a3 3 0 0 1 6 0"/></symbol>
+      <symbol id="icon-hotel" viewBox="0 0 24 24"><path d="M5 20V6h14v14"/><path d="M8 20v-5h8v5"/><path d="M8 9h.1M12 9h.1M16 9h.1M8 12h.1M12 12h.1M16 12h.1"/></symbol>
+      <symbol id="icon-laptop" viewBox="0 0 24 24"><path d="M6 6.5h12v9H6z"/><path d="M4 18h16"/><path d="M10 15.5h4"/></symbol>
+      <symbol id="icon-plane" viewBox="0 0 24 24"><path d="M4 12.4 20 4l-4.3 16-3.5-6.1L4 12.4Z"/><path d="m20 4-7.8 9.9"/></symbol>
+    </defs>
+  </svg>
+
+  <div class="setup-screen hidden" id="setupScreen">
+    <form class="setup-card" id="setupForm">
+      <h2>On Duty Income</h2>
+      <p id="setupCopy">Enter your fixed monthly income. From 09:00 to 20:00, your daily earnings grow by the second.</p>
+      <div class="setup-preview-note" id="setupPreviewNote">The app is visible behind this card. Save your income to switch from preview to your real numbers.</div>
+      <div class="field">
+        <label for="setupMonthlyIncome" id="setupIncomeLabel">Monthly fixed income HKD</label>
+        <input id="setupMonthlyIncome" type="number" min="0" step="100" placeholder="e.g. 45000" required>
+      </div>
+      <div class="modal-actions">
+        <button class="primary-button" id="setupSubmitBtn" type="submit">Start Tracking</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <div class="flash" id="flash"></div>
+  <div class="celebration" id="celebrationLayer"></div>
+
+  <main class="shell">
+    <header class="app-header" id="home">
+      <div class="brand">
+        <h1>On Duty<br>Income</h1>
+        <p id="brandSubtitle">Turn working hours into visible income.</p>
+      </div>
+      <div class="header-actions">
+        <select class="language-select" id="languageSelect" aria-label="Language">
+          <option value="en">EN</option>
+          <option value="zh">中文</option>
+        </select>
+        <button class="settings-button" id="headerSettingsBtn" type="button" aria-label="Income settings">
+          <div>
+            <strong id="clockText">--:--</strong>
+            <span id="dateText">Today</span>
+            <span class="gear"><svg class="ui-icon"><use href="#icon-settings"></use></svg></span>
+          </div>
+        </button>
+      </div>
+    </header>
+
+    <section class="hero-card" id="heroCard">
+      <div class="hero-top">
+        <div class="status-pill"><span class="pulse-dot"></span><span id="statusText">Loading</span></div>
+        <div class="currency-tabs" id="currencyTabs">
+          <button type="button" data-currency="HKD" class="active">HKD</button>
+          <button type="button" data-currency="CNY">CNY</button>
+          <button type="button" data-currency="USD">USD</button>
+        </div>
+      </div>
+      <p class="income-title" id="todayIncomeTitle">Today Earned</p>
+      <p class="big-money" id="todayMoney"><span class="scroll-money" id="scrollMoney">Loading...</span></p>
+      <!-- Earning rate (updated by JS) -->
+      <p class="earning-rate" id="earningRate" style="display:none">
+        Earning <span class="rate-value" id="rateValue">HK$0.00</span>/sec
+      </p>
+      <!-- Daily progress bar (updated by JS) -->
+      <div class="daily-progress" id="dailyProgress" style="display:none">
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill" style="width:0%"></div>
+        </div>
+        <div class="progress-labels">
+          <span id="progressLabel">0% of daily max</span>
+          <span id="progressTarget">HK$0</span>
+        </div>
+      </div>
+
+
+      <p class="subline" id="heroSubline">Waiting to start --</p>
+      <p class="subline" id="debugError" style="color:#ff6b6b;font-size:0.7rem;display:none;margin-top:6px"></p>
+      <div class="hero-actions">
+        <button class="primary-button" id="addIncomeBtn" type="button">Add Extra Income</button>
+        <button class="icon-button" id="refreshRatesBtn" type="button" aria-label="Refresh rates"><svg class="ui-icon"><use href="#icon-refresh"></use></svg></button>
+      </div>
+    </section>
+
+    <section class="stats-grid">
+      <article class="card purple">
+        <p class="label" id="monthLabel">This Month</p>
+        <p class="value" id="monthMoney">HK$0</p>
+      </article>
+      <article class="card cyan">
+        <p class="label" id="yearLabel">This Year</p>
+        <p class="value" id="yearMoney">HK$0</p>
+      </article>
+    </section>
+
+    <section class="money-stage" id="moneyStage">
+      <div class="stage-title" id="stageTitle">HK$10 per bill, 10 bills per bundle</div>
+      <div class="bill-stack" id="billStack"></div>
+    </section>
+
+    <section class="reward-section" id="rewards">
+      <div class="section-title">
+        <h2 id="rewardsTitle">What It Can Buy</h2>
+        <span id="rewardHint">Make income tangible</span>
+      </div>
+      <div class="reward-rail" id="rewardRail"></div>
+    </section>
+
+    <section class="calendar-section" id="calendar">
+      <div class="section-title">
+        <h2 id="calendarSectionTitle">Monthly Calendar</h2>
+        <span id="calendarTitle">This month progress</span>
+      </div>
+      <div class="sheet">
+        <div class="calendar-grid" id="calendarGrid"></div>
+      </div>
+    </section>
+
+    <section class="year-section" id="year">
+      <div class="section-title">
+        <h2 id="yearSectionTitle">Year View</h2>
+        <span id="yearSectionHint">Full-year momentum</span>
+      </div>
+      <div class="sheet">
+        <div class="year-grid" id="yearGrid"></div>
+      </div>
+    </section>
+
+    <section class="event-section">
+      <div class="section-title">
+        <h2 id="extraSectionTitle">Extra Income</h2>
+        <span id="extraSectionHint">Side income, windfalls, bonus</span>
+      </div>
+      <div class="sheet">
+        <div class="event-list" id="eventList"></div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav" id="bottomNav" aria-label="Main navigation">
+    <a class="active" data-target="home" href="#home"><span class="nav-icon"><svg class="ui-icon"><use href="#icon-home"></use></svg></span><span id="navHome">Home</span></a>
+    <a data-target="rewards" href="#rewards"><span class="nav-icon"><svg class="ui-icon"><use href="#icon-diamond"></use></svg></span><span id="navRewards">Rewards</span></a>
+    <a data-target="calendar" href="#calendar"><span class="nav-icon"><svg class="ui-icon"><use href="#icon-calendar"></use></svg></span><span id="navCalendar">Calendar</span></a>
+    <a data-target="year" href="#year"><span class="nav-icon"><svg class="ui-icon"><use href="#icon-chart"></use></svg></span><span id="navYear">Year</span></a>
+  </nav>
+
+  <dialog id="extraDialog">
+    <form class="modal-body" id="extraForm">
+      <h2 id="extraDialogTitle">Add Extra Income</h2>
+      <div class="field">
+        <label for="extraType" id="extraTypeLabel">Income type</label>
+        <select id="extraType">
+          <option value="side">Side Income</option>
+          <option value="windfall">Windfall</option>
+          <option value="yearEnd">Year-end Bonus</option>
+          <option value="other">Other Income</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="extraAmount" id="extraAmountLabel">Amount HKD</label>
+        <input id="extraAmount" type="number" min="1" step="1" placeholder="e.g. 3000" required>
+      </div>
+      <div class="field">
+        <label for="extraNote" id="extraNoteLabel">Note</label>
+        <textarea id="extraNote" rows="2" placeholder="例如 freelance、bonus、unexpected win"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="primary-button" id="saveExtraBtn" type="button">Add & Close</button>
+        <button class="secondary-button" id="cancelExtraBtn" type="button" data-close="extraDialog">Cancel</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="incomeDialog">
+    <form class="modal-body" id="incomeForm">
+      <h2 id="incomeDialogTitle">Monthly Income</h2>
+      <div class="field">
+        <label for="monthlyIncomeInput" id="monthlyIncomeLabel">Monthly fixed income HKD</label>
+        <input id="monthlyIncomeInput" type="number" min="0" step="100" required>
+      </div>
+      <div class="modal-actions">
+        <button class="primary-button" id="saveIncomeBtn" type="button">Save & Close</button>
+        <button class="secondary-button" id="cancelIncomeBtn" type="button" data-close="incomeDialog">Cancel</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script id="income-core" type="text/plain">
+    (function (global) {
+      function clamp(value, min, max) {
+        return Math.min(Math.max(value, min), max);
+      }
+
+      function daysInMonth(date) {
+        return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+      }
+
+      function dayKey(date) {
+        return [date.getFullYear(), String(date.getMonth() + 1).padStart(2, "0"), String(date.getDate()).padStart(2, "0")].join("-");
+      }
+
+      function monthKey(date) {
+        return [date.getFullYear(), String(date.getMonth() + 1).padStart(2, "0")].join("-");
+      }
+
+      function startOfWorkday(date) {
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
+      }
+
+      function endOfWorkday(date) {
+        return new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1, 0, 0, 0, 0);
+      }
+
+      function baseEarnedAt(monthlyIncome, date) {
+        const dailyIncome = Number(monthlyIncome || 0) / daysInMonth(date);
+        const start = startOfWorkday(date).getTime();
+        const end = endOfWorkday(date).getTime();
+        const progress = clamp((date.getTime() - start) / (end - start), 0, 1);
+        return Math.round(dailyIncome * progress * 100) / 100;
+      }
+
+      function eventDate(event) {
+        return new Date(event.date);
+      }
+
+      function sumExtraIncome(events, scope, date) {
+        return events.reduce(function (sum, event) {
+          const current = eventDate(event);
+          if (scope === "day" && dayKey(current) !== dayKey(date)) return sum;
+          if (scope === "month" && monthKey(current) !== monthKey(date)) return sum;
+          if (scope === "year" && current.getFullYear() !== date.getFullYear()) return sum;
+          return sum + Number(event.amount || 0);
+        }, 0);
+      }
+
+      function monthBaseEarned(monthlyIncome, date) {
+        const dim = daysInMonth(date);
+        const dailyIncome = Number(monthlyIncome || 0) / dim;
+        const completeDays = Math.max(0, date.getDate() - 1);
+        return completeDays * dailyIncome + baseEarnedAt(monthlyIncome, date);
+      }
+
+      function yearBaseEarned(monthlyIncome, date) {
+        const monthly = Number(monthlyIncome || 0);
+        return date.getMonth() * monthly + monthBaseEarned(monthlyIncome, date);
+      }
+
+      function totalsFor(monthlyIncome, events, date) {
+        const todayBase = baseEarnedAt(monthlyIncome, date);
+        const todayExtra = sumExtraIncome(events, "day", date);
+        const monthExtra = sumExtraIncome(events, "month", date);
+        const yearExtra = sumExtraIncome(events, "year", date);
+        return {
+          todayBase: todayBase,
+          todayExtra: todayExtra,
+          today: Math.round((todayBase + todayExtra) * 100) / 100,
+          month: Math.round((monthBaseEarned(monthlyIncome, date) + monthExtra) * 100) / 100,
+          monthExtra: monthExtra,
+          year: Math.round((yearBaseEarned(monthlyIncome, date) + yearExtra) * 100) / 100,
+          yearExtra: yearExtra,
+        };
+      }
+
+      function convertAmount(amount, currency, rates) {
+        const rate = rates && rates[currency] ? rates[currency] : 1;
+        return Math.round(Number(amount || 0) * rate * 100) / 100;
+      }
+
+      function chooseRewards(amountHkd, catalog) {
+        return catalog
+          .filter(function (item) { return amountHkd >= item.price; })
+          .map(function (item) {
+            return {
+              name: item.name,
+              price: item.price,
+              count: Math.max(1, Math.floor(amountHkd / item.price)),
+              icon: item.icon,
+              description: item.description,
+            };
+          })
+          .sort(function (a, b) { return b.price - a.price; })
+          .slice(0, 8);
+      }
+
+      global.OnDutyIncomeCore = {
+        clamp: clamp,
+        daysInMonth: daysInMonth,
+        dayKey: dayKey,
+        monthKey: monthKey,
+        startOfWorkday: startOfWorkday,
+        endOfWorkday: endOfWorkday,
+        baseEarnedAt: baseEarnedAt,
+        sumExtraIncome: sumExtraIncome,
+        totalsFor: totalsFor,
+        convertAmount: convertAmount,
+        chooseRewards: chooseRewards,
+      };
+    })(typeof window !== "undefined" ? window : globalThis);
+  </script>
+
+  <script>
+    // === VISIBLE SCRIPT LOAD MARKER ===
+    window.onerror = function(msg, url, line, col, err) {
+      var el = document.getElementById("debugError");
+      if (el) { el.style.display = "block"; el.textContent = "ERR: " + msg + " (L" + line + ")"; }
+      var st = document.getElementById("statusText");
+      if (st) st.textContent = "⚠️ JS Error";
+    };
+    (function() {
+      var el = document.getElementById("statusText");
+      if (el) el.textContent = "⚡Loading JS...";
+    })();
+
+    eval(document.getElementById("income-core").textContent);
+
+    const Core = window.OnDutyIncomeCore;
+    const storageKey = "onDutyIncome:v1";
+    const moneyStage = document.getElementById("moneyStage");
+    const billStack = document.getElementById("billStack");
+    const celebrationLayer = document.getElementById("celebrationLayer");
+    const flash = document.getElementById("flash");
+
+    const rewardCatalog = [
+      { name: "Specialty Pour-over Coffee", nameZh: "精品手沖咖啡", price: 38, icon: "coffee", description: "A refined coffee ritual for the morning.", descriptionZh: "一杯讓上午變精緻的咖啡" },
+      { name: "McDonald's Burger", nameZh: "麥當勞漢堡", price: 30, icon: "burger", description: "A small instant reward you can actually taste.", descriptionZh: "把小額到賬變成立即快樂" },
+      { name: "Starbucks Tea Drink", nameZh: "星巴克茶飲", price: 45, icon: "drink", description: "A polished little afternoon upgrade.", descriptionZh: "下午茶也有一點儀式感" },
+      { name: "Premium Scented Candle", nameZh: "高級香氛蠟燭", price: 260, icon: "candle", description: "Make your room feel like a weekend hotel.", descriptionZh: "讓房間聞起來像週末酒店" },
+      { name: "Silk Sleep Mask", nameZh: "絲質眼罩", price: 380, icon: "sleep", description: "Upgrade sleep with one quiet luxury.", descriptionZh: "把睡眠質感升級一級" },
+      { name: "Niche Fragrance", nameZh: "小眾香水", price: 880, icon: "sparkle", description: "A subtle premium impression when you walk in.", descriptionZh: "走近時有一點高級留白" },
+      { name: "AirPods Pro", nameZh: "AirPods Pro", price: 1849, icon: "earbuds", description: "Make commuting and focus feel cleaner.", descriptionZh: "通勤和專注都變安靜" },
+      { name: "Boutique Leather Mini Bag", nameZh: "精品皮具小包", price: 3200, icon: "bag", description: "A reward you can carry every day.", descriptionZh: "可以每天帶出門的獎勵" },
+      { name: "Five-star Staycation", nameZh: "五星酒店 Staycation", price: 4200, icon: "hotel", description: "Turn a weekend into a short escape.", descriptionZh: "把週末升級成短假期" },
+      { name: "MacBook Air", nameZh: "MacBook Air", price: 8499, icon: "laptop", description: "A productivity upgrade that also feels good.", descriptionZh: "工作效率和爽感一起升級" },
+      { name: "Designer Handbag", nameZh: "設計師手袋", price: 16800, icon: "bag", description: "A serious year-level material milestone.", descriptionZh: "年度級別的物質化目標" },
+      { name: "Luxury Short Trip", nameZh: "短途奢華旅行", price: 26000, icon: "plane", description: "Convert a season of effort into scenery.", descriptionZh: "把一段時間的努力換成風景" },
+    ];
+
+    const defaultState = {
+      monthlyIncome: 0,
+      language: "en",
+      currency: "HKD",
+      rates: { HKD: 1, CNY: 0.92, USD: 0.128 },
+      ratesUpdatedAt: null,
+      extras: [],
+    };
+
+    let state = loadState();
+    let lastBillCount = 0;
+    let idleTicker = 0;
+
+    function loadState() {
+      try {
+        return { ...defaultState, ...JSON.parse(localStorage.getItem(storageKey) || "{}") };
+      } catch {
+        return { ...defaultState };
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(storageKey, JSON.stringify(state));
+    }
+
+    const i18n = {
+      en: {
+        setupCopy: "Enter your fixed monthly income. From 09:00 to 20:00, your daily earnings grow by the second.",
+        setupPreviewNote: "The app is visible behind this card. Save your income to switch from preview to your real numbers.",
+        setupIncomeLabel: "Monthly fixed income HKD",
+        setupSubmitBtn: "Start Tracking",
+        setupPlaceholder: "e.g. 45000",
+        brandSubtitle: "Turn working hours into visible income.",
+        settingsAria: "Income settings",
+        dateToday: "Today",
+        loading: "Loading",
+        todayIncomeTitle: "Today Earned",
+        waitingPlaceholder: "Waiting to start --",
+        addIncomeBtn: "Add Extra Income",
+        refreshRatesAria: "Refresh rates",
+        monthLabel: "This Month",
+        yearLabel: "This Year",
+        stageTitle: "HK$10 per bill, 10 bills per bundle",
+        rewardsTitle: "What It Can Buy",
+        rewardHintDefault: "Make income tangible",
+        calendarSectionTitle: "Monthly Calendar",
+        calendarDefault: "This month progress",
+        yearSectionTitle: "Year View",
+        yearSectionHint: "Full-year momentum",
+        extraSectionTitle: "Extra Income",
+        extraSectionHint: "Side income, windfalls, bonus",
+        navHome: "Home",
+        navRewards: "Rewards",
+        navCalendar: "Calendar",
+        navYear: "Year",
+        extraDialogTitle: "Add Extra Income",
+        extraTypeLabel: "Income type",
+        extraAmountLabel: "Amount HKD",
+        extraNoteLabel: "Note",
+        extraAmountPlaceholder: "e.g. 3000",
+        extraNotePlaceholder: "e.g. freelance, bonus, unexpected win",
+        saveExtraBtn: "Add & Close",
+        cancel: "Cancel",
+        incomeDialogTitle: "Monthly Income",
+        monthlyIncomeLabel: "Monthly fixed income HKD",
+        saveIncomeBtn: "Save & Close",
+        statusBefore: "Before work",
+        statusDone: "Capped today",
+        statusLive: "Earning live",
+        preview: "Preview mode",
+        startsIn: "Starts in",
+        tomorrowStartsIn: "Tomorrow starts in",
+        endsIn: "Ends in",
+        settingsHint: "Use the top-right clock to set your monthly income",
+        hours: "h",
+        minutes: "m",
+        seconds: "s",
+        rewardHint: "can become",
+        rewardEmptyTitle: "Your first specialty coffee is getting close",
+        rewardEmptyCopy: "Reach {amount}, and today\'s income can become a refined coffee ritual.",
+        unitPrice: "Unit",
+        weekdays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+        monthSuffix: "M",
+        boosted: "boosted",
+        eventTypes: { side: "Side Income", windfall: "Windfall", yearEnd: "Year-end Bonus", other: "Other Income" },
+        noExtraTitle: "No extra income yet",
+        noExtraCopy: "Your next side income, windfall, or bonus will light up here.",
+        extraFallback: "Extra Income",
+        noNote: "No note",
+        ratesUpdated: "Rates updated",
+        ratesFailed: "Rate update failed. Using the last successful rates.",
+        setupSaved: "Today\'s earnings are now tracking",
+        incomeSaved: "Monthly income updated",
+        extraSaved: "added to today",
+        earningRate: "Earning",
+        perSecond: "/sec",
+        ofDaily: "of daily max",
+      },
+      zh: {
+        setupCopy: "輸入每月固定收入。每天 09:00 到 20:00，今日到賬會按秒增長。",
+        setupPreviewNote: "後面的畫面已可預覽；輸入收入後會切換成你的真實數字。",
+        setupIncomeLabel: "每月固定收入 HKD",
+        setupSubmitBtn: "開始今日到賬",
+        setupPlaceholder: "例如 45000",
+        brandSubtitle: "把上班時間變成看得見的到賬",
+        settingsAria: "收入設定",
+        dateToday: "今日",
+        loading: "準備中",
+        todayIncomeTitle: "今日到賬",
+        waitingPlaceholder: "距離開始還有 --",
+        addIncomeBtn: "添加額外收入",
+        refreshRatesAria: "更新匯率",
+        monthLabel: "本月累計",
+        yearLabel: "年度累計",
+        stageTitle: "HK$10 一張，10 張成捆",
+        rewardsTitle: "現在能買什麼",
+        rewardHintDefault: "把收入物質化",
+        calendarSectionTitle: "月曆表",
+        calendarDefault: "本月收入進度",
+        yearSectionTitle: "年表",
+        yearSectionHint: "全年期待感",
+        extraSectionTitle: "額外收入",
+        extraSectionHint: "副業、意外、年終獎",
+        navHome: "首頁",
+        navRewards: "可買",
+        navCalendar: "月曆",
+        navYear: "年表",
+        extraDialogTitle: "添加額外收入",
+        extraTypeLabel: "收入類型",
+        extraAmountLabel: "金額 HKD",
+        extraNoteLabel: "備註",
+        extraAmountPlaceholder: "例如 3000",
+        extraNotePlaceholder: "例如 freelance、bonus、unexpected win",
+        saveExtraBtn: "加入並關閉",
+        cancel: "取消",
+        incomeDialogTitle: "月收入設定",
+        monthlyIncomeLabel: "每月固定收入 HKD",
+        saveIncomeBtn: "保存並關閉",
+        statusBefore: "等待開工",
+        statusDone: "今日封頂",
+        statusLive: "正在到賬",
+        preview: "預覽模式",
+        startsIn: "距離今日開始還有",
+        tomorrowStartsIn: "距離明日開始還有",
+        endsIn: "距離下班還有",
+        settingsHint: "右上角時鐘可設定你的月收入",
+        hours: "小時",
+        minutes: "分",
+        seconds: "秒",
+        rewardHint: "可以換成",
+        rewardEmptyTitle: "第一杯精品咖啡正在靠近",
+        rewardEmptyCopy: "到 {amount}，就能把今日收入換成一杯精緻咖啡。",
+        unitPrice: "單價",
+        weekdays: ["日", "一", "二", "三", "四", "五", "六"],
+        monthSuffix: "月",
+        boosted: "有加成",
+        eventTypes: { side: "副業收入", windfall: "意外收入", yearEnd: "年終獎", other: "其他收入" },
+        noExtraTitle: "還沒有額外收入",
+        noExtraCopy: "下一筆副業、意外收入或年終獎會在這裡閃亮登場。",
+        extraFallback: "額外收入",
+        noNote: "沒有備註",
+        ratesUpdated: "匯率已更新",
+        ratesFailed: "匯率更新失敗，已使用上次成功匯率",
+        setupSaved: "今日到賬開始計算",
+        incomeSaved: "月收入已更新",
+        extraSaved: "已加入今日",
+        earningRate: "正在賺取",
+        perSecond: "/秒",
+        ofDaily: "／每日上限",
+      },
+    };
+
+    function currentLanguage() {
+      return state.language === "zh" ? "zh" : "en";
+    }
+
+    function t(key) {
+      return i18n[currentLanguage()][key] || i18n.en[key] || key;
+    }
+
+    function setText(id, value) {
+      const element = document.getElementById(id);
+      if (element) element.textContent = value;
+    }
+
+    function applyLanguage() {
+      document.documentElement.lang = currentLanguage() === "zh" ? "zh-Hant" : "en";
+      document.getElementById("languageSelect").value = currentLanguage();
+      setText("setupCopy", t("setupCopy"));
+      setText("setupPreviewNote", t("setupPreviewNote"));
+      setText("setupIncomeLabel", t("setupIncomeLabel"));
+      setText("setupSubmitBtn", t("setupSubmitBtn"));
+      document.getElementById("setupMonthlyIncome").placeholder = t("setupPlaceholder");
+      setText("brandSubtitle", t("brandSubtitle"));
+      document.getElementById("headerSettingsBtn").setAttribute("aria-label", t("settingsAria"));
+      setText("todayIncomeTitle", t("todayIncomeTitle"));
+      setText("addIncomeBtn", t("addIncomeBtn"));
+      document.getElementById("refreshRatesBtn").setAttribute("aria-label", t("refreshRatesAria"));
+      setText("monthLabel", t("monthLabel"));
+      setText("yearLabel", t("yearLabel"));
+      setText("stageTitle", t("stageTitle"));
+      setText("rewardsTitle", t("rewardsTitle"));
+      setText("calendarSectionTitle", t("calendarSectionTitle"));
+      setText("yearSectionTitle", t("yearSectionTitle"));
+      setText("yearSectionHint", t("yearSectionHint"));
+      setText("extraSectionTitle", t("extraSectionTitle"));
+      setText("extraSectionHint", t("extraSectionHint"));
+      setText("navHome", t("navHome"));
+      setText("navRewards", t("navRewards"));
+      setText("navCalendar", t("navCalendar"));
+      setText("navYear", t("navYear"));
+      setText("extraDialogTitle", t("extraDialogTitle"));
+      setText("extraTypeLabel", t("extraTypeLabel"));
+      setText("extraAmountLabel", t("extraAmountLabel"));
+      setText("extraNoteLabel", t("extraNoteLabel"));
+      setText("saveExtraBtn", t("saveExtraBtn"));
+      setText("cancelExtraBtn", t("cancel"));
+      setText("incomeDialogTitle", t("incomeDialogTitle"));
+      setText("monthlyIncomeLabel", t("monthlyIncomeLabel"));
+      setText("saveIncomeBtn", t("saveIncomeBtn"));
+      setText("cancelIncomeBtn", t("cancel"));
+      document.getElementById("extraAmount").placeholder = t("extraAmountPlaceholder");
+      document.getElementById("extraNote").placeholder = t("extraNotePlaceholder");
+      document.querySelectorAll("#extraType option").forEach((option) => {
+        option.textContent = t("eventTypes")[option.value] || option.textContent;
+      });
+      updateDashboard();
+    }
+
+    function formatMoney(amountHkd, options = {}) {
+      const currency = options.currency || state.currency;
+      const value = Core.convertAmount(amountHkd, currency, state.rates);
+      const symbol = currency === "HKD" ? "HK$" : currency === "CNY" ? "¥" : "$";
+      const digits = options.compact ? 0 : 2;
+      return symbol + value.toLocaleString("en-US", {
+        minimumFractionDigits: digits,
+        maximumFractionDigits: digits,
+      });
+    }
+
+    
+
+        function renderFlipMoney(amountHkd) {
+      const currency = state.currency;
+      const value = Core.convertAmount(amountHkd, currency, state.rates);
+      const symbol = currency === "HKD" ? "HK$" : currency === "CNY" ? "\u00a5" : "$";
+      const str = symbol + value.toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
+
+      let html = "";
+      let prefix = "";
+      let rest = str;
+
+      if (str.startsWith("HK$")) { prefix = "HK$"; rest = str.slice(3); }
+      else if (str.startsWith("\u00a5")) { prefix = "\u00a5"; rest = str.slice(1); }
+      else if (str.startsWith("$")) { prefix = "$"; rest = str.slice(1); }
+
+      html += '<span class="scroll-prefix">' + prefix + '</span>';
+
+      // Count digit positions for per-digit speed
+      let digitCount = 0;
+      for (let j = 0; j < rest.length; j++) {
+        if (rest[j] >= "0" && rest[j] <= "9") digitCount++;
+      }
+
+      if (!window._reelTrack) {
+        let t = "";
+        for (let c = 0; c < 40; c++) {
+          for (let d = 0; d <= 9; d++) t += '<span>' + d + '</span>';
+        }
+        window._reelTrack = t;
+      }
+
+      let digitIdx = 0;
+      for (let i = 0; i < rest.length; i++) {
+        const ch = rest[i];
+        if (ch === ",") {
+          html += '<span class="scroll-digit sep">,</span>';
+        } else if (ch === ".") {
+          html += '<span class="scroll-digit dot">.</span>';
+        } else {
+          const digit = parseInt(ch, 10);
+          const key = "d" + i;
+          const prevDigit = _prevDigitValues[key];
+          const fromRight = digitCount - 1 - digitIdx;
+
+          let inner;
+          if (prevDigit !== undefined && prevDigit !== digit) {
+            // Per-digit speed: rightmost digits animate faster
+            const dur = Math.max(0.08, 0.40 - digitIdx * 0.04).toFixed(3);
+            inner = '<span class="scroll-digit-inner go" style="animation-duration:' + dur + 's"><span>' + prevDigit + '</span><span>' + digit + '</span></span>';
+          } else {
+            inner = '<span class="scroll-digit-inner"><span>' + digit + '</span></span>';
+          }
+
+          _prevDigitValues[key] = digit;
+          digitIdx++;
+          html += '<span class="scroll-digit">' + inner + '</span>';
+        }
+      }
+      return html;
+    }
+
+    let _prevDigitValues = {};
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 2600);
+    }
+
+    function updateClock(now) {
+      document.getElementById("clockText").textContent = now.toLocaleTimeString("zh-HK", { hour: "2-digit", minute: "2-digit", hour12: false });
+      document.getElementById("dateText").textContent = `${now.getMonth() + 1}/${now.getDate()}`;
+    }
+
+    function fitMainMoney() {
+      const money = document.getElementById("todayMoney");
+      const flip = document.getElementById("scrollMoney");
+      const card = document.getElementById("heroCard");
+      if (!money || !card) return;
+      money.style.setProperty("--money-font-size", "clamp(2.5rem, 12vw, 4rem)");
+      const available = card.clientWidth - 48;
+      if (available <= 0 || (flip ? flip : money).scrollWidth <= available) return;
+      const currentSize = Number.parseFloat(getComputedStyle(money).fontSize);
+      const nextSize = Math.max(28, Math.floor(currentSize * (available / (flip ? flip : money).scrollWidth)));
+      money.style.setProperty("--money-font-size", `${nextSize}px`);
+    }
+
+    function getStatus(now) {
+      const start = Core.startOfWorkday(now);
+      const end = Core.endOfWorkday(now);
+      if (now < start) {
+        return { text: t("statusBefore"), detail: `${t("startsIn")} ${formatDuration(start - now)}` };
+      }
+      if (now > end) {
+        const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 9, 0, 0, 0);
+        return { text: t("statusDone"), detail: `${t("tomorrowStartsIn")} ${formatDuration(tomorrow - now)}` };
+      }
+      return { text: t("statusLive"), detail: `${t("endsIn")} ${formatDuration(end - now)}` };
+    }
+
+    function formatDuration(ms) {
+      const total = Math.max(0, Math.floor(ms / 1000));
+      const hours = Math.floor(total / 3600);
+      const minutes = Math.floor((total % 3600) / 60);
+      const seconds = total % 60;
+      if (hours > 0) return `${hours}${t("hours")} ${minutes}${t("minutes")}`;
+      return `${minutes}${t("minutes")} ${seconds}${t("seconds")}`;
+    }
+
+    function updateDashboard() {
+      try {
+        const now = new Date();
+        const isPreview = !state.monthlyIncome;
+        const activeMonthlyIncome = isPreview ? 45000 : state.monthlyIncome;
+        const totals = Core.totalsFor(activeMonthlyIncome, state.extras, now);
+        const status = getStatus(now);
+        updateClock(now);
+
+        document.getElementById("statusText").textContent = isPreview ? t("preview") : status.text;
+        document.getElementById("heroSubline").textContent = isPreview ? t("settingsHint") : status.detail;
+
+        document.getElementById("todayMoney").innerHTML = renderFlipMoney(totals.today);
+        fitMainMoney();
+
+        document.getElementById("monthMoney").textContent = formatMoney(totals.month, { compact: true });
+        document.getElementById("yearMoney").textContent = formatMoney(totals.year, { compact: true });
+        document.getElementById("rewardHint").textContent = `${formatMoney(totals.today, { compact: true })} ${t("rewardHint")}`;
+
+        const dailyIncome = activeMonthlyIncome / Core.daysInMonth(now);
+        const rateEl = document.getElementById("earningRate");
+        const progressEl = document.getElementById("dailyProgress");
+        const progressFill = document.getElementById("progressFill");
+        const progressLabel = document.getElementById("progressLabel");
+        const progressTarget = document.getElementById("progressTarget");
+        const rateValue = document.getElementById("rateValue");
+
+        if (isPreview) {
+          rateEl.style.display = "none";
+          progressEl.style.display = "none";
+        } else {
+          const start = Core.startOfWorkday(now);
+          const end = Core.endOfWorkday(now);
+          const totalSecs = (end - start) / 1000;
+          const elapsedSecs = Math.max(0, Math.min(totalSecs, (now - start) / 1000));
+          const basePerSecond = totalSecs > 0 ? dailyIncome / totalSecs : 0;
+          const isActive = now >= start && now <= end;
+
+          if (isActive) {
+            rateEl.style.display = "block";
+            rateValue.textContent = formatMoney(basePerSecond);
+            const pct = Math.min(100, Math.round((totals.todayBase / dailyIncome) * 100));
+            progressFill.style.width = Math.min(pct, 100) + "%";
+            progressLabel.textContent = `${pct}% ${t("ofDaily")}`;
+            progressTarget.textContent = formatMoney(dailyIncome, { compact: true });
+            progressEl.style.display = "block";
+          } else {
+            rateEl.style.display = "none";
+            if (now > end && dailyIncome > 0) {
+              progressFill.style.width = "100%";
+              progressLabel.textContent = `${t("statusDone")}`;
+              progressTarget.textContent = formatMoney(dailyIncome, { compact: true });
+              progressEl.style.display = "block";
+            } else {
+              progressEl.style.display = "none";
+            }
+          }
+        }
+
+        updateCurrencyTabs();
+        updateMoneyStack(totals.today);
+        renderRewards(totals.today);
+        renderCalendar(now, activeMonthlyIncome);
+        renderYear(now, activeMonthlyIncome);
+        renderEvents();
+      } catch (e) {
+        console.error("Dashboard error:", e);
+      }
+    }
+
+    function updateCurrencyTabs() {
+      document.querySelectorAll("[data-currency]").forEach((button) => {
+        button.classList.toggle("active", button.dataset.currency === state.currency);
+      });
+    }
+
+    function updateMoneyStack(amount) {
+      const billCount = Math.min(60, Math.floor(amount / 10));
+      if (billCount > lastBillCount) {
+        spawnBills(Math.min(8, billCount - lastBillCount), moneyStage);
+      }
+      lastBillCount = billCount;
+      const bundles = Math.floor(billCount / 10);
+      const loose = billCount % 10;
+      billStack.innerHTML = "";
+      for (let i = 0; i < Math.min(bundles, 10); i++) {
+        const bundle = document.createElement("div");
+        bundle.className = "bundle stack-note";
+        bundle.style.setProperty("--x", `${42 + (i % 5) * 23}px`);
+        bundle.style.setProperty("--y", `${Math.floor(i / 5) * 14}px`);
+        bundle.style.setProperty("--r", `${(i % 2 ? -1 : 1) * (2 + i % 3)}deg`);
+        billStack.appendChild(bundle);
+      }
+      for (let i = 0; i < loose; i++) {
+        const bill = document.createElement("div");
+        bill.className = "bill stack-note";
+        bill.style.setProperty("--x", `${28 + i * 12}px`);
+        bill.style.setProperty("--y", `${bundles * 7 + i * 2}px`);
+        bill.style.setProperty("--r", `${-5 + i}deg`);
+        billStack.appendChild(bill);
+      }
+    }
+
+    function spawnBills(count, layer, intense = false) {
+      for (let i = 0; i < count; i++) {
+        setTimeout(() => {
+          const bill = document.createElement("div");
+          bill.className = "bill falling";
+          const left = Math.random() * 78 + 4;
+          bill.style.setProperty("--left", `${left}%`);
+          bill.style.setProperty("--drift", `${Math.random() * 90 - 45}px`);
+          bill.style.setProperty("--spin", `${Math.random() * 180 - 90}deg`);
+          bill.style.setProperty("--duration", `${intense ? 1.2 + Math.random() * 0.9 : 2.4 + Math.random() * 1.2}s`);
+          layer.appendChild(bill);
+          setTimeout(() => bill.remove(), intense ? 2400 : 4200);
+        }, i * (intense ? 36 : 120));
+      }
+    }
+
+    function idleAnimation() {
+      idleTicker += 1;
+      if (idleTicker % 2 === 0) spawnBills(1, moneyStage);
+    }
+
+    function celebrate(type, amount) {
+      const heroCard = document.getElementById("heroCard");
+      heroCard.classList.remove("burst");
+      void heroCard.offsetWidth;
+      heroCard.classList.add("burst");
+      flash.classList.remove("play");
+      void flash.offsetWidth;
+      flash.classList.add("play");
+      const capped = Math.min(90, Math.max(18, Math.floor(amount / 100)));
+      const count = type === "yearEnd" ? Math.max(capped, 60) : type === "windfall" ? Math.max(capped, 42) : Math.max(capped, 24);
+      spawnBills(count, celebrationLayer, true);
+      if (type === "yearEnd") {
+        setTimeout(() => spawnBills(70, celebrationLayer, true), 700);
+        document.getElementById("yearGrid").classList.add("burst");
+        setTimeout(() => document.getElementById("yearGrid").classList.remove("burst"), 1800);
+      }
+    }
+
+    function iconMarkup(name, className = "lux-icon") {
+      const safeName = /^[a-z-]+$/.test(name || "") ? name : "sparkle";
+      return '<svg class="' + className + '" aria-hidden="true"><use href="#icon-' + safeName + '"></use></svg>';
+    }
+
+    function renderRewards(amountHkd) {
+      const localizedCatalog = rewardCatalog.map((item) => ({
+        ...item,
+        name: currentLanguage() === "zh" ? item.nameZh : item.name,
+        description: currentLanguage() === "zh" ? item.descriptionZh : item.description,
+      }));
+      const rewards = Core.chooseRewards(amountHkd, localizedCatalog);
+      const rail = document.getElementById("rewardRail");
+      if (rewards.length === 0) {
+        const copy = t("rewardEmptyCopy").replace("{amount}", formatMoney(38, { compact: true }));
+        rail.innerHTML = '<article class="reward-card"><div class="reward-art">' + iconMarkup("sparkle") + '</div><div class="reward-body"><h3>' + escapeHtml(t("rewardEmptyTitle")) + '</h3><p>' + escapeHtml(copy) + '</p></div></article>';
+        return;
+      }
+      rail.innerHTML = rewards.map((item) => '<article class="reward-card"><div class="reward-art">' + iconMarkup(item.icon) + '</div><div class="reward-body"><h3>' + item.count + ' × ' + escapeHtml(item.name) + '</h3><p>' + escapeHtml(item.description || "") + ' · ' + t("unitPrice") + ' ' + formatMoney(item.price, { compact: true }) + '</p></div></article>').join("");
+    }
+
+    function renderCalendar(now, monthlyIncomeForView) {
+      const grid = document.getElementById("calendarGrid");
+      const weekdays = t("weekdays");
+      const year = now.getFullYear();
+      const month = now.getMonth();
+      const dim = Core.daysInMonth(now);
+      const firstDay = new Date(year, month, 1).getDay();
+      const daily = Number(monthlyIncomeForView || 0) / dim;
+      const html = weekdays.map((day) => '<div class="weekday">' + day + '</div>').join("")
+        + Array.from({ length: firstDay }, () => '<div class="day-cell empty"></div>').join("")
+        + Array.from({ length: dim }, (_, index) => {
+          const day = index + 1;
+          const date = new Date(year, month, day, now.getHours(), now.getMinutes(), now.getSeconds());
+          const isToday = day === now.getDate();
+          const isPast = day < now.getDate();
+          const base = isPast ? daily : isToday ? Core.baseEarnedAt(monthlyIncomeForView, now) : 0;
+          const extra = Core.sumExtraIncome(state.extras, "day", date);
+          return '<div class="day-cell ' + (isToday ? "today" : "") + '">'
+            + (extra > 0 ? '<span class="event-dot"></span>' : "")
+            + '<span class="day-number">' + day + '</span>'
+            + '<span class="day-money">' + formatMoney(base + extra, { compact: true }) + '</span></div>';
+        }).join("");
+      grid.innerHTML = html;
+      document.getElementById("calendarTitle").textContent = currentLanguage() === "zh" ? (year + " / " + (month + 1)) : (now.toLocaleString("en-US", { month: "long" }) + " " + year);
+    }
+
+    function renderYear(now, monthlyIncomeForView) {
+      const yearGrid = document.getElementById("yearGrid");
+      const monthly = Number(monthlyIncomeForView || 0);
+      yearGrid.innerHTML = Array.from({ length: 12 }, (_, index) => {
+        const date = new Date(now.getFullYear(), index, 1);
+        const monthEvents = Core.sumExtraIncome(state.extras, "month", date);
+        let amount = monthly + monthEvents;
+        if (index < now.getMonth()) amount = monthly + monthEvents;
+        if (index === now.getMonth()) amount = Core.totalsFor(monthlyIncomeForView, state.extras, now).month;
+        if (index > now.getMonth()) amount = monthly + monthEvents;
+        return '<article class="month-card ' + (index === now.getMonth() ? "active" : "") + '"><h3>' + (index + 1) + t("monthSuffix") + '</h3><p>' + formatMoney(amount, { compact: true }) + (monthEvents ? ' · ' + t("boosted") : "") + '</p></article>';
+      }).join("");
+    }
+
+    function renderEvents() {
+      const list = document.getElementById("eventList");
+      const labels = t("eventTypes");
+      const events = state.extras.slice().sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 8);
+      if (!events.length) {
+        list.innerHTML = '<div class="event-item"><div><strong>' + escapeHtml(t("noExtraTitle")) + '</strong><span>' + escapeHtml(t("noExtraCopy")) + '</span></div></div>';
+        return;
+      }
+      list.innerHTML = events.map((event) => '<div class="event-item"><div><strong>' + (labels[event.type] || t("extraFallback")) + '</strong><span>' + new Date(event.date).toLocaleDateString(currentLanguage() === "zh" ? "zh-HK" : "en-US") + ' · ' + escapeHtml(event.note || t("noNote")) + '</span></div><strong>' + formatMoney(event.amount, { compact: true }) + '</strong></div>').join("");
+    }
+
+    function escapeHtml(value) {
+      return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&#039;");
+    }
+
+    async function updateRates(silent = false) {
+      try {
+        const response = await fetch("https://open.er-api.com/v6/latest/HKD", { cache: "no-store" });
+        if (!response.ok) throw new Error("rate request failed");
+        const data = await response.json();
+        if (!data || !data.rates || !data.rates.CNY || !data.rates.USD) throw new Error("rate payload invalid");
+        state.rates = { HKD: 1, CNY: data.rates.CNY, USD: data.rates.USD };
+        state.ratesUpdatedAt = new Date().toISOString();
+        saveState();
+        updateDashboard();
+        if (!silent) showToast(t("ratesUpdated"));
+      } catch {
+        if (!silent) showToast(t("ratesFailed"));
+      }
+    }
+
+    function openDialog(dialog) {
+      dialog.style.display = "";
+      if (typeof dialog.showModal === "function") dialog.showModal();
+      else dialog.setAttribute("open", "");
+    }
+
+    function closeDialog(dialog) {
+      if (!dialog) return;
+      if (document.activeElement && typeof document.activeElement.blur === "function") {
+        document.activeElement.blur();
+      }
+      if (typeof dialog.close === "function" && dialog.open) {
+        dialog.close();
+      }
+      dialog.removeAttribute("open");
+      dialog.style.display = "none";
+    }
+
+    function hideSetupScreen() {
+      const setupScreen = document.getElementById("setupScreen");
+      if (!setupScreen) return;
+      setupScreen.classList.add("hidden");
+      setupScreen.remove();
+    }
+
+    function openIncomeSettings() {
+      document.getElementById("monthlyIncomeInput").value = state.monthlyIncome || "";
+      openDialog(document.getElementById("incomeDialog"));
+    }
+
+    document.getElementById("setupForm").addEventListener("submit", (event) => {
+      event.preventDefault();
+      state.monthlyIncome = Number(document.getElementById("setupMonthlyIncome").value || 0);
+      saveState();
+      hideSetupScreen();
+      updateDashboard();
+      showToast(t("setupSaved"));
+    });
+
+    document.getElementById("addIncomeBtn").addEventListener("click", () => openDialog(document.getElementById("extraDialog")));
+    document.getElementById("headerSettingsBtn").addEventListener("click", openIncomeSettings);
+    document.getElementById("refreshRatesBtn").addEventListener("click", () => updateRates(false));
+    document.getElementById("languageSelect").addEventListener("change", (event) => {
+      state.language = event.target.value === "zh" ? "zh" : "en";
+      saveState();
+      applyLanguage();
+    });
+
+    document.querySelectorAll("[data-close]").forEach((button) => {
+      button.addEventListener("click", () => closeDialog(document.getElementById(button.dataset.close)));
+    });
+
+    function saveIncomeSettings(event) {
+      if (event) event.preventDefault();
+      const form = document.getElementById("incomeForm");
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      state.monthlyIncome = Number(document.getElementById("monthlyIncomeInput").value || 0);
+      saveState();
+      closeDialog(document.getElementById("incomeDialog"));
+      updateDashboard();
+      showToast(t("incomeSaved"));
+    }
+
+    document.getElementById("incomeForm").addEventListener("submit", saveIncomeSettings);
+    document.getElementById("saveIncomeBtn").addEventListener("click", saveIncomeSettings);
+
+    function saveExtraIncome(event) {
+      if (event) event.preventDefault();
+      const form = document.getElementById("extraForm");
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      const amount = Number(document.getElementById("extraAmount").value || 0);
+      const type = document.getElementById("extraType").value;
+      const note = document.getElementById("extraNote").value.trim();
+      if (!amount || amount <= 0) return;
+      state.extras.push({ id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()), amount, type, note, date: new Date().toISOString() });
+      saveState();
+      closeDialog(document.getElementById("extraDialog"));
+      document.getElementById("extraForm").reset();
+      celebrate(type, amount);
+      updateDashboard();
+      showToast(formatMoney(amount, { compact: true }) + " " + t("extraSaved"));
+    }
+
+    document.getElementById("extraForm").addEventListener("submit", saveExtraIncome);
+    document.getElementById("saveExtraBtn").addEventListener("click", saveExtraIncome);
+
+    document.getElementById("currencyTabs").addEventListener("click", (event) => {
+      const button = event.target.closest("[data-currency]");
+      if (!button) return;
+      state.currency = button.dataset.currency;
+      saveState();
+      updateDashboard();
+    });
+
+    function activateNav(button) {
+      if (!button) return;
+      const target = document.getElementById(button.dataset.target);
+      if (!target) return;
+      document.querySelectorAll(".bottom-nav [data-target]").forEach((item) => item.classList.remove("active"));
+      button.classList.add("active");
+      const top = target.getBoundingClientRect().top + window.pageYOffset - 14;
+      window.scrollTo({ top, behavior: "smooth" });
+      if (history.replaceState) history.replaceState(null, "", "#" + button.dataset.target);
+    }
+
+    document.querySelectorAll(".bottom-nav [data-target]").forEach((button) => {
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        activateNav(button);
+      });
+    });
+
+    window.addEventListener("resize", fitMainMoney);
+
+    applyLanguage();
+    hideSetupScreen();
+
+    updateRates(true);
+    setInterval(updateDashboard, 500);
+    setInterval(idleAnimation, 1700);
+  </script>
+</body>
+</html>
