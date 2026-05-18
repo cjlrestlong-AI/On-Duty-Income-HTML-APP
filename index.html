@@ -696,12 +696,13 @@
       position: absolute;
       width: 82px;
       height: 42px;
-      border-radius: 3px;
       background-image: url("hkd10.jpg");
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
-      box-shadow: 0 4px 10px rgba(80, 20, 60, 0.25);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.1),
+        0 3px 8px rgba(0,0,0,0.15);
     }
 
     /* ── HK$100×100 Bundle ── */
@@ -724,13 +725,10 @@
     }
 
     @keyframes fall {
-      0% { transform: translate3d(0, -20px, 80px) rotateX(70deg) rotateZ(var(--spin)); opacity: 0; }
-      8% { opacity: 1; }
-      25% { transform: translate3d(-55px, 55px, 50px) rotateX(50deg) rotateY(15deg) rotateZ(calc(var(--spin) * 0.7)); }
-      45% { transform: translate3d(45px, 110px, 20px) rotateX(35deg) rotateY(-10deg) rotateZ(calc(var(--spin) * -0.5)); }
-      65% { transform: translate3d(-35px, 165px, 5px) rotateX(20deg) rotateY(8deg) rotateZ(calc(var(--spin) * 0.3)); }
-      85% { transform: translate3d(20px, 220px, 0) rotateX(8deg) rotateY(-5deg) rotateZ(calc(var(--spin) * -0.1)); }
-      100% { transform: translate3d(-5px, 270px, 0) rotateX(0deg) rotateY(0deg) rotateZ(0deg); opacity: 0; }
+      0% { transform: translate3d(0, -20px, 80px) rotateX(60deg) rotateZ(var(--spin)); opacity: 0; }
+      10% { opacity: 1; }
+      75% { transform: translate3d(var(--drift), 200px, 10px) rotateX(15deg) rotateZ(calc(var(--spin) * -0.4)); opacity: 1; }
+      100% { transform: translate3d(calc(var(--drift) * 0.5), 250px, 0) rotateX(0deg) rotateZ(0deg); opacity: 0; }
     }
 
     .bill-stack {
@@ -799,98 +797,232 @@
     /* ═══════════════ Rewards ═══════════════ */
 
     .reward-rail {
-      display: grid;
-      grid-auto-flow: column;
-      grid-auto-columns: 72%;
-      gap: 12px;
-      overflow-x: auto;
-      padding: 2px 2px 12px;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
+      position: relative;
+      height: 386px;
+      overflow: hidden;
+      border-radius: var(--radius-xl);
+      perspective: 950px;
+      touch-action: pan-y;
+      cursor: grab;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(245, 252, 255, 0.2), rgba(0, 229, 255, 0.08) 18%, transparent 44%),
+        radial-gradient(circle at 50% 28%, rgba(0, 229, 255, 0.16), transparent 34%),
+        radial-gradient(circle at 50% 76%, rgba(124, 58, 237, 0.16), transparent 42%),
+        linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015));
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 22px 70px rgba(0, 0, 0, 0.32), var(--inset);
     }
 
-    .reward-rail::-webkit-scrollbar {
-      height: 3px;
+    .reward-rail.dragging {
+      cursor: grabbing;
     }
 
-    .reward-rail::-webkit-scrollbar-track {
-      background: rgba(255, 255, 255, 0.03);
-      border-radius: 999px;
+    .reward-rail::before,
+    .reward-rail::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 26%;
+      z-index: 8;
+      pointer-events: none;
     }
 
-    .reward-rail::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 999px;
+    .reward-rail::before {
+      left: 0;
+      background: linear-gradient(90deg, rgba(5, 11, 26, 0.82), transparent);
+    }
+
+    .reward-rail::after {
+      right: 0;
+      background: linear-gradient(270deg, rgba(5, 11, 26, 0.82), transparent);
     }
 
     .reward-card {
-      scroll-snap-align: start;
-      border-radius: var(--radius);
-      overflow: hidden;
-      min-height: 190px;
-      display: grid;
-      grid-template-rows: 100px auto;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      backdrop-filter: blur(16px);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2), var(--inset);
-      transition: all 0.3s ease;
+      position: absolute;
+      left: 50%;
+      top: 12px;
+      width: min(78%, 340px);
+      height: 350px;
+      border-radius: 28px;
+      overflow: visible;
+      transform:
+        translateX(calc(-50% + var(--slide-x, 0px)))
+        translateZ(var(--slide-z, 120px))
+        rotateY(var(--slide-rotate, 0deg))
+        scale(var(--slide-scale, 1));
+      opacity: var(--slide-opacity, 1);
+      filter:
+        blur(var(--slide-blur, 0px))
+        saturate(var(--slide-sat, 1))
+        brightness(var(--slide-brightness, 1));
+      z-index: var(--z-index);
+      background: transparent;
+      border: 0;
+      box-shadow: none;
+      transition:
+        transform 720ms cubic-bezier(.2,.82,.2,1),
+        opacity 720ms ease,
+        filter 720ms ease,
+        box-shadow 720ms ease;
+      will-change: transform, opacity, filter;
     }
 
     .reward-card:hover {
-      transform: translateY(-2px);
-      border-color: rgba(0, 229, 255, 0.15);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3), 0 0 30px rgba(0, 229, 255, 0.05), var(--inset);
+      box-shadow: none;
     }
 
     .reward-art {
+      height: 100%;
       display: grid;
-      place-items: center;
+      place-items: start center;
       position: relative;
       isolation: isolate;
-      background:
-        linear-gradient(145deg, rgba(255,255,255,0.06), transparent),
-        linear-gradient(145deg, #0f1f42, #070e24);
+      overflow: visible;
+      perspective: 520px;
       color: #00e5ff;
+      padding-top: 8px;
     }
 
     .reward-art::before {
       content: "";
       position: absolute;
-      width: 80px;
-      height: 80px;
+      width: 180px;
+      height: 180px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(0, 229, 255, 0.1), transparent 60%);
+      top: 58px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: radial-gradient(circle, rgba(0, 229, 255, 0.22), rgba(0, 229, 255, 0.06) 42%, transparent 70%);
       z-index: -1;
+      filter: blur(18px);
     }
 
-    .reward-card:nth-child(2n) .reward-art {
+    .reward-card[data-offset="0"] .reward-art::after {
+      content: "";
+      position: absolute;
+      top: -46px;
+      left: 50%;
+      width: 280px;
+      height: 260px;
+      transform: translateX(-50%);
       background:
-        linear-gradient(145deg, rgba(255,255,255,0.06), transparent),
-        linear-gradient(145deg, #1a0a3e, #070e24);
+        radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.36), rgba(0, 229, 255, 0.18) 28%, rgba(0, 229, 255, 0.04) 58%, transparent 76%);
+      filter: blur(10px);
+      opacity: 0.86;
+      z-index: -2;
+      pointer-events: none;
     }
 
     .reward-card:nth-child(2n) .reward-art::before {
-      background: radial-gradient(circle, rgba(124, 58, 237, 0.1), transparent 60%);
+      background: radial-gradient(circle, rgba(124, 58, 237, 0.3), transparent 66%);
     }
 
-    .reward-body {
-      padding: 14px;
+    .reward-caption {
+      position: absolute;
+      left: 50%;
+      bottom: 32px;
+      width: min(78%, 340px);
+      padding: 0 22px 16px;
+      background: transparent;
+      transform: translateX(-50%);
+      opacity: 1;
+      z-index: 38;
+      pointer-events: none;
+      transition: opacity 260ms ease;
     }
 
-    .reward-body h3 {
+    .reward-caption.is-fading {
+      opacity: 0;
+    }
+
+    .reward-caption h3 {
       margin: 0;
-      font-size: 1rem;
-      line-height: 1.2;
-      font-weight: 700;
+      font-size: clamp(1.15rem, 5.3vw, 1.65rem);
+      line-height: 1.08;
+      font-weight: 800;
       color: #fff;
+      text-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
     }
 
-    .reward-body p {
+    .reward-caption::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -12px;
+      width: 118%;
+      height: 118px;
+      transform: translateX(-50%);
+      background: radial-gradient(ellipse at 50% 100%, rgba(1, 6, 22, 0.78), rgba(12, 34, 94, 0.34) 44%, transparent 76%);
+      filter: blur(18px);
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .reward-title {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 5px 8px;
+    }
+
+    .reward-quantity {
+      font-size: clamp(2.15rem, 11vw, 3.25rem);
+      line-height: 0.86;
+      font-weight: 900;
+      letter-spacing: 0;
+      color: #fff;
+      text-shadow:
+        0 18px 38px rgba(0, 0, 0, 0.55),
+        0 0 22px rgba(0, 229, 255, 0.18);
+    }
+
+    .reward-unit {
+      font-size: inherit;
+      font-weight: 800;
+      color: rgba(226, 241, 255, 0.78);
+    }
+
+    .reward-name {
+      min-width: 0;
+    }
+
+    .reward-caption p {
       margin: 6px 0 0;
-      color: rgba(255, 255, 255, 0.4);
-      font-weight: 500;
-      font-size: 0.82rem;
+      color: rgba(225, 238, 255, 0.62);
+      font-weight: 600;
+      font-size: 0.86rem;
+      line-height: 1.35;
+      max-width: 25em;
+    }
+
+    .reward-card[data-offset="0"] {
+      filter: blur(0) saturate(1.08);
+    }
+
+    .reward-card[data-hidden="true"] {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    @media (max-width: 390px) {
+      .reward-rail { height: 360px; }
+      .reward-card {
+        width: 86%;
+        height: 322px;
+        top: 12px;
+      }
+      .reward-art { padding-top: 4px; }
+      .reward-caption {
+        bottom: 24px;
+        width: 86%;
+        padding: 0 18px 14px;
+      }
+      .lux-icon {
+        width: min(190px, 66vw);
+        height: min(190px, 66vw);
+      }
     }
 
     /* ═══════════════ Sheet / Calendar ═══════════════ */
@@ -1099,15 +1231,26 @@
     }
 
     .lux-icon {
-      width: 56px;
-      height: 56px;
-      color: #00e5ff;
-      filter: drop-shadow(0 0 14px rgba(0, 229, 255, 0.25));
+      width: min(218px, 74vw);
+      height: min(218px, 74vw);
+      display: block;
+      object-fit: contain;
+      object-position: center;
+      transform: translateY(20px);
+      filter:
+        drop-shadow(0 24px 22px rgba(0, 0, 0, 0.36))
+        drop-shadow(0 0 20px rgba(0, 229, 255, 0.16));
+      transition: transform 0.35s ease, filter 0.35s ease;
     }
 
     .reward-card:nth-child(2n) .lux-icon {
-      color: #a855f7;
-      filter: drop-shadow(0 0 14px rgba(168, 85, 247, 0.25));
+      filter:
+        drop-shadow(0 20px 20px rgba(0, 0, 0, 0.34))
+        drop-shadow(0 0 18px rgba(168, 85, 247, 0.16));
+    }
+
+    .reward-card:hover .lux-icon {
+      transform: translateY(14px) scale(1.035);
     }
 
     /* ═══════════════ Dialogs ═══════════════ */
@@ -1455,18 +1598,17 @@
       <symbol id="icon-diamond" viewBox="0 0 24 24"><path d="M12 3.5 20.5 12 12 20.5 3.5 12 12 3.5Z"/><path d="M8.5 12 12 7.7l3.5 4.3-3.5 4.3L8.5 12Z"/></symbol>
       <symbol id="icon-calendar" viewBox="0 0 24 24"><path d="M5 6.5h14v13H5z"/><path d="M5 10h14"/><path d="M8 4.5v3"/><path d="M16 4.5v3"/><path d="M8.2 13.2h.1M12 13.2h.1M15.8 13.2h.1M8.2 16.4h.1M12 16.4h.1M15.8 16.4h.1"/></symbol>
       <symbol id="icon-chart" viewBox="0 0 24 24"><path d="M5 19V5"/><path d="M5 19h14"/><path d="M8 16v-4"/><path d="M12 16V8"/><path d="M16 16v-6"/></symbol>
-      <symbol id="icon-coffee" viewBox="0 0 24 24"><path d="M6 8h10v5.3a4.2 4.2 0 0 1-4.2 4.2H10A4 4 0 0 1 6 13.5V8Z"/><path d="M16 9.2h1.4a2.4 2.4 0 1 1 0 4.8H16"/><path d="M8 5.3c.9-.7 1-1.4.3-2.2M12 5.3c.9-.7 1-1.4.3-2.2"/></symbol>
-      <symbol id="icon-burger" viewBox="0 0 24 24"><path d="M5 11.5c.5-3.4 3.3-5.5 7-5.5s6.5 2.1 7 5.5H5Z"/><path d="M5 14h14"/><path d="M6 17.5h12"/><path d="M8 11.5h.1M12 11.5h.1M16 11.5h.1"/></symbol>
-      <symbol id="icon-drink" viewBox="0 0 24 24"><path d="m7 6 1.4 14h7.2L17 6H7Z"/><path d="M6 6h12"/><path d="M10 3h5"/><path d="M12.5 3 11 6"/><path d="M8.2 10.5h7.6"/></symbol>
-      <symbol id="icon-candle" viewBox="0 0 24 24"><path d="M8 10h8v9H8z"/><path d="M12 10V7"/><path d="M12 3.2c1.5 1.4 1.8 2.7.1 3.8-1.2-.9-1.3-2.2-.1-3.8Z"/></symbol>
-      <symbol id="icon-sleep" viewBox="0 0 24 24"><path d="M5 13c2.3-4 5-6 7-6s4.7 2 7 6c-2.3 4-5 6-7 6s-4.7-2-7-6Z"/><path d="M9 13a3 3 0 0 0 6 0"/></symbol>
-      <symbol id="icon-sparkle" viewBox="0 0 24 24"><path d="M12 3 14.2 9.8 21 12l-6.8 2.2L12 21l-2.2-6.8L3 12l6.8-2.2L12 3Z"/><path d="M19 4.5v3M20.5 6h-3"/></symbol>
-      <symbol id="icon-earbuds" viewBox="0 0 24 24"><path d="M8 6.5a3 3 0 0 0-3 3v1.8a2.7 2.7 0 0 0 2.7 2.7H9V9.5a3 3 0 0 0-1-2.2Z"/><path d="M16 6.5a3 3 0 0 1 3 3v1.8a2.7 2.7 0 0 1-2.7 2.7H15V9.5a3 3 0 0 1 1-2.2Z"/><path d="M9 14v5M15 14v5"/></symbol>
-      <symbol id="icon-bag" viewBox="0 0 24 24"><path d="M6.5 8h11l1 12h-13l1-12Z"/><path d="M9 8a3 3 0 0 1 6 0"/></symbol>
-      <symbol id="icon-hotel" viewBox="0 0 24 24"><path d="M5 20V6h14v14"/><path d="M8 20v-5h8v5"/><path d="M8 9h.1M12 9h.1M16 9h.1M8 12h.1M12 12h.1M16 12h.1"/></symbol>
-      <symbol id="icon-laptop" viewBox="0 0 24 24"><path d="M6 6.5h12v9H6z"/><path d="M4 18h16"/><path d="M10 15.5h4"/></symbol>
-      <symbol id="icon-plane" viewBox="0 0 24 24"><path d="M4 12.4 20 4l-4.3 16-3.5-6.1L4 12.4Z"/><path d="m20 4-7.8 9.9"/></symbol>
-    </defs>
+            <!-- Coffee --> <symbol id="icon-coffee" viewBox="0 0 48 48"><rect x="8" y="20" width="28" height="18" rx="4" fill="#7c3aed"/><path d="M36 26h4a4 4 0 010 8h-4" stroke="#a78bfa" stroke-width="2.5" fill="none"/><path d="M12 24h18v8H12z" fill="#c4b5fd" opacity="0.3"/><path d="M16 34c0 2 1 4 4 4s4-2 4-4" stroke="#a78bfa" stroke-width="1.5" fill="none"/><path d="M14 16c2-1.5 2-3 .5-5M20 16c2-1.5 2-3 .5-5" stroke="#a78bfa" stroke-width="2" fill="none" stroke-linecap="round"/></symbol>
+      <!-- Burger --> <symbol id="icon-burger" viewBox="0 0 48 48"><path d="M10 22c1-5 6-8 14-8s13 3 14 8H10z" fill="#fbbf24"/><path d="M10 26h28" stroke="#f59e0b" stroke-width="3"/><path d="M12 30h24" stroke="#10b981" stroke-width="4"/><path d="M14 34h20" stroke="#fbbf24" stroke-width="3"/><circle cx="17" cy="24" r="1.5" fill="#f59e0b"/><circle cx="24" cy="24" r="1.5" fill="#f59e0b"/><circle cx="31" cy="24" r="1.5" fill="#f59e0b"/></symbol>
+      <!-- Drink --> <symbol id="icon-drink" viewBox="0 0 48 48"><rect x="14" y="8" width="20" height="28" rx="3" fill="#7c3aed"/><path d="M22 8l-3-5h10l-3 5" stroke="#a78bfa" stroke-width="2.5" fill="none"/><circle cx="24" cy="22" r="5" fill="#fbbf24" opacity="0.3"/><path d="M10 36h28" stroke="#7c3aed" stroke-width="2"/></symbol>
+      <!-- Candle --> <symbol id="icon-candle" viewBox="0 0 48 48"><rect x="16" y="16" width="16" height="24" rx="3" fill="#fbbf24"/><rect x="19" y="19" width="10" height="18" rx="2" fill="#fcd34d" opacity="0.4"/><path d="M24 16V8" stroke="#fbbf24" stroke-width="2.5"/><path d="M24 4c2 2 2.5 3.5 0 5-1.5-1.2-1.5-2.8 0-5z" fill="#f59e0b"/></symbol>
+      <!-- Sleep --> <symbol id="icon-sleep" viewBox="0 0 48 48"><path d="M8 20c3-6 8-8 16-8s13 2 16 8c-3 6-8 8-16 8s-13-2-16-8z" fill="#7c3aed"/><path d="M14 20a6 6 0 0012 0" stroke="#a78bfa" stroke-width="2" fill="none"/><path d="M30 20a6 6 0 0012 0" stroke="#a78bfa" stroke-width="2" fill="none"/><circle cx="16" cy="16" r="1" fill="#00e5ff"/><circle cx="20" cy="14" r="0.7" fill="#00e5ff"/></symbol>
+      <!-- Sparkle --> <symbol id="icon-sparkle" viewBox="0 0 48 48"><path d="M24 6l5 13 14 5-14 5-5 13-5-13-14-5 14-5z" fill="#00e5ff"/><path d="M24 10l4 10 11 4-11 4-4 10-4-10-11-4 11-4z" fill="#fff" opacity="0.2"/><path d="M38 8l1 3 3 1-3 1-1 3-1-3-3-1 3-1z" fill="#fbbf24"/><path d="M6 14l1 2 2 1-2 1-1 2-1-2-2-1 2-1z" fill="#00e5ff"/></symbol>
+      <!-- Earbuds --> <symbol id="icon-earbuds" viewBox="0 0 48 48"><path d="M14 18a7 7 0 00-7 7v4a5 5 0 005 5h2V25a7 7 0 00-2-5z" fill="#7c3aed"/><path d="M34 18a7 7 0 017 7v4a5 5 0 01-5 5h-2V25a7 7 0 012-5z" fill="#7c3aed"/><path d="M14 14a7 7 0 017 7v18" stroke="#a78bfa" stroke-width="3" fill="none"/><path d="M34 14a7 7 0 00-7 7v18" stroke="#a78bfa" stroke-width="3" fill="none"/></symbol>
+      <!-- Bag --> <symbol id="icon-bag" viewBox="0 0 48 48"><path d="M12 16h24l3 22H9l3-22z" fill="#7c3aed"/><path d="M17 16a7 7 0 0114 0" stroke="#a78bfa" stroke-width="3" fill="none"/><path d="M24 26v6" stroke="#c4b5fd" stroke-width="2"/><path d="M12 20h24" stroke="#a78bfa" stroke-width="2"/></symbol>
+      <!-- Hotel --> <symbol id="icon-hotel" viewBox="0 0 48 48"><rect x="8" y="8" width="32" height="32" rx="3" fill="#7c3aed"/><rect x="8" y="8" width="32" height="6" fill="#5b21b6"/><circle cx="24" cy="11" r="2" fill="#fbbf24"/><rect x="14" y="18" width="6" height="10" fill="#a78bfa" opacity="0.3" rx="1"/><rect x="28" y="18" width="6" height="10" fill="#a78bfa" opacity="0.3" rx="1"/></symbol>
+      <!-- Laptop --> <symbol id="icon-laptop" viewBox="0 0 48 48"><rect x="10" y="8" width="28" height="20" rx="3" fill="#7c3aed"/><path d="M6 34h36l-3-6H9l-3 6z" fill="#5b21b6"/><rect x="20" y="34" width="8" height="4" rx="1" fill="#a78bfa"/><rect x="13" y="11" width="22" height="14" rx="1" fill="#00e5ff" opacity="0.15"/></symbol>
+      <!-- Plane --> <symbol id="icon-plane" viewBox="0 0 48 48"><path d="M6 26l32-16-6 32-8-12-12-4z" fill="#7c3aed"/><path d="M38 10l-16 18" stroke="#a78bfa" stroke-width="1.5"/><circle cx="8" cy="28" r="2" fill="#fbbf24"/><circle cx="40" cy="12" r="2" fill="#00e5ff"/></symbol></defs>
   </svg>
 
   <div class="setup-screen hidden" id="setupScreen">
@@ -1781,20 +1923,21 @@
     const billStack = document.getElementById("billStack");
     const celebrationLayer = document.getElementById("celebrationLayer");
     const flash = document.getElementById("flash");
+    let memoryStateCache = null;
 
     const rewardCatalog = [
-      { name: "Specialty Pour-over Coffee", nameZh: "精品手沖咖啡", price: 38, icon: "coffee", description: "A refined coffee ritual for the morning.", descriptionZh: "一杯讓上午變精緻的咖啡" },
-      { name: "McDonald's Burger", nameZh: "麥當勞漢堡", price: 30, icon: "burger", description: "A small instant reward you can actually taste.", descriptionZh: "把小額到賬變成立即快樂" },
-      { name: "Starbucks Tea Drink", nameZh: "星巴克茶飲", price: 45, icon: "drink", description: "A polished little afternoon upgrade.", descriptionZh: "下午茶也有一點儀式感" },
-      { name: "Premium Scented Candle", nameZh: "高級香氛蠟燭", price: 260, icon: "candle", description: "Make your room feel like a weekend hotel.", descriptionZh: "讓房間聞起來像週末酒店" },
-      { name: "Silk Sleep Mask", nameZh: "絲質眼罩", price: 380, icon: "sleep", description: "Upgrade sleep with one quiet luxury.", descriptionZh: "把睡眠質感升級一級" },
-      { name: "Niche Fragrance", nameZh: "小眾香水", price: 880, icon: "sparkle", description: "A subtle premium impression when you walk in.", descriptionZh: "走近時有一點高級留白" },
-      { name: "AirPods Pro", nameZh: "AirPods Pro", price: 1849, icon: "earbuds", description: "Make commuting and focus feel cleaner.", descriptionZh: "通勤和專注都變安靜" },
-      { name: "Boutique Leather Mini Bag", nameZh: "精品皮具小包", price: 3200, icon: "bag", description: "A reward you can carry every day.", descriptionZh: "可以每天帶出門的獎勵" },
-      { name: "Five-star Staycation", nameZh: "五星酒店 Staycation", price: 4200, icon: "hotel", description: "Turn a weekend into a short escape.", descriptionZh: "把週末升級成短假期" },
-      { name: "MacBook Air", nameZh: "MacBook Air", price: 8499, icon: "laptop", description: "A productivity upgrade that also feels good.", descriptionZh: "工作效率和爽感一起升級" },
-      { name: "Designer Handbag", nameZh: "設計師手袋", price: 16800, icon: "bag", description: "A serious year-level material milestone.", descriptionZh: "年度級別的物質化目標" },
-      { name: "Luxury Short Trip", nameZh: "短途奢華旅行", price: 26000, icon: "plane", description: "Convert a season of effort into scenery.", descriptionZh: "把一段時間的努力換成風景" },
+      { name: "Specialty Pour-over Coffee", nameZh: "精品手沖咖啡", price: 38, icon: "coffee", unitZh: "杯", description: "A refined coffee ritual for the morning.", descriptionZh: "一杯讓上午變精緻的咖啡" },
+      { name: "McDonald's Burger", nameZh: "麥當勞漢堡", price: 30, icon: "burger", unitZh: "個", description: "A small instant reward you can actually taste.", descriptionZh: "把小額到賬變成立即快樂" },
+      { name: "Starbucks Tea Drink", nameZh: "星巴克茶飲", price: 45, icon: "drink", unitZh: "杯", description: "A polished little afternoon upgrade.", descriptionZh: "下午茶也有一點儀式感" },
+      { name: "Premium Scented Candle", nameZh: "高級香氛蠟燭", price: 260, icon: "candle", unitZh: "支", description: "Make your room feel like a weekend hotel.", descriptionZh: "讓房間聞起來像週末酒店" },
+      { name: "Silk Sleep Mask", nameZh: "絲質眼罩", price: 380, icon: "sleep", unitZh: "副", description: "Upgrade sleep with one quiet luxury.", descriptionZh: "把睡眠質感升級一級" },
+      { name: "Niche Fragrance", nameZh: "小眾香水", price: 880, icon: "sparkle", unitZh: "瓶", description: "A subtle premium impression when you walk in.", descriptionZh: "走近時有一點高級留白" },
+      { name: "AirPods Pro", nameZh: "AirPods Pro", price: 1849, icon: "earbuds", unitZh: "對", description: "Make commuting and focus feel cleaner.", descriptionZh: "通勤和專注都變安靜" },
+      { name: "Boutique Leather Mini Bag", nameZh: "精品皮具小包", price: 3200, icon: "bag", unitZh: "個", description: "A reward you can carry every day.", descriptionZh: "可以每天帶出門的獎勵" },
+      { name: "Five-star Staycation", nameZh: "五星酒店 Staycation", price: 4200, icon: "hotel", unitZh: "晚", description: "Turn a weekend into a short escape.", descriptionZh: "把週末升級成短假期" },
+      { name: "MacBook Air", nameZh: "MacBook Air", price: 8499, icon: "laptop", unitZh: "部", description: "A productivity upgrade that also feels good.", descriptionZh: "工作效率和爽感一起升級" },
+      { name: "Designer Handbag", nameZh: "設計師手袋", price: 16800, icon: "designer-bag", unitZh: "個", description: "A serious year-level material milestone.", descriptionZh: "年度級別的物質化目標" },
+      { name: "Luxury Short Trip", nameZh: "短途奢華旅行", price: 26000, icon: "plane", unitZh: "次", description: "Convert a season of effort into scenery.", descriptionZh: "把一段時間的努力換成風景" },
     ];
 
     const defaultState = {
@@ -1810,17 +1953,32 @@
     let lastBillCount = 0;
     let idleTicker = 0;
     let _lastTodayTens = 0;
+    let rewardRenderSignature = "";
+    let rewardCarouselIndex = 0;
+    let rewardAutoTimer = null;
+    let rewardCaptionSignature = "";
+    let rewardCaptionTimer = null;
+    let currentRewardItems = [];
 
     function loadState() {
+      if (memoryStateCache) return { ...defaultState, ...memoryStateCache };
       try {
-        return { ...defaultState, ...JSON.parse(localStorage.getItem(storageKey) || "{}") };
+        const stored = window.localStorage.getItem(storageKey);
+        memoryStateCache = JSON.parse(stored || "{}");
+        return { ...defaultState, ...memoryStateCache };
       } catch {
         return { ...defaultState };
       }
     }
 
     function saveState() {
-      localStorage.setItem(storageKey, JSON.stringify(state));
+      memoryStateCache = { ...state };
+      try {
+        window.localStorage.setItem(storageKey, JSON.stringify(state));
+      } catch {
+        return false;
+      }
+      return true;
     }
 
     const i18n = {
@@ -2308,11 +2466,11 @@
         bundle.style.cursor = "pointer";
         bundle.addEventListener("mouseenter", () => {
           if (!isMessy) return;
-          bundle.style.transform = `rotate(${rot}deg) translateY(-8px) scale(1.05)`;
+          bundle.style.transform = `rotate(${rot}deg) scale(${pScaleB}) translateY(-8px) scale(1.05)`;
           bundle.style.transition = "all 0.2s ease";
         });
         bundle.addEventListener("mouseleave", () => {
-          bundle.style.transform = `rotate(${rot}deg)`;
+          bundle.style.transform = `rotate(${rot}deg) scale(${pScaleB})`;
           bundle.style.transition = "all 0.3s ease";
         });
         billStack.appendChild(bundle);
@@ -2351,10 +2509,17 @@
             bill.style.setProperty("--spin", `${Math.random() * 360 - 180}deg`);
           } else {
             bill.className = "bill falling";
-            bill.style.setProperty("--left", `${60 + Math.random() * 35}%`);
+            // Perspective: random size for depth (0.6x to 1.4x)
+            const pScale = 0.6 + Math.random() * 0.8;
+            const pw = Math.round(82 * pScale);
+            const ph = Math.round(42 * pScale);
+            const pDur = (1.2 + Math.random() * 0.8) * (1.2 - pScale * 0.3);
+            bill.style.width = pw + "px";
+            bill.style.height = ph + "px";
+            bill.style.setProperty("--left", `${55 + Math.random() * 40}%`);
             bill.style.setProperty("--drift", `${Math.random() * 90 - 45}px`);
             bill.style.setProperty("--spin", `${Math.random() * 180 - 90}deg`);
-            bill.style.setProperty("--duration", `${intense ? 1.2 + Math.random() * 0.9 : 2.4 + Math.random() * 1.2}s`);
+            bill.style.setProperty("--duration", pDur.toFixed(2) + "s");
           }
           layer.appendChild(bill);
           setTimeout(() => bill.remove(), intense ? 2400 : 4200);
@@ -2414,9 +2579,180 @@
       }
     }
 
+    const rewardImages = {
+      coffee: "assets/rewards/coffee.png",
+      burger: "assets/rewards/burger.png",
+      drink: "assets/rewards/drink.png",
+      candle: "assets/rewards/candle.png",
+      sleep: "assets/rewards/sleep.png",
+      sparkle: "assets/rewards/sparkle.png",
+      earbuds: "assets/rewards/earbuds.png",
+      bag: "assets/rewards/bag.png",
+      "designer-bag": "assets/rewards/designer-bag.png",
+      hotel: "assets/rewards/hotel.png",
+      laptop: "assets/rewards/laptop.png",
+      plane: "assets/rewards/plane.png",
+    };
     function iconMarkup(name, className = "lux-icon") {
-      const safeName = /^[a-z-]+$/.test(name || "") ? name : "sparkle";
-      return '<svg class="' + className + '" aria-hidden="true"><use href="#icon-' + safeName + '"></use></svg>';
+      const src = rewardImages[name] || rewardImages.sparkle;
+      return '<img class="' + className + '" src="' + src + '" alt="" loading="lazy" decoding="async" aria-hidden="true">';
+    }
+
+    function rewardTitleMarkup(item) {
+      if (!item.count) return escapeHtml(item.name);
+      const unit = currentLanguage() === "zh" ? (item.unitZh || "件") : "×";
+      return '<span class="reward-title"><span class="reward-quantity">' + item.count + '</span><span class="reward-unit">' + unit + '</span><span class="reward-name">' + escapeHtml(item.name) + '</span></span>';
+    }
+
+    function rewardCarouselItems(amountHkd, catalog) {
+      return catalog
+        .map((item) => {
+          const count = Math.floor(amountHkd / item.price);
+          return {
+            ...item,
+            count: count > 0 ? count : 0,
+            affordable: count > 0,
+            distance: Math.max(0, item.price - amountHkd),
+          };
+        })
+        .sort((a, b) => {
+          if (a.affordable !== b.affordable) return a.affordable ? -1 : 1;
+          if (a.affordable) return b.price - a.price;
+          return a.distance - b.distance;
+        })
+        .slice(0, 8);
+    }
+
+    function stopRewardAuto() {
+      if (rewardAutoTimer) clearInterval(rewardAutoTimer);
+      rewardAutoTimer = null;
+    }
+
+    function startRewardAuto(length) {
+      stopRewardAuto();
+      if (length <= 1) return;
+      rewardAutoTimer = setInterval(() => {
+        setRewardCarouselIndex(rewardCarouselIndex + 1, length);
+      }, 3200);
+    }
+
+    function setRewardCarouselIndex(nextIndex, length) {
+      if (!length) return;
+      rewardCarouselIndex = (nextIndex + length) % length;
+      updateRewardCarousel();
+    }
+
+    function rewardDetailMarkup(item) {
+      if (!item) return "";
+      return item.affordable
+        ? escapeHtml(item.description || "") + " · " + t("unitPrice") + " " + formatMoney(item.price, { compact: true })
+        : (currentLanguage() === "zh"
+            ? "還差 " + formatMoney(item.distance, { compact: true }) + " · " + t("unitPrice") + " " + formatMoney(item.price, { compact: true })
+            : formatMoney(item.distance, { compact: true }) + " away · " + t("unitPrice") + " " + formatMoney(item.price, { compact: true }));
+    }
+
+    function updateRewardCaption(immediate = false) {
+      const caption = document.getElementById("rewardCaption");
+      const item = currentRewardItems[rewardCarouselIndex];
+      if (!caption || !item) return;
+      const nextSignature = [item.icon, item.count, item.name, item.description, item.price, currentLanguage()].join("|");
+      if (nextSignature === rewardCaptionSignature) return;
+      const render = () => {
+        caption.innerHTML = "<h3>" + rewardTitleMarkup(item) + "</h3><p>" + rewardDetailMarkup(item) + "</p>";
+        rewardCaptionSignature = nextSignature;
+        caption.classList.remove("is-fading");
+      };
+      if (rewardCaptionTimer) clearTimeout(rewardCaptionTimer);
+      if (immediate || !rewardCaptionSignature) {
+        render();
+        return;
+      }
+      caption.classList.add("is-fading");
+      rewardCaptionTimer = setTimeout(render, 160);
+    }
+
+    function updateRewardCarousel() {
+      const cards = Array.from(document.querySelectorAll("#rewardRail .reward-card"));
+      const length = cards.length;
+      if (!length) return;
+      rewardCarouselIndex = (rewardCarouselIndex + length) % length;
+      cards.forEach((card, index) => {
+        let offset = index - rewardCarouselIndex;
+        if (offset > length / 2) offset -= length;
+        if (offset < -length / 2) offset += length;
+        const hidden = Math.abs(offset) > 2;
+        const visualOffset = Math.max(-2, Math.min(2, offset));
+        const depth = Math.min(Math.abs(offset), 2.2);
+        const slideX = visualOffset * 196;
+        const slideZ = 120 - depth * 150;
+        const rotate = visualOffset * -18;
+        const scale = Math.max(0.62, 1 - depth * 0.17);
+        const opacity = Math.max(0, 1 - depth * 0.34);
+        const blur = depth * 2.8;
+        const sat = Math.max(0.38, 1 - depth * 0.28);
+        const brightness = Math.max(0.42, 1 - depth * 0.34);
+        card.dataset.offset = String(visualOffset);
+        card.dataset.hidden = hidden ? "true" : "false";
+        card.style.setProperty("--slide-x", slideX.toFixed(1) + "px");
+        card.style.setProperty("--slide-z", slideZ.toFixed(1) + "px");
+        card.style.setProperty("--slide-rotate", rotate.toFixed(1) + "deg");
+        card.style.setProperty("--slide-scale", scale.toFixed(3));
+        card.style.setProperty("--slide-opacity", opacity.toFixed(3));
+        card.style.setProperty("--slide-blur", blur.toFixed(2) + "px");
+        card.style.setProperty("--slide-sat", sat.toFixed(3));
+        card.style.setProperty("--slide-brightness", brightness.toFixed(3));
+        card.style.setProperty("--z-index", String(30 - Math.round(Math.abs(visualOffset) * 7)));
+      });
+      updateRewardCaption();
+    }
+
+    function bindRewardCarousel(rail, length) {
+      let startX = 0;
+      let moved = false;
+      let dragging = false;
+
+      rail.onmouseenter = () => stopRewardAuto();
+      rail.onmouseleave = () => {
+        if (dragging) return;
+        startRewardAuto(length);
+      };
+
+      rail.onpointerdown = (event) => {
+        if (length <= 1) return;
+        dragging = true;
+        moved = false;
+        startX = event.clientX;
+        rail.classList.add("dragging");
+        stopRewardAuto();
+        if (rail.setPointerCapture) rail.setPointerCapture(event.pointerId);
+      };
+
+      rail.onpointermove = (event) => {
+        if (!dragging) return;
+        if (Math.abs(event.clientX - startX) > 8) moved = true;
+      };
+
+      const finishDrag = (event) => {
+        if (!dragging) return;
+        dragging = false;
+        rail.classList.remove("dragging");
+        const dx = event.clientX - startX;
+        if (Math.abs(dx) > 42) {
+          setRewardCarouselIndex(rewardCarouselIndex + (dx < 0 ? 1 : -1), length);
+        }
+        startRewardAuto(length);
+      };
+
+      rail.onpointerup = finishDrag;
+      rail.onpointercancel = finishDrag;
+
+      rail.onclick = (event) => {
+        if (moved) return;
+        const card = event.target.closest(".reward-card");
+        if (!card) return;
+        const index = Number(card.dataset.index);
+        if (Number.isFinite(index)) setRewardCarouselIndex(index, length);
+      };
     }
 
     function renderRewards(amountHkd) {
@@ -2425,14 +2761,21 @@
         name: currentLanguage() === "zh" ? item.nameZh : item.name,
         description: currentLanguage() === "zh" ? item.descriptionZh : item.description,
       }));
-      const rewards = Core.chooseRewards(amountHkd, localizedCatalog);
       const rail = document.getElementById("rewardRail");
-      if (rewards.length === 0) {
-        const copy = t("rewardEmptyCopy").replace("{amount}", formatMoney(38, { compact: true }));
-        rail.innerHTML = '<article class="reward-card"><div class="reward-art">' + iconMarkup("sparkle") + '</div><div class="reward-body"><h3>' + escapeHtml(t("rewardEmptyTitle")) + '</h3><p>' + escapeHtml(copy) + '</p></div></article>';
-        return;
-      }
-      rail.innerHTML = rewards.map((item) => '<article class="reward-card"><div class="reward-art">' + iconMarkup(item.icon) + '</div><div class="reward-body"><h3>' + item.count + ' × ' + escapeHtml(item.name) + '</h3><p>' + escapeHtml(item.description || "") + ' · ' + t("unitPrice") + ' ' + formatMoney(item.price, { compact: true }) + '</p></div></article>').join("");
+      const displayRewards = rewardCarouselItems(amountHkd, localizedCatalog);
+      const signature = displayRewards.map((item) => [item.icon, item.count, item.name, item.description, item.price].join("|")).join("~");
+      if (signature === rewardRenderSignature) return;
+      rewardRenderSignature = signature;
+      currentRewardItems = displayRewards;
+      rewardCaptionSignature = "";
+      rewardCarouselIndex = Math.min(rewardCarouselIndex, displayRewards.length - 1);
+      rail.innerHTML = displayRewards.map((item, index) => {
+        return '<article class="reward-card" data-index="' + index + '"><div class="reward-art">' + iconMarkup(item.icon) + '</div></article>';
+      }).join("") + '<div class="reward-caption" id="rewardCaption" aria-live="polite"></div>';
+      updateRewardCarousel();
+      updateRewardCaption(true);
+      bindRewardCarousel(rail, displayRewards.length);
+      startRewardAuto(displayRewards.length);
     }
 
     function renderCalendar(now, monthlyIncomeForView) {
