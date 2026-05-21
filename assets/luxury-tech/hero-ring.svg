@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 420" fill="none">
+  <defs>
+    <linearGradient id="metal" x1="89" y1="76" x2="402" y2="337" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff9ee"/>
+      <stop offset=".24" stop-color="#c8c1b4"/>
+      <stop offset=".5" stop-color="#6e706e"/>
+      <stop offset=".72" stop-color="#f1eadc"/>
+      <stop offset="1" stop-color="#9d9589"/>
+    </linearGradient>
+    <linearGradient id="inner" x1="191" y1="106" x2="356" y2="310" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2d302f"/>
+      <stop offset=".45" stop-color="#eef0ec"/>
+      <stop offset="1" stop-color="#111414"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(267 215) rotate(90) scale(176 232)">
+      <stop stop-color="#fff7df" stop-opacity=".78"/>
+      <stop offset=".48" stop-color="#d9b877" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#fff7df" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="softShadow" x="26" y="22" width="468" height="376" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="26" stdDeviation="28" flood-color="#6d5a43" flood-opacity=".24"/>
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#ffffff" flood-opacity=".25"/>
+    </filter>
+  </defs>
+  <ellipse cx="260" cy="238" rx="210" ry="132" fill="url(#glow)"/>
+  <g filter="url(#softShadow)" transform="rotate(-15 260 210)">
+    <ellipse cx="260" cy="210" rx="151" ry="116" stroke="url(#metal)" stroke-width="58"/>
+    <ellipse cx="260" cy="210" rx="105" ry="76" stroke="url(#inner)" stroke-width="10" opacity=".8"/>
+    <path d="M354 158c26 24 35 59 21 92" stroke="#fff8ea" stroke-width="12" stroke-linecap="round" opacity=".55"/>
+    <path d="M165 237c-17-38-5-78 31-106" stroke="#1d1f1e" stroke-width="12" stroke-linecap="round" opacity=".4"/>
+  </g>
+  <g opacity=".86">
+    <circle cx="346" cy="177" r="8" fill="#d7b46d"/>
+    <circle cx="366" cy="201" r="7" fill="#8f7a52"/>
+    <circle cx="363" cy="232" r="6" fill="#d7b46d"/>
+  </g>
+</svg>

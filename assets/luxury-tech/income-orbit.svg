@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 260" fill="none">
+  <defs>
+    <linearGradient id="line" x1="54" y1="134" x2="459" y2="134" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#92775f" stop-opacity="0"/>
+      <stop offset=".28" stop-color="#c49b66" stop-opacity=".72"/>
+      <stop offset=".62" stop-color="#f7e7c3"/>
+      <stop offset="1" stop-color="#92775f" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="blurGlow" x="0" y="0" width="520" height="260" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="2"/>
+    </filter>
+  </defs>
+  <path d="M58 139c92-68 164-74 264-29 61 28 107 25 139-8" stroke="url(#line)" stroke-width="3" stroke-linecap="round"/>
+  <path d="M58 139c92-68 164-74 264-29 61 28 107 25 139-8" stroke="url(#line)" stroke-width="12" stroke-linecap="round" opacity=".18" filter="url(#blurGlow)"/>
+  <circle cx="188" cy="94" r="10" fill="#f4dfb2"/>
+  <circle cx="331" cy="113" r="6" fill="#b99565"/>
+  <circle cx="401" cy="115" r="4" fill="#f8ead1"/>
+</svg>
