@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>On Duty Income · Luminous</title>
+  <title>On Duty Income · Minimal Luxury Tech</title>
   <style>
     /* ═══════════════════════════════════════
-       LUMINOUS — Premium Dark Fintech Theme
+       LEGACY BASE — overridden by Minimal Luxury Tech skin below
        ═══════════════════════════════════════ */
 
     :root {
@@ -687,32 +687,36 @@
       color: #fff;
       border-color: rgba(0, 229, 255, 0.2);
     }
-    /* ═══════════════ Realistic HKD Banknotes ═══════════════ */
+    /* ═══════════════ Stylized Luxury HKD Tokens ═══════════════ */
 
-    /* ═══════════════ Realistic HKD Banknote Images ═══════════════ */
-
-    /* ── HK$10 Falling Note ── */
-    .bill, .bundle {
+    .bill, .bundle, .coin {
       position: absolute;
-      width: 82px;
-      height: 42px;
-      background-image: url("hkd10.jpg");
-      background-size: cover;
+      width: 88px;
+      height: 50px;
+      background-image: url("assets/money/hkd-10-luxury.png");
+      background-size: contain;
       background-repeat: no-repeat;
       background-position: center;
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.1),
-        0 3px 8px rgba(0,0,0,0.15);
+      box-shadow: none;
+      filter: saturate(0.96) drop-shadow(0 12px 18px rgba(92, 73, 55, 0.14));
     }
 
-    /* ── HK$100×100 Bundle ── */
     .bundle {
-      width: 92px;
-      height: 46px;
-      background-image: url("HKD100x100.png");
-      background-size: cover;
+      width: 116px;
+      height: 68px;
+      background-image: url("assets/money/hkd-100-bundle-luxury.png");
+      background-size: contain;
       background-position: center;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      filter: none;
+      box-shadow: none;
+    }
+
+    .coin {
+      width: 48px;
+      height: 52px;
+      background-image: url("assets/money/hkd-1-coin-luxury.png");
+      filter: drop-shadow(0 12px 18px rgba(92, 73, 55, 0.14));
+      box-shadow: none;
     }
 
     .falling {
@@ -745,7 +749,7 @@
       left: var(--x);
       bottom: var(--y);
       transform: rotate(var(--r));
-      opacity: 0.9;
+      opacity: 0.96;
     }
 
     .burst {
@@ -1031,10 +1035,54 @@
       border-radius: var(--radius);
       padding: 16px;
       margin-top: 12px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      background:
+        radial-gradient(circle at 22% 8%, rgba(0, 229, 255, 0.12), transparent 34%),
+        linear-gradient(155deg, rgba(12, 34, 74, 0.68), rgba(15, 16, 46, 0.82));
+      border: 1px solid rgba(148, 223, 255, 0.14);
       backdrop-filter: blur(16px);
       box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2), var(--inset);
+    }
+
+    .calendar-summary {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .calendar-metric {
+      min-width: 0;
+      border-radius: 18px;
+      padding: 10px 11px;
+      background: rgba(255, 255, 255, 0.055);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    .calendar-metric span {
+      display: block;
+      color: rgba(220, 242, 255, 0.54);
+      font-size: 0.62rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .calendar-metric strong {
+      display: block;
+      margin-top: 4px;
+      color: #ecfeff;
+      font-size: 0.9rem;
+      font-weight: 950;
+      font-variant-numeric: tabular-nums;
+      overflow-wrap: anywhere;
+    }
+
+    .calendar-metric.accent strong { color: #fcd98b; }
+    .calendar-metric.progress strong { color: #67e8f9; }
+
+    .calendar-mobile,
+    .calendar-mini {
+      display: none;
     }
 
     .calendar-grid {
@@ -1057,51 +1105,424 @@
     }
 
     .day-cell {
-      min-height: 48px;
-      padding: 5px 2px;
+      appearance: none;
+      -webkit-appearance: none;
+      border: 0;
+      color: inherit;
+      font-family: inherit;
+      min-height: 62px;
+      padding: 7px 5px 6px;
       background: rgba(255, 255, 255, 0.03);
       position: relative;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      gap: 2px;
-      transition: all 0.2s ease;
+      align-items: stretch;
+      justify-content: flex-start;
+      gap: 3px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.045);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease, filter 0.2s ease;
     }
 
-    .day-cell.empty { background: transparent; }
+    .day-cell.empty {
+      min-height: 48px;
+      background: transparent;
+      border-color: transparent;
+      box-shadow: none;
+      cursor: default;
+    }
+
+    .day-cell:not(.empty):hover {
+      transform: translateY(-1px);
+      border-color: rgba(103, 232, 249, 0.22);
+    }
+
+    .day-cell.earned {
+      background:
+        radial-gradient(circle at 50% 115%, rgba(45, 212, 191, 0.22), transparent 62%),
+        linear-gradient(160deg, rgba(14, 116, 144, 0.2), rgba(255, 255, 255, 0.035));
+      border-color: rgba(103, 232, 249, 0.16);
+    }
+
+    .day-cell.future {
+      background: rgba(8, 14, 34, 0.38);
+      border-color: rgba(255, 255, 255, 0.035);
+      filter: saturate(0.68);
+    }
 
     .day-cell.today {
-      background: linear-gradient(145deg, rgba(0, 229, 255, 0.1), rgba(124, 58, 237, 0.1));
-      border: 1px solid rgba(0, 229, 255, 0.15);
-      box-shadow: 0 0 20px rgba(0, 229, 255, 0.08);
+      background:
+        radial-gradient(circle at 50% 105%, rgba(0, 229, 255, 0.22), transparent 65%),
+        linear-gradient(145deg, rgba(0, 229, 255, 0.13), rgba(124, 58, 237, 0.16));
+      border-color: rgba(103, 232, 249, 0.48);
+      box-shadow: 0 0 22px rgba(0, 229, 255, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      animation: calendarPulse 2.6s ease-in-out infinite;
+    }
+
+    .day-cell.selected {
+      border-color: rgba(252, 211, 77, 0.58);
+      box-shadow: 0 0 0 1px rgba(252, 211, 77, 0.2), 0 0 24px rgba(252, 211, 77, 0.12), var(--inset);
+    }
+
+    @keyframes calendarPulse {
+      0%, 100% { box-shadow: 0 0 18px rgba(0, 229, 255, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.08); }
+      50% { box-shadow: 0 0 30px rgba(0, 229, 255, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.12); }
+    }
+
+    .day-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2px;
+      min-height: 15px;
     }
 
     .day-cell .day-number {
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 700;
       color: rgba(255, 255, 255, 0.7);
+      line-height: 1;
     }
 
     .day-cell.today .day-number { color: #00e5ff; }
 
-    .day-cell .day-money {
-      font-size: 0.58rem;
-      color: rgba(255, 255, 255, 0.3);
-      font-weight: 600;
+    .day-cell.future .day-number,
+    .day-cell.future .day-base {
+      color: rgba(207, 229, 255, 0.33);
+    }
+
+    .day-base,
+    .day-extra {
+      display: block;
+      text-align: left;
+      font-size: 0.53rem;
+      line-height: 1.05;
+      font-weight: 850;
+      overflow-wrap: anywhere;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .day-base { color: rgba(220, 252, 255, 0.66); }
+    .day-extra { color: #f8d579; }
+
+    .boost-badge {
+      border-radius: 999px;
+      padding: 2px 4px;
+      color: #3a2500;
+      background: linear-gradient(135deg, #fde68a, #f59e0b);
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.32);
+      font-size: 0.48rem;
+      font-weight: 950;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .today-progress {
+      display: block;
+      height: 3px;
+      margin-top: auto;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.09);
+      overflow: hidden;
+    }
+
+    .today-progress span {
+      display: block;
+      height: 100%;
+      width: 0;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #22d3ee, #a78bfa, #facc15);
+      box-shadow: 0 0 10px rgba(34, 211, 238, 0.34);
+    }
+
+    .calendar-detail {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 20px;
+      background:
+        radial-gradient(circle at 16% 0%, rgba(250, 204, 21, 0.12), transparent 32%),
+        rgba(3, 10, 28, 0.34);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .calendar-detail h3 {
+      margin: 0;
+      color: #f8fafc;
+      font-size: 0.95rem;
+      font-weight: 950;
+    }
+
+    .calendar-detail .detail-status {
+      margin: 4px 0 12px;
+      color: rgba(220, 242, 255, 0.54);
+      font-size: 0.72rem;
+      font-weight: 750;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+
+    .detail-pill {
+      min-width: 0;
+      border-radius: 15px;
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.055);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+
+    .detail-pill span {
+      display: block;
+      color: rgba(220, 242, 255, 0.5);
+      font-size: 0.62rem;
+      font-weight: 800;
+    }
+
+    .detail-pill strong {
+      display: block;
+      margin-top: 4px;
+      color: #ecfeff;
+      font-size: 0.88rem;
+      font-weight: 950;
       overflow-wrap: anywhere;
     }
 
-    .day-cell.today .day-money { color: rgba(255, 255, 255, 0.6); }
+    .detail-events {
+      display: grid;
+      gap: 6px;
+      margin-top: 10px;
+    }
 
-    .event-dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: #fbbf24;
-      box-shadow: 0 0 8px rgba(251, 191, 36, 0.4);
-      position: absolute;
-      right: 4px;
-      top: 4px;
+    .detail-event {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      border-radius: 14px;
+      padding: 8px 10px;
+      background: rgba(250, 204, 21, 0.09);
+      border: 1px solid rgba(250, 204, 21, 0.14);
+      color: rgba(255, 248, 220, 0.86);
+      font-size: 0.7rem;
+      font-weight: 800;
+    }
+
+    .detail-toggle {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 100%;
+      margin-top: 4px;
+      border: 1px solid rgba(250, 204, 21, 0.18);
+      border-radius: 14px;
+      padding: 10px 12px;
+      color: #fef3c7;
+      background: rgba(250, 204, 21, 0.08);
+      font: inherit;
+      font-size: 0.72rem;
+      font-weight: 900;
+      cursor: pointer;
+    }
+
+    @media (max-width: 390px) {
+      .calendar-summary { gap: 6px; }
+      .calendar-metric { padding: 9px 8px; }
+      .calendar-metric strong { font-size: 0.78rem; }
+      .calendar-grid { gap: 4px; }
+      .day-cell {
+        min-height: 58px;
+        padding: 6px 4px 5px;
+      }
+      .day-base,
+      .day-extra { font-size: 0.49rem; }
+      .boost-badge { font-size: 0.43rem; padding: 2px 3px; }
+    }
+
+    @media (max-width: 520px) {
+      .calendar-grid {
+        display: none;
+      }
+
+      .calendar-mobile {
+        display: flex;
+        gap: 12px;
+        margin: 2px -16px 14px;
+        padding: 2px 16px 12px;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .week-card {
+        appearance: none;
+        -webkit-appearance: none;
+        flex: 0 0 min(235px, 78vw);
+        min-height: 142px;
+        border: 1px solid rgba(255, 255, 255, 0.075);
+        border-radius: 24px;
+        padding: 15px;
+        color: inherit;
+        font: inherit;
+        text-align: left;
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+        scroll-snap-align: center;
+        background:
+          radial-gradient(circle at 70% 0%, rgba(125, 211, 252, 0.18), transparent 40%),
+          linear-gradient(155deg, rgba(10, 27, 64, 0.9), rgba(11, 13, 40, 0.94));
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        transition: transform 0.22s ease, border-color 0.22s ease, filter 0.22s ease;
+      }
+
+      .week-card.earned {
+        background:
+          radial-gradient(circle at 70% 0%, rgba(45, 212, 191, 0.24), transparent 42%),
+          linear-gradient(155deg, rgba(12, 88, 112, 0.74), rgba(9, 22, 54, 0.94));
+        border-color: rgba(103, 232, 249, 0.2);
+      }
+
+      .week-card.today {
+        border-color: rgba(103, 232, 249, 0.58);
+        box-shadow: 0 0 32px rgba(0, 229, 255, 0.15), 0 18px 40px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+        animation: calendarPulse 2.6s ease-in-out infinite;
+      }
+
+      .week-card.future {
+        filter: saturate(0.72) brightness(0.74);
+      }
+
+      .week-card.selected {
+        border-color: rgba(252, 211, 77, 0.62);
+      }
+
+      .week-card:hover {
+        transform: translateY(-2px);
+      }
+
+      .week-card-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .week-day {
+        display: block;
+        color: rgba(226, 246, 255, 0.58);
+        font-size: 0.68rem;
+        font-weight: 850;
+      }
+
+      .week-date {
+        display: block;
+        margin-top: 3px;
+        color: #f8fafc;
+        font-size: 2.25rem;
+        line-height: 0.95;
+        font-weight: 950;
+        letter-spacing: 0;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .week-card .boost-badge {
+        font-size: 0.64rem;
+        padding: 5px 7px;
+      }
+
+      .week-amount {
+        display: block;
+        margin-top: 14px;
+        color: #ecfeff;
+        font-size: 1.22rem;
+        font-weight: 950;
+        font-variant-numeric: tabular-nums;
+        overflow-wrap: anywhere;
+      }
+
+      .week-sub {
+        display: block;
+        margin-top: 6px;
+        color: rgba(220, 242, 255, 0.5);
+        font-size: 0.72rem;
+        font-weight: 800;
+      }
+
+      .week-card .today-progress {
+        height: 5px;
+        margin-top: 14px;
+      }
+
+      .calendar-mini {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 6px;
+        margin: 2px 0 14px;
+        padding: 12px;
+        border-radius: 20px;
+        background: rgba(3, 10, 28, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+      }
+
+      .mini-day {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 100%;
+        aspect-ratio: 1;
+        border: 0;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.045);
+        color: rgba(226, 246, 255, 0.48);
+        font: inherit;
+        font-size: 0.62rem;
+        font-weight: 900;
+        position: relative;
+        cursor: pointer;
+      }
+
+      .mini-day.empty {
+        background: transparent;
+        cursor: default;
+      }
+
+      .mini-day.earned {
+        color: #dcfce7;
+        background: rgba(45, 212, 191, 0.2);
+      }
+
+      .mini-day.today {
+        color: #06121f;
+        background: linear-gradient(135deg, #67e8f9, #a78bfa);
+        box-shadow: 0 0 18px rgba(103, 232, 249, 0.28);
+      }
+
+      .mini-day.future {
+        opacity: 0.62;
+      }
+
+      .mini-day.selected {
+        outline: 2px solid rgba(252, 211, 77, 0.72);
+        outline-offset: 2px;
+      }
+
+      .mini-day.has-extra::after {
+        content: "";
+        position: absolute;
+        right: 2px;
+        top: 2px;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #facc15;
+        box-shadow: 0 0 10px rgba(250, 204, 21, 0.48);
+      }
+
+      .calendar-detail {
+        margin-top: 10px;
+      }
     }
 
     .year-grid {
@@ -1256,6 +1677,7 @@
     /* ═══════════════ Dialogs ═══════════════ */
 
     dialog {
+      display: none;
       border: 0;
       border-radius: var(--radius-xl);
       width: min(420px, calc(100% - 28px));
@@ -1265,6 +1687,10 @@
       box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 229, 255, 0.06);
       padding: 0;
       border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    dialog[open] {
+      display: block;
     }
 
     dialog::backdrop {
@@ -1362,23 +1788,28 @@
     .toast {
       position: fixed;
       left: 50%;
-      top: 18px;
-      transform: translateX(-50%) translateY(-120%);
-      width: min(420px, calc(100% - 28px));
+      top: max(76px, calc(env(safe-area-inset-top, 0px) + 76px));
+      transform: translateX(-50%) translateY(-18px) scale(0.96);
+      width: auto;
+      max-width: min(360px, calc(100% - 48px));
       z-index: 60;
       background: rgba(8, 18, 46, 0.85);
       backdrop-filter: blur(24px);
       border: 1px solid rgba(0, 229, 255, 0.1);
       color: #fff;
-      padding: 14px 18px;
-      border-radius: var(--radius);
+      padding: 11px 16px;
+      border-radius: 999px;
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
       font-weight: 600;
-      transition: transform 0.35s cubic-bezier(.34,1.56,.64,1);
+      opacity: 0;
+      pointer-events: none;
+      text-align: center;
+      transition: transform 0.28s ease, opacity 0.28s ease;
     }
 
     .toast.show {
-      transform: translateX(-50%) translateY(0);
+      transform: translateX(-50%) translateY(0) scale(1);
+      opacity: 1;
     }
 
     /* ═══════════════ Celebrations ═══════════════ */
@@ -1580,6 +2011,550 @@
       animation: digitUp 0.4s cubic-bezier(0.22, 0.85, 0.35, 1) forwards;
     }
 
+    /* ═══════════════ Minimal Luxury Tech Skin ═══════════════ */
+
+    :root {
+      --page: #f5f0e7;
+      --panel: rgba(255, 253, 247, 0.78);
+      --panel-green: rgba(250, 245, 236, 0.78);
+      --panel-soft: #efe6d8;
+      --ink: #202225;
+      --cream: #fbf8f1;
+      --muted: #746f67;
+      --gold: #b68b57;
+      --gold-soft: #ead8b7;
+      --clay: #a7876f;
+      --moss: #6f948a;
+      --blue: #8a9697;
+      --accent-cyan: #6f948a;
+      --accent-purple: #b7aaa0;
+      --accent-gold: #b68b57;
+      --accent-pink: #b28a80;
+      --shadow: 0 28px 70px rgba(92, 73, 55, 0.13);
+      --inset: inset 0 1px 0 rgba(255, 255, 255, 0.86);
+      --radius: 18px;
+      --radius-sm: 14px;
+      --radius-xl: 28px;
+    }
+
+    body {
+      color: var(--ink);
+      background:
+        radial-gradient(ellipse at 78% 8%, rgba(192, 151, 112, 0.26) 0%, transparent 44%),
+        radial-gradient(ellipse at 16% 28%, rgba(255, 255, 255, 0.78) 0%, transparent 38%),
+        linear-gradient(180deg, #efe3d2 0%, #fbf8f1 34%, #f7f1e8 100%);
+      background-attachment: fixed;
+    }
+
+    body::before {
+      background:
+        linear-gradient(90deg, rgba(255,255,255,0.34), transparent 42%),
+        url("assets/luxury-tech/income-orbit.svg") no-repeat right 6vw top 120px / min(520px, 76vw);
+      mix-blend-mode: normal;
+      opacity: 0.55;
+    }
+
+    body::after,
+    .ambient-orbs,
+    .hero-card::before,
+    .hero-card::after,
+    .money-stage::before {
+      display: none;
+    }
+
+    ::selection {
+      background: rgba(182, 139, 87, 0.22);
+      color: #171717;
+    }
+
+    .shell {
+      width: min(100%, 500px);
+      overflow: visible;
+      padding-top: 18px;
+    }
+
+    .app-header {
+      padding: 8px 0 18px;
+    }
+
+    .brand h1 {
+      color: #202225;
+      background: none;
+      -webkit-text-fill-color: currentColor;
+      font-size: 1.08rem;
+      font-weight: 760;
+      letter-spacing: -0.02em;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand h1::before {
+      content: "";
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: inline-block;
+      background:
+        radial-gradient(circle at 68% 34%, #fbf8f1 0 24%, transparent 25%),
+        linear-gradient(135deg, #1f2224, #6d6a63);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.45);
+    }
+
+    .header-clock {
+      color: #202225;
+      font-weight: 720;
+      font-size: 1rem;
+    }
+
+    .header-date,
+    .subline,
+    .progress-labels,
+    .card .label,
+    .section-title span,
+    .event-item span,
+    .month-card h3,
+    .calendar-metric span,
+    .detail-pill span,
+    .calendar-detail .detail-status,
+    .week-day,
+    .week-sub {
+      color: rgba(42, 43, 42, 0.52);
+    }
+
+    .language-select,
+    .settings-button,
+    .currency-tabs,
+    .status-pill,
+    .stage-btn,
+    .icon-button {
+      color: #343434;
+      background: rgba(255, 252, 245, 0.58);
+      border: 1px solid rgba(43, 42, 39, 0.1);
+      backdrop-filter: blur(18px);
+      box-shadow: none;
+    }
+
+    .settings-button:hover,
+    .icon-button:hover,
+    .stage-btn:hover {
+      color: #171717;
+      background: rgba(255, 255, 255, 0.82);
+      border-color: rgba(31, 31, 31, 0.18);
+    }
+
+    .hero-card {
+      min-height: 302px;
+      padding: 28px 24px 24px;
+      color: #202225;
+      background:
+        radial-gradient(ellipse at 82% 24%, rgba(255, 255, 255, 0.68), rgba(226, 213, 194, 0.22) 28%, transparent 58%),
+        linear-gradient(118deg, transparent 0 58%, rgba(186, 160, 126, 0.12) 58% 100%),
+        linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(246, 238, 225, 0.52)),
+        rgba(255, 251, 244, 0.72);
+      border: 1px solid rgba(74, 62, 48, 0.12);
+      backdrop-filter: blur(22px);
+      box-shadow: 0 28px 80px rgba(95, 76, 56, 0.14), inset 0 1px 0 rgba(255,255,255,0.9);
+    }
+
+    .hero-object {
+      position: absolute;
+      right: 14px;
+      top: 78px;
+      width: 148px;
+      height: 96px;
+      border-radius: 999px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.34), rgba(185, 173, 158, 0.08)),
+        url("assets/luxury-tech/income-orbit.svg") center / contain no-repeat;
+      opacity: 0.24;
+      filter: saturate(0.55);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .hero-top,
+    .income-title,
+    .big-money,
+    .earning-rate,
+    .daily-progress,
+    .subline,
+    .hero-actions {
+      position: relative;
+      z-index: 3;
+    }
+
+    .status-pill {
+      color: rgba(32, 34, 37, 0.72);
+      padding: 8px 13px;
+    }
+
+    .pulse-dot {
+      background: #6f948a;
+      box-shadow: 0 0 0 5px rgba(111, 148, 138, 0.12);
+      animation: none;
+    }
+
+    .currency-tabs {
+      background: rgba(250, 246, 238, 0.58);
+      border-color: rgba(42, 39, 35, 0.12);
+    }
+
+    .currency-tabs button {
+      color: rgba(32, 34, 37, 0.48);
+    }
+
+    .currency-tabs button.active {
+      color: #fbf8f1;
+      background: #202225;
+      box-shadow: none;
+    }
+
+    .income-title {
+      margin-top: 28px;
+      color: rgba(32, 34, 37, 0.48);
+      letter-spacing: 0.02em;
+      font-weight: 720;
+    }
+
+    .big-money {
+      color: #171819;
+      font-weight: 780;
+      letter-spacing: -0.04em;
+      max-width: 82%;
+    }
+
+    .scroll-prefix,
+    .scroll-digit.dot,
+    .scroll-digit-inner > span,
+    .earning-rate,
+    .earning-rate .rate-value {
+      color: #202225;
+      text-shadow: none;
+    }
+
+    .progress-track,
+    .today-progress {
+      background: rgba(31, 31, 31, 0.08);
+    }
+
+    .progress-fill,
+    .today-progress span {
+      background: linear-gradient(90deg, #2d2e2f, #b68b57);
+      box-shadow: none;
+    }
+
+    .progress-fill::after {
+      background: #b68b57;
+      box-shadow: 0 0 0 5px rgba(182, 139, 87, 0.13);
+    }
+
+    .primary-button,
+    .secondary-button,
+    .icon-button {
+      border-radius: 999px;
+      font-weight: 720;
+    }
+
+    .primary-button {
+      color: #fbf8f1;
+      background: #202225;
+      box-shadow: 0 18px 38px rgba(35, 30, 24, 0.16);
+    }
+
+    .primary-button:hover {
+      background: #0f1011;
+      box-shadow: 0 22px 44px rgba(35, 30, 24, 0.2);
+    }
+
+    .primary-button::after {
+      background: linear-gradient(110deg, transparent 0 20%, rgba(255,255,255,0.18) 35%, transparent 50% 100%);
+    }
+
+    .secondary-button {
+      color: #202225;
+      background: rgba(255, 252, 246, 0.62);
+      border: 1px solid rgba(32, 34, 37, 0.14);
+    }
+
+    .card,
+    .money-stage,
+    .reward-rail,
+    .sheet,
+    .month-card,
+    .calendar-metric,
+    .calendar-detail,
+    .detail-pill,
+    .event-item,
+    .setup-card,
+    dialog,
+    .bottom-nav {
+      color: #202225;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.66), rgba(246,238,225,0.48)),
+        rgba(255, 252, 246, 0.7);
+      border: 1px solid rgba(69, 57, 43, 0.11);
+      box-shadow: 0 18px 46px rgba(92, 73, 55, 0.1), inset 0 1px 0 rgba(255,255,255,0.8);
+      backdrop-filter: blur(18px);
+    }
+
+    .card.purple,
+    .card.cyan,
+    .month-card.active,
+    .calendar-metric.progress,
+    .calendar-metric.accent {
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.74), rgba(240,230,214,0.56)),
+        rgba(255, 252, 246, 0.76);
+      border-color: rgba(104, 87, 67, 0.13);
+    }
+
+    .card .value,
+    .card.purple .value,
+    .card.cyan .value,
+    .month-card p,
+    .month-card.active p,
+    .calendar-metric strong,
+    .detail-pill strong,
+    .event-item strong,
+    .calendar-detail h3,
+    .section-title h2,
+    .reward-caption h3,
+    .reward-quantity,
+    .reward-name,
+    .week-date,
+    .week-amount {
+      color: #202225;
+    }
+
+    .calendar-metric.accent strong,
+    .day-extra,
+    .detail-event strong,
+    .event-item > strong:last-child {
+      color: #9b6e39;
+    }
+
+    .money-stage {
+      min-height: 164px;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.7), rgba(242,233,218,0.58));
+    }
+
+    .stage-title,
+    .stage-btn {
+      color: rgba(32, 34, 37, 0.58);
+    }
+
+    .bill {
+      filter: drop-shadow(0 12px 20px rgba(95, 76, 56, 0.16));
+    }
+
+    .reward-rail {
+      background:
+        radial-gradient(ellipse at 50% 8%, rgba(255,255,255,0.96), rgba(235,220,199,0.28) 42%, transparent 70%),
+        linear-gradient(180deg, rgba(255,255,255,0.62), rgba(239,230,215,0.34));
+      border: 1px solid rgba(69, 57, 43, 0.1);
+    }
+
+    .reward-rail::before {
+      background: linear-gradient(90deg, rgba(247,241,232,0.9), transparent);
+    }
+
+    .reward-rail::after {
+      background: linear-gradient(270deg, rgba(247,241,232,0.9), transparent);
+    }
+
+    .reward-art::before,
+    .reward-card:nth-child(2n) .reward-art::before {
+      background: radial-gradient(circle, rgba(214, 190, 156, 0.26), transparent 68%);
+    }
+
+    .reward-card[data-offset="0"] .reward-art::after {
+      background: radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.72), rgba(220, 194, 153, 0.18) 34%, transparent 72%);
+    }
+
+    .reward-caption::before {
+      background: radial-gradient(ellipse at 50% 100%, rgba(247, 241, 232, 0.92), rgba(247, 241, 232, 0.45) 44%, transparent 76%);
+    }
+
+    .reward-caption p,
+    .reward-unit {
+      color: rgba(32, 34, 37, 0.55);
+    }
+
+    .lux-icon {
+      filter: drop-shadow(0 22px 28px rgba(72, 56, 42, 0.18));
+    }
+
+    .day-cell,
+    .week-card,
+    .mini-day {
+      color: #202225;
+      background: rgba(255, 252, 246, 0.48);
+      border-color: rgba(69, 57, 43, 0.1);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.68);
+    }
+
+    .day-cell.earned,
+    .week-card.earned,
+    .mini-day.earned {
+      color: #26332f;
+      background:
+        radial-gradient(circle at 50% 115%, rgba(111, 148, 138, 0.16), transparent 62%),
+        rgba(247, 250, 244, 0.66);
+      border-color: rgba(111, 148, 138, 0.22);
+    }
+
+    .day-cell.today,
+    .week-card.today,
+    .mini-day.today {
+      color: #202225;
+      background:
+        radial-gradient(circle at 50% 105%, rgba(182, 139, 87, 0.18), transparent 64%),
+        rgba(255, 250, 239, 0.84);
+      border-color: rgba(182, 139, 87, 0.42);
+      box-shadow: 0 0 0 1px rgba(182, 139, 87, 0.08), 0 18px 42px rgba(132, 100, 65, 0.12);
+    }
+
+    .day-cell.future,
+    .week-card.future,
+    .mini-day.future {
+      background: rgba(232, 224, 211, 0.36);
+      border-color: rgba(69, 57, 43, 0.08);
+      opacity: 0.72;
+      filter: saturate(0.8);
+    }
+
+    .day-cell.selected,
+    .week-card.selected,
+    .mini-day.selected {
+      border-color: rgba(32, 34, 37, 0.36);
+      outline-color: rgba(182, 139, 87, 0.7);
+      box-shadow: 0 0 0 1px rgba(32, 34, 37, 0.08), 0 18px 42px rgba(132, 100, 65, 0.12);
+    }
+
+    .day-cell .day-number,
+    .day-cell.today .day-number,
+    .day-base,
+    .day-cell.future .day-number,
+    .day-cell.future .day-base {
+      color: rgba(32, 34, 37, 0.72);
+    }
+
+    .boost-badge {
+      color: #332412;
+      background: linear-gradient(135deg, #f4e2bd, #bd8c4f);
+      box-shadow: none;
+    }
+
+    .detail-event {
+      color: #5d4a31;
+      background: rgba(182, 139, 87, 0.09);
+      border-color: rgba(182, 139, 87, 0.16);
+    }
+
+    .detail-toggle {
+      color: #202225;
+      background: rgba(255, 252, 246, 0.62);
+      border-color: rgba(32, 34, 37, 0.12);
+    }
+
+    .bottom-nav {
+      background: rgba(255, 252, 246, 0.72);
+      border-color: rgba(69, 57, 43, 0.14);
+      box-shadow: 0 18px 48px rgba(92, 73, 55, 0.16), inset 0 1px 0 rgba(255,255,255,0.9);
+    }
+
+    .bottom-nav button,
+    .bottom-nav a {
+      color: rgba(32, 34, 37, 0.48);
+    }
+
+    .bottom-nav button.active,
+    .bottom-nav a.active {
+      color: #202225;
+      background: rgba(32, 34, 37, 0.06);
+    }
+
+    .bottom-nav .nav-icon,
+    .bottom-nav button.active .nav-icon,
+    .bottom-nav a.active .nav-icon {
+      background: transparent;
+      border-color: rgba(32, 34, 37, 0.12);
+    }
+
+    dialog::backdrop,
+    .setup-screen {
+      background: rgba(232, 222, 207, 0.58);
+      backdrop-filter: blur(18px);
+    }
+
+    .modal-body h2,
+    .setup-card h2 {
+      color: #202225;
+    }
+
+    .modal-body label,
+    .setup-card p,
+    .setup-preview-note,
+    .event-item span {
+      color: rgba(32, 34, 37, 0.54);
+    }
+
+    .modal-body input,
+    .modal-body textarea,
+    .modal-body select,
+    .setup-card input {
+      color: #202225;
+      background: rgba(255, 255, 255, 0.66);
+      border-color: rgba(32, 34, 37, 0.12);
+    }
+
+    .toast {
+      color: #fbf8f1;
+      background: rgba(32, 34, 37, 0.9);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 20px 50px rgba(92, 73, 55, 0.22);
+    }
+
+    .flash {
+      background: radial-gradient(circle, rgba(230, 202, 152, 0.22), rgba(182, 139, 87, 0.08), transparent 62%);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: rgba(32, 34, 37, 0.16);
+    }
+
+    @media (max-width: 390px) {
+      .hero-card { padding: 24px 20px 22px; }
+      .big-money { font-size: clamp(2.25rem, 11vw, 3.35rem); }
+      .hero-object {
+        width: 132px;
+        height: 82px;
+        right: 18px;
+        top: 90px;
+        opacity: 0.16;
+      }
+    }
+
+    @media (min-width: 760px) {
+      .shell {
+        width: min(1160px, 100%);
+        gap: 24px;
+      }
+
+      .hero-card {
+        min-height: 330px;
+      }
+
+      .hero-object {
+        right: 28px;
+        top: 92px;
+        width: 168px;
+        height: 108px;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -1651,6 +2626,7 @@
     </header>
 
     <section class="hero-card" id="heroCard">
+      <div class="hero-object" aria-hidden="true"></div>
       <div class="hero-top">
         <div class="status-pill"><span class="pulse-dot"></span><span id="statusText">Loading</span></div>
         <div class="currency-tabs" id="currencyTabs">
@@ -1716,7 +2692,11 @@
         <span id="calendarTitle">This month progress</span>
       </div>
       <div class="sheet">
+        <div class="calendar-summary" id="calendarSummary"></div>
+        <div class="calendar-mobile" id="calendarMobile"></div>
         <div class="calendar-grid" id="calendarGrid"></div>
+        <div class="calendar-mini" id="calendarMini"></div>
+        <div class="calendar-detail" id="calendarDetail"></div>
       </div>
     </section>
 
@@ -1952,6 +2932,7 @@
     let state = loadState();
     let lastBillCount = 0;
     let idleTicker = 0;
+    let _lastTodayOnes = 0;
     let _lastTodayTens = 0;
     let rewardRenderSignature = "";
     let rewardCarouselIndex = 0;
@@ -1959,6 +2940,8 @@
     let rewardCaptionSignature = "";
     let rewardCaptionTimer = null;
     let currentRewardItems = [];
+    let selectedCalendarDateKey = "";
+    let expandedCalendarEventKey = "";
 
     function loadState() {
       if (memoryStateCache) return { ...defaultState, ...memoryStateCache };
@@ -2003,6 +2986,22 @@
         rewardHintDefault: "Make income tangible",
         calendarSectionTitle: "Monthly Calendar",
         calendarDefault: "This month progress",
+        calendarEarnedPct: "Earned",
+        calendarRemaining: "Remaining",
+        calendarExtra: "Extra",
+        calendarProjected: "Projected",
+        calendarBase: "Base",
+        calendarBonus: "Boost",
+        calendarDetailToday: "Today is earning live",
+        calendarDetailPast: "Completed earning day",
+        calendarDetailFuture: "Projected earning day",
+        calendarNoExtra: "No extra income",
+        calendarInDays: "in {days}d",
+        calendarWorkProgress: "Workday progress",
+        calendarFixedIncome: "Fixed income",
+        calendarExtraIncome: "Extra income",
+        calendarShowAll: "Show all {count}",
+        calendarShowLess: "Show less",
         yearSectionTitle: "Year View",
         yearSectionHint: "Full-year momentum",
         extraSectionTitle: "Extra Income",
@@ -2075,6 +3074,22 @@
         rewardHintDefault: "把收入物質化",
         calendarSectionTitle: "月曆表",
         calendarDefault: "本月收入進度",
+        calendarEarnedPct: "已賺",
+        calendarRemaining: "剩餘",
+        calendarExtra: "加成",
+        calendarProjected: "月底預估",
+        calendarBase: "固定",
+        calendarBonus: "加成",
+        calendarDetailToday: "今日正在到賬",
+        calendarDetailPast: "已完成到賬日",
+        calendarDetailFuture: "預計到賬日",
+        calendarNoExtra: "暫無額外收入",
+        calendarInDays: "{days} 天後",
+        calendarWorkProgress: "上班進度",
+        calendarFixedIncome: "固定收入",
+        calendarExtraIncome: "額外收入",
+        calendarShowAll: "展開全部 {count} 條",
+        calendarShowLess: "收起",
         yearSectionTitle: "年表",
         yearSectionHint: "全年期待感",
         extraSectionTitle: "額外收入",
@@ -2371,10 +3386,15 @@
           }
         }
 
-        // ── HK$10 bills fall based on today's earnings ──
+        // ── HK$1 coins and HK$10 bills fall based on today's earnings ──
+        const todayOnes = Math.floor(totals.today);
+        if (todayOnes > _lastTodayOnes) {
+          spawnBills(Math.min(8, todayOnes - _lastTodayOnes), moneyStage, false, "coin");
+          _lastTodayOnes = todayOnes;
+        }
         const todayTens = Math.floor(totals.today / 10);
         if (todayTens > _lastTodayTens) {
-          spawnBills(Math.min(5, todayTens - _lastTodayTens), moneyStage);
+          spawnBills(Math.min(5, todayTens - _lastTodayTens), moneyStage, false, "hkd10");
           _lastTodayTens = todayTens;
         }
 
@@ -2477,7 +3497,7 @@
       }
     }
 
-    function spawnBills(count, layer, intense = false, imageType) {
+    function spawnBills(count, layer, intense = false, imageType = "hkd10") {
       const isCelebration = layer === celebrationLayer;
       for (let i = 0; i < count; i++) {
         setTimeout(() => {
@@ -2485,9 +3505,9 @@
           if (isCelebration) {
             // Jackpot rain: varied sizes for depth, different images per type
             const scale = 0.5 + Math.random() * 1.5; // 0.5x to 2.0x (big range)
-            const w = Math.round(72 * scale);
-            const h = Math.round(37 * scale);
-            const img = imageType === "hkd100" ? "hkd100.jpg" : "hkd10.jpg";
+            const w = Math.round(78 * scale);
+            const h = Math.round(44 * scale);
+            const img = imageType === "hkd100" ? "assets/money/hkd-100-luxury.png" : "assets/money/hkd-10-luxury.png";
             const topOff = -80 - Math.random() * 60;
             // Bigger bills fall slower for dramatic depth effect
             const fallDur = (0.6 + Math.random() * 0.8) * (0.5 + scale * 0.6);
@@ -2496,8 +3516,9 @@
             bill.style.cssText = [
               "position: fixed",
               "width:" + w + "px; height:" + h + "px",
-              "background: url('" + img + "') center/cover",
-              "border-radius: 2px",
+              "background: url('" + img + "') center/contain no-repeat",
+              "filter: drop-shadow(0 14px 20px rgba(92, 73, 55, 0.16))",
+              "box-shadow: none",
               "top: " + topOff + "px",
               "left: " + (Math.random() * 94) + "%",
               "z-index: " + zBase,
@@ -2508,17 +3529,18 @@
             ].join(";");
             bill.style.setProperty("--spin", `${Math.random() * 360 - 180}deg`);
           } else {
-            bill.className = "bill falling";
+            const isCoin = imageType === "coin";
+            bill.className = (isCoin ? "coin" : "bill") + " falling";
             // Perspective: random size for depth (0.6x to 1.4x)
             const pScale = 0.6 + Math.random() * 0.8;
-            const pw = Math.round(82 * pScale);
-            const ph = Math.round(42 * pScale);
+            const pw = Math.round((isCoin ? 50 : 88) * pScale);
+            const ph = Math.round((isCoin ? 54 : 50) * pScale);
             const pDur = (1.2 + Math.random() * 0.8) * (1.2 - pScale * 0.3);
             bill.style.width = pw + "px";
             bill.style.height = ph + "px";
-            bill.style.setProperty("--left", `${55 + Math.random() * 40}%`);
-            bill.style.setProperty("--drift", `${Math.random() * 90 - 45}px`);
-            bill.style.setProperty("--spin", `${Math.random() * 180 - 90}deg`);
+            bill.style.setProperty("--left", `${8 + Math.random() * 78}%`);
+            bill.style.setProperty("--drift", `${Math.random() * 70 - 35}px`);
+            bill.style.setProperty("--spin", `${Math.random() * (isCoin ? 360 : 180) - (isCoin ? 180 : 90)}deg`);
             bill.style.setProperty("--duration", pDur.toFixed(2) + "s");
           }
           layer.appendChild(bill);
@@ -2529,7 +3551,7 @@
 
     function idleAnimation() {
       idleTicker += 1;
-      if (idleTicker % 2 === 0) spawnBills(1, moneyStage);
+      if (idleTicker % 2 === 0) spawnBills(1, moneyStage, false, "coin");
     }
 
     function celebrate(type, amount) {
@@ -2778,6 +3800,145 @@
       startRewardAuto(displayRewards.length);
     }
 
+    function dateKey(date) {
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return date.getFullYear() + "-" + month + "-" + day;
+    }
+
+    function dateFromKey(key) {
+      const parts = String(key).split("-").map(Number);
+      return new Date(parts[0], parts[1] - 1, parts[2], 12, 0, 0, 0);
+    }
+
+    function calendarEventsForDay(date) {
+      const key = dateKey(date);
+      return state.extras.filter((event) => dateKey(new Date(event.date)) === key);
+    }
+
+    function workdayProgress(now) {
+      const start = Core.startOfWorkday(now);
+      const end = Core.endOfWorkday(now);
+      const duration = end - start;
+      if (duration <= 0) return 0;
+      return Math.max(0, Math.min(1, (now - start) / duration));
+    }
+
+    function calendarDayData(now, monthlyIncomeForView, date) {
+      const todayKey = dateKey(now);
+      const key = dateKey(date);
+      const isToday = key === todayKey;
+      const isPast = key < todayKey;
+      const events = calendarEventsForDay(date);
+      const extra = events.reduce((sum, event) => sum + Number(event.amount || 0), 0);
+      const daily = Number(monthlyIncomeForView || 0) / Core.daysInMonth(now);
+      return {
+        key,
+        day: date.getDate(),
+        isToday,
+        isPast,
+        isFuture: key > todayKey,
+        events,
+        extra,
+        base: isToday ? Core.baseEarnedAt(monthlyIncomeForView, now) : daily,
+      };
+    }
+
+    function calendarStateClass(data) {
+      return data.isToday ? "today" : data.isPast ? "earned" : "future";
+    }
+
+    function renderCalendarSummary(now, monthlyIncomeForView) {
+      const summary = document.getElementById("calendarSummary");
+      if (!summary) return;
+      const dim = Core.daysInMonth(now);
+      const daily = Number(monthlyIncomeForView || 0) / dim;
+      const completedDays = Math.max(0, now.getDate() - 1);
+      const monthBaseEarned = (completedDays * daily) + Core.baseEarnedAt(monthlyIncomeForView, now);
+      const monthExtra = Core.sumExtraIncome(state.extras, "month", now);
+      const projected = Number(monthlyIncomeForView || 0) + monthExtra;
+      const earned = monthBaseEarned + monthExtra;
+      const percent = projected > 0 ? Math.min(100, Math.round((earned / projected) * 100)) : 0;
+      const remaining = Math.max(0, projected - earned);
+      summary.innerHTML = [
+        '<article class="calendar-metric progress"><span>' + t("calendarEarnedPct") + '</span><strong>' + percent + '%</strong></article>',
+        '<article class="calendar-metric"><span>' + t("calendarRemaining") + '</span><strong>' + formatMoney(remaining, { compact: true }) + '</strong></article>',
+        '<article class="calendar-metric accent"><span>' + t("calendarExtra") + '</span><strong>' + formatMoney(monthExtra, { compact: true }) + '</strong></article>',
+        '<article class="calendar-metric"><span>' + t("calendarProjected") + '</span><strong>' + formatMoney(projected, { compact: true }) + '</strong></article>',
+      ].join("");
+    }
+
+    function renderCalendarDetail(now, monthlyIncomeForView, daily) {
+      const detail = document.getElementById("calendarDetail");
+      if (!detail || !selectedCalendarDateKey) return;
+      const selectedDate = dateFromKey(selectedCalendarDateKey);
+      const todayKey = dateKey(now);
+      const selectedKey = dateKey(selectedDate);
+      const isToday = selectedKey === todayKey;
+      const isPast = selectedKey < todayKey;
+      const isFuture = selectedKey > todayKey;
+      const base = isToday ? Core.baseEarnedAt(monthlyIncomeForView, now) : daily;
+      const events = calendarEventsForDay(selectedDate);
+      const extra = events.reduce((sum, event) => sum + Number(event.amount || 0), 0);
+      const labels = t("eventTypes");
+      const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const selectedMidnight = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate());
+      const daysAway = Math.max(0, Math.ceil((selectedMidnight - todayMidnight) / 86400000));
+      const status = isToday
+        ? t("calendarDetailToday")
+        : isPast
+          ? t("calendarDetailPast")
+          : t("calendarDetailFuture") + " · " + t("calendarInDays").replace("{days}", daysAway);
+      const locale = currentLanguage() === "zh" ? "zh-HK" : "en-US";
+      const expanded = expandedCalendarEventKey === selectedKey;
+      const visibleEvents = expanded ? events : events.slice(0, 3);
+      const eventHtml = events.length
+        ? visibleEvents.map((event) => '<div class="detail-event"><span>' + escapeHtml(labels[event.type] || t("extraFallback")) + (event.note ? ' · ' + escapeHtml(event.note) : "") + '</span><strong>' + formatMoney(event.amount, { compact: true }) + '</strong></div>').join("")
+        : '<div class="detail-event"><span>' + t("calendarNoExtra") + '</span><strong>' + formatMoney(0, { compact: true }) + '</strong></div>';
+      const toggleHtml = events.length > 3
+        ? '<button class="detail-toggle" type="button" data-calendar-toggle="events">' + (expanded ? t("calendarShowLess") : t("calendarShowAll").replace("{count}", events.length)) + '</button>'
+        : "";
+      detail.innerHTML = '<h3>' + selectedDate.toLocaleDateString(locale, { month: "short", day: "numeric", weekday: "short" }) + '</h3>'
+        + '<p class="detail-status">' + status + '</p>'
+        + '<div class="detail-grid">'
+        + '<div class="detail-pill"><span>' + t("calendarFixedIncome") + '</span><strong>' + formatMoney(base, { compact: true }) + '</strong></div>'
+        + '<div class="detail-pill"><span>' + t("calendarWorkProgress") + '</span><strong>' + (isToday ? Math.round(workdayProgress(now) * 100) + "%" : isFuture ? "0%" : "100%") + '</strong></div>'
+        + '<div class="detail-pill"><span>' + t("calendarExtraIncome") + '</span><strong>' + formatMoney(extra, { compact: true }) + '</strong></div>'
+        + '<div class="detail-pill"><span>' + t("calendarProjected") + '</span><strong>' + formatMoney(base + extra, { compact: true }) + '</strong></div>'
+        + '</div><div class="detail-events">' + eventHtml + toggleHtml + '</div>';
+    }
+
+    function renderMobileCalendar(now, monthlyIncomeForView, firstDay, dim) {
+      const mobile = document.getElementById("calendarMobile");
+      const mini = document.getElementById("calendarMini");
+      if (!mobile || !mini) return;
+      const year = now.getFullYear();
+      const month = now.getMonth();
+      const weekStart = Math.max(1, now.getDate() - now.getDay());
+      const weekEnd = Math.min(dim, weekStart + 6);
+      const locale = currentLanguage() === "zh" ? "zh-HK" : "en-US";
+      const todayProgress = Math.round(workdayProgress(now) * 100);
+      mobile.innerHTML = Array.from({ length: weekEnd - weekStart + 1 }, (_, index) => {
+        const date = new Date(year, month, weekStart + index, now.getHours(), now.getMinutes(), now.getSeconds());
+        const data = calendarDayData(now, monthlyIncomeForView, date);
+        const classes = ["week-card", calendarStateClass(data), data.extra > 0 ? "has-extra" : "", data.key === selectedCalendarDateKey ? "selected" : ""].filter(Boolean).join(" ");
+        const boost = data.extra > 0 ? '<span class="boost-badge">+' + formatMoney(data.extra, { compact: true }) + '</span>' : "";
+        const progress = data.isToday ? '<span class="today-progress"><span style="width:' + todayProgress + '%"></span></span>' : "";
+        return '<button class="' + classes + '" type="button" data-date="' + data.key + '">'
+          + '<span class="week-card-top"><span><span class="week-day">' + date.toLocaleDateString(locale, { weekday: "short" }) + '</span><span class="week-date">' + data.day + '</span></span>' + boost + '</span>'
+          + '<span class="week-amount">' + formatMoney(data.base + data.extra, { compact: true }) + '</span>'
+          + '<span class="week-sub">' + (data.isToday ? t("calendarDetailToday") : data.isPast ? t("calendarDetailPast") : t("calendarDetailFuture")) + '</span>'
+          + progress + '</button>';
+      }).join("");
+      mini.innerHTML = Array.from({ length: firstDay }, () => '<span class="mini-day empty"></span>').join("")
+        + Array.from({ length: dim }, (_, index) => {
+          const date = new Date(year, month, index + 1, now.getHours(), now.getMinutes(), now.getSeconds());
+          const data = calendarDayData(now, monthlyIncomeForView, date);
+          const classes = ["mini-day", calendarStateClass(data), data.extra > 0 ? "has-extra" : "", data.key === selectedCalendarDateKey ? "selected" : ""].filter(Boolean).join(" ");
+          return '<button class="' + classes + '" type="button" data-date="' + data.key + '">' + data.day + '</button>';
+        }).join("");
+    }
+
     function renderCalendar(now, monthlyIncomeForView) {
       const grid = document.getElementById("calendarGrid");
       const weekdays = t("weekdays");
@@ -2786,21 +3947,28 @@
       const dim = Core.daysInMonth(now);
       const firstDay = new Date(year, month, 1).getDay();
       const daily = Number(monthlyIncomeForView || 0) / dim;
+      const todayKey = dateKey(now);
+      const monthPrefix = year + "-" + String(month + 1).padStart(2, "0") + "-";
+      if (!selectedCalendarDateKey || !selectedCalendarDateKey.startsWith(monthPrefix)) selectedCalendarDateKey = todayKey;
+      renderCalendarSummary(now, monthlyIncomeForView);
+      renderMobileCalendar(now, monthlyIncomeForView, firstDay, dim);
+      const todayProgress = Math.round(workdayProgress(now) * 100);
       const html = weekdays.map((day) => '<div class="weekday">' + day + '</div>').join("")
         + Array.from({ length: firstDay }, () => '<div class="day-cell empty"></div>').join("")
         + Array.from({ length: dim }, (_, index) => {
-          const day = index + 1;
-          const date = new Date(year, month, day, now.getHours(), now.getMinutes(), now.getSeconds());
-          const isToday = day === now.getDate();
-          const isPast = day < now.getDate();
-          const base = isPast ? daily : isToday ? Core.baseEarnedAt(monthlyIncomeForView, now) : 0;
-          const extra = Core.sumExtraIncome(state.extras, "day", date);
-          return '<div class="day-cell ' + (isToday ? "today" : "") + '">'
-            + (extra > 0 ? '<span class="event-dot"></span>' : "")
-            + '<span class="day-number">' + day + '</span>'
-            + '<span class="day-money">' + formatMoney(base + extra, { compact: true }) + '</span></div>';
+          const date = new Date(year, month, index + 1, now.getHours(), now.getMinutes(), now.getSeconds());
+          const data = calendarDayData(now, monthlyIncomeForView, date);
+          const classes = ["day-cell", calendarStateClass(data), data.extra > 0 ? "has-extra" : "", data.key === selectedCalendarDateKey ? "selected" : ""].filter(Boolean).join(" ");
+          const boost = data.extra > 0 ? '<span class="boost-badge">+' + formatMoney(data.extra, { compact: true }) + '</span>' : "";
+          const progress = data.isToday ? '<span class="today-progress"><span style="width:' + todayProgress + '%"></span></span>' : "";
+          return '<button class="' + classes + '" type="button" data-date="' + data.key + '">'
+            + '<span class="day-top"><span class="day-number">' + data.day + '</span>' + boost + '</span>'
+            + '<span class="day-base">' + t("calendarBase") + ' ' + formatMoney(data.base, { compact: true }) + '</span>'
+            + (data.extra > 0 ? '<span class="day-extra">' + t("calendarBonus") + ' +' + formatMoney(data.extra, { compact: true }) + '</span>' : "")
+            + progress + '</button>';
         }).join("");
       grid.innerHTML = html;
+      renderCalendarDetail(now, monthlyIncomeForView, daily);
       document.getElementById("calendarTitle").textContent = currentLanguage() === "zh" ? (year + " / " + (month + 1)) : (now.toLocaleString("en-US", { month: "long" }) + " " + year);
     }
 
@@ -2940,6 +4108,37 @@
 
     document.getElementById("extraForm").addEventListener("submit", saveExtraIncome);
     document.getElementById("saveExtraBtn").addEventListener("click", saveExtraIncome);
+
+    document.getElementById("calendarGrid").addEventListener("click", (event) => {
+      const cell = event.target.closest(".day-cell[data-date]");
+      if (!cell) return;
+      selectedCalendarDateKey = cell.dataset.date;
+      expandedCalendarEventKey = "";
+      updateDashboard();
+    });
+
+    document.getElementById("calendarMobile").addEventListener("click", (event) => {
+      const cell = event.target.closest("[data-date]");
+      if (!cell) return;
+      selectedCalendarDateKey = cell.dataset.date;
+      expandedCalendarEventKey = "";
+      updateDashboard();
+    });
+
+    document.getElementById("calendarMini").addEventListener("click", (event) => {
+      const cell = event.target.closest("[data-date]");
+      if (!cell || cell.classList.contains("empty")) return;
+      selectedCalendarDateKey = cell.dataset.date;
+      expandedCalendarEventKey = "";
+      updateDashboard();
+    });
+
+    document.getElementById("calendarDetail").addEventListener("click", (event) => {
+      const toggle = event.target.closest("[data-calendar-toggle]");
+      if (!toggle) return;
+      expandedCalendarEventKey = expandedCalendarEventKey === selectedCalendarDateKey ? "" : selectedCalendarDateKey;
+      updateDashboard();
+    });
 
     document.getElementById("currencyTabs").addEventListener("click", (event) => {
       const button = event.target.closest("[data-currency]");
