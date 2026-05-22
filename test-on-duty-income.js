@@ -252,6 +252,21 @@ assert(html.includes("function renderIncomeChart(series)"), "Lessons analytics s
 assert(html.includes("@keyframes lessonPointPulse"), "lesson chart points should have a breathing animation");
 assert(html.includes("@media (prefers-reduced-motion: reduce)"), "lesson point animation should respect reduced motion");
 assert(html.includes("chart-point-halo"), "lesson chart should include pulsing point halos");
+assert(html.includes(".lesson-income-chart {\n      display: none;"), "lesson income chart should be folded into the main report panel");
+assert(html.includes("min-height: 390px;"), "lesson chart should be readable on mobile without excessive vertical whitespace");
+assert(html.includes("const width = 720, height = 390;"), "lesson chart SVG should use a compact mobile-readable viewBox");
+assert(html.includes("const barW = Math.max(8, Math.min(24, barSlot * 0.42));"), "lesson income bars should be visible but still compact");
+assert(html.includes('class="chart-hover-zone" tabindex="0"'), "lesson chart bars should expose hover/focus detail zones");
+assert(html.includes("chart-tooltip"), "lesson chart should include hover/tap tooltips");
+assert(html.includes('font-size="21" font-weight="820"'), "lesson chart title labels should be readable on mobile");
+assert(html.includes('font-size="18" font-weight="820"'), "lesson chart date labels should be readable on mobile");
+assert(html.includes('width="232" height="66"'), "lesson chart tooltip should be large enough on mobile");
+assert(html.includes("chart-point:not(.is-highlight) .chart-point-halo"), "lesson chart should only pulse highlighted points");
+assert(html.includes('text-anchor="middle"'), "lesson chart should use a compact latest value marker instead of crowded summaries");
+assert(!html.includes("LATEST"), "lesson chart should not crowd the plot with redundant summary labels");
+assert(html.includes("return \"\";"), "legacy standalone income chart renderer should be disabled");
+assert(fs.existsSync("DESIGN_GUIDELINES.md"), "design guidelines should exist for future UI work");
+assert(fs.readFileSync("DESIGN_GUIDELINES.md", "utf8").includes("Pre-Design Checklist"), "design guidelines should include a pre-design checklist");
 assert(html.includes("lessonAvgRate"), "Lessons analytics should expose localized summary metrics");
 
 console.log("All income core tests passed.");

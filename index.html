@@ -1538,26 +1538,23 @@
       background: #202225;
     }
 
-    .lesson-chart,
-    .lesson-income-chart {
-      min-height: 178px;
+    .lesson-chart {
+      min-height: 360px;
       border-radius: 20px;
       overflow: hidden;
       background:
         linear-gradient(rgba(32,34,37,0.035) 1px, transparent 1px),
         linear-gradient(90deg, rgba(32,34,37,0.035) 1px, transparent 1px),
         rgba(255, 253, 247, 0.58);
-      background-size: 100% 25%, 20% 100%, auto;
+      background-size: 100% 16.66%, 12.5% 100%, auto;
       border: 1px solid rgba(184, 148, 86, 0.1);
     }
 
     .lesson-income-chart {
-      margin-top: 10px;
-      min-height: 142px;
+      display: none;
     }
 
-    .lesson-chart svg,
-    .lesson-income-chart svg {
+    .lesson-chart svg {
       width: 100%;
       height: 100%;
       min-height: inherit;
@@ -1567,17 +1564,26 @@
     .chart-line {
       fill: none;
       stroke: #202225;
-      stroke-width: 3;
+      stroke-width: 3.2;
       stroke-linecap: round;
       stroke-linejoin: round;
     }
 
     .chart-area {
-      fill: rgba(216, 189, 130, 0.18);
+      fill: rgba(216, 189, 130, 0.08);
     }
 
     .chart-bar {
-      fill: url(#lessonBarGradient);
+      fill: rgba(155, 110, 57, 0.42);
+      transition: fill 0.2s ease, opacity 0.2s ease;
+    }
+
+    .chart-bar.is-highlight {
+      fill: #202225;
+    }
+
+    .chart-bar:hover {
+      fill: #9b6e39;
     }
 
     .chart-point-core {
@@ -1592,9 +1598,36 @@
       transform-origin: center;
     }
 
+    .chart-point:not(.is-highlight) .chart-point-halo {
+      display: none;
+    }
+
+    .chart-point:not(.is-highlight) .chart-point-core {
+      fill: rgba(32, 34, 37, 0.48);
+      stroke: rgba(255, 253, 247, 0.9);
+      stroke-width: 1.6;
+    }
+
     .chart-point.is-highlight .chart-point-core {
       fill: #9b6e39;
       stroke: #fff4cf;
+    }
+
+    .chart-axis-label,
+    .chart-mark-label,
+    .chart-tooltip text {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif;
+    }
+
+    .chart-tooltip {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.18s ease;
+    }
+
+    .chart-hover-zone:hover .chart-tooltip,
+    .chart-hover-zone:focus .chart-tooltip {
+      opacity: 1;
     }
 
     .chart-empty {
@@ -1606,6 +1639,42 @@
       text-align: center;
       font-size: 0.82rem;
       font-weight: 720;
+    }
+
+    @media (max-width: 520px) {
+      .lesson-chart-panel {
+        padding: 14px 12px 16px;
+      }
+
+      .lesson-chart-head {
+        gap: 10px;
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .lesson-chart-head h3 {
+        font-size: 1.18rem;
+      }
+
+      .chart-eyebrow {
+        font-size: 0.72rem;
+      }
+
+      .lesson-toggle {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .lesson-toggle button {
+        flex: 1;
+        min-height: 40px;
+        font-size: 0.82rem;
+      }
+
+      .lesson-chart {
+        min-height: 390px;
+        border-radius: 18px;
+      }
     }
 
     @keyframes lessonPointPulse {
@@ -4369,47 +4438,64 @@
 
     function renderLineChart(series) {
       if (!series.length) return '<div class="chart-empty">' + escapeHtml(t("lessonNoData")) + '</div>';
-      const width = 640, height = 240, pad = 34;
+      const width = 720, height = 390;
+      const padX = 46, topPad = 58, chartBottom = 218, stripTop = 262, stripBottom = 334;
       const values = series.map((item) => item.rate);
       const min = Math.min(...values);
       const max = Math.max(...values);
       const range = Math.max(1, max - min);
+      const incomeMax = Math.max(1, ...series.map((item) => item.income));
       const points = series.map((item, index) => {
-        const x = series.length === 1 ? width / 2 : pad + (index * (width - pad * 2)) / (series.length - 1);
-        const y = height - pad - ((item.rate - min) / range) * (height - pad * 2);
+        const x = series.length === 1 ? width / 2 : padX + (index * (width - padX * 2)) / (series.length - 1);
+        const y = chartBottom - ((item.rate - min) / range) * (chartBottom - topPad);
         return { ...item, x: Math.round(x * 10) / 10, y: Math.round(y * 10) / 10 };
       });
       const best = Math.max(...values);
+      const bestIncome = Math.max(...series.map((item) => item.income));
       const lastKey = points[points.length - 1].key;
-      const area = smoothPath(points) + ` L ${points[points.length - 1].x} ${height - pad} L ${points[0].x} ${height - pad} Z`;
+      const area = smoothPath(points) + ` L ${points[points.length - 1].x} ${chartBottom} L ${points[0].x} ${chartBottom} Z`;
+      const barSlot = (width - padX * 2) / Math.max(1, series.length);
+      const barW = Math.max(8, Math.min(24, barSlot * 0.42));
+      const avg = values.reduce((sum, value) => sum + value, 0) / values.length;
+      const latest = points[points.length - 1];
+      const title = escapeHtml(t("lessonChartTitle"));
+      const incomeTitle = escapeHtml(t(currentLessonMode === "lesson" ? "lessonIncomeChartTitle" : "lessonMonthlyIncomeChartTitle"));
       return '<svg viewBox="0 0 ' + width + ' ' + height + '" role="img" aria-label="' + escapeHtml(t("lessonChartTitle")) + '">'
+        + '<line x1="' + padX + '" y1="' + topPad + '" x2="' + (width - padX) + '" y2="' + topPad + '" class="axis"></line>'
+        + '<line x1="' + padX + '" y1="' + ((topPad + chartBottom) / 2) + '" x2="' + (width - padX) + '" y2="' + ((topPad + chartBottom) / 2) + '" class="axis"></line>'
+        + '<line x1="' + padX + '" y1="' + chartBottom + '" x2="' + (width - padX) + '" y2="' + chartBottom + '" class="axis"></line>'
+        + '<text class="chart-axis-label" x="' + padX + '" y="34" fill="rgba(32,34,37,.58)" font-size="21" font-weight="820">' + title + '</text>'
+        + '<text class="chart-axis-label" x="' + (width - padX) + '" y="34" text-anchor="end" fill="rgba(32,34,37,.52)" font-size="18" font-weight="820">' + escapeHtml(formatMoney(max)) + '/h</text>'
         + '<path class="chart-area" d="' + area + '"></path>'
         + '<path class="chart-line" d="' + smoothPath(points) + '"></path>'
         + points.map((point, index) => '<g class="chart-point ' + (point.rate === best || point.key === lastKey ? 'is-highlight' : '') + '">'
           + '<circle class="chart-point-halo" cx="' + point.x + '" cy="' + point.y + '" r="7" style="animation-delay:' + (index * 0.16).toFixed(2) + 's"></circle>'
-          + '<circle class="chart-point-core" cx="' + point.x + '" cy="' + point.y + '" r="' + (point.key === lastKey ? 5.2 : 4.3) + '"></circle>'
+          + '<circle class="chart-point-core" cx="' + point.x + '" cy="' + point.y + '" r="' + (point.key === lastKey ? 5.2 : 3.2) + '"></circle>'
           + '</g>').join("")
-        + '<text x="' + pad + '" y="22" fill="rgba(32,34,37,.48)" font-size="18" font-weight="700">' + escapeHtml(formatMoney(max)) + '/h</text>'
-        + '<text x="' + pad + '" y="' + (height - 10) + '" fill="rgba(32,34,37,.38)" font-size="16" font-weight="700">' + escapeHtml(points[0].label) + '</text>'
-        + '<text x="' + (width - pad) + '" y="' + (height - 10) + '" text-anchor="end" fill="rgba(32,34,37,.38)" font-size="16" font-weight="700">' + escapeHtml(points[points.length - 1].label) + '</text>'
+        + '<text class="chart-mark-label" x="' + latest.x + '" y="' + Math.max(44, latest.y - 14) + '" text-anchor="middle" fill="rgba(32,34,37,.64)" font-size="15" font-weight="820">' + escapeHtml(formatMoney(latest.rate)) + '/h</text>'
+        + '<line x1="' + padX + '" y1="' + stripTop + '" x2="' + (width - padX) + '" y2="' + stripTop + '" class="axis"></line>'
+        + '<line x1="' + padX + '" y1="' + stripBottom + '" x2="' + (width - padX) + '" y2="' + stripBottom + '" class="axis"></line>'
+        + '<text class="chart-axis-label" x="' + padX + '" y="' + (stripTop - 16) + '" fill="rgba(32,34,37,.56)" font-size="19" font-weight="820">' + incomeTitle + '</text>'
+        + points.map((point) => {
+          const h = Math.max(5, (point.income / incomeMax) * (stripBottom - stripTop));
+          const y = stripBottom - h;
+          const highlight = point.income === bestIncome || point.key === lastKey;
+          const tipX = Math.min(width - 250, Math.max(padX, point.x - 96));
+          const tipY = Math.max(42, y - 104);
+          const details = escapeHtml(point.label + ' · ' + formatMoney(point.income, { compact: true }) + ' · ' + formatMoney(point.rate) + '/h');
+          return '<g class="chart-hover-zone" tabindex="0">'
+            + '<rect class="chart-bar ' + (highlight ? 'is-highlight' : '') + '" x="' + (point.x - barW / 2).toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + barW.toFixed(1) + '" height="' + h.toFixed(1) + '" rx="2"></rect>'
+            + '<rect x="' + (point.x - Math.max(10, barSlot / 2)) + '" y="' + stripTop + '" width="' + Math.max(20, barSlot) + '" height="' + (stripBottom - stripTop) + '" fill="transparent"></rect>'
+            + '<g class="chart-tooltip"><rect x="' + tipX + '" y="' + tipY + '" width="232" height="66" rx="12" fill="#202225" opacity="0.94"></rect><text x="' + (tipX + 14) + '" y="' + (tipY + 27) + '" fill="#fffaf2" font-size="17" font-weight="850">' + details + '</text><text x="' + (tipX + 14) + '" y="' + (tipY + 49) + '" fill="rgba(255,250,242,.66)" font-size="14" font-weight="760">Tap / hover for details</text></g>'
+            + '</g>';
+        }).join("")
+        + '<text class="chart-axis-label" x="' + padX + '" y="' + (height - 22) + '" fill="rgba(32,34,37,.46)" font-size="18" font-weight="820">' + escapeHtml(points[0].label) + '</text>'
+        + '<text class="chart-axis-label" x="' + (width - padX) + '" y="' + (height - 22) + '" text-anchor="end" fill="rgba(32,34,37,.46)" font-size="18" font-weight="820">' + escapeHtml(points[points.length - 1].label) + '</text>'
         + '</svg>';
     }
 
     function renderIncomeChart(series) {
-      if (!series.length) return "";
-      const width = 640, height = 170, pad = 28;
-      const max = Math.max(1, ...series.map((item) => item.income));
-      const barW = Math.max(10, (width - pad * 2) / series.length * 0.58);
-      return '<svg viewBox="0 0 ' + width + ' ' + height + '" role="img" aria-label="' + escapeHtml(t(currentLessonMode === "lesson" ? "lessonIncomeChartTitle" : "lessonMonthlyIncomeChartTitle")) + '">'
-        + '<defs><linearGradient id="lessonBarGradient" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#202225"/><stop offset="100%" stop-color="#d8bd82"/></linearGradient></defs>'
-        + series.map((item, index) => {
-          const x = series.length === 1 ? width / 2 - barW / 2 : pad + (index * (width - pad * 2)) / (series.length - 1) - barW / 2;
-          const h = Math.max(8, (item.income / max) * (height - pad * 2));
-          const y = height - pad - h;
-          return '<rect class="chart-bar" x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + barW.toFixed(1) + '" height="' + h.toFixed(1) + '" rx="8"></rect>';
-        }).join("")
-        + '<text x="' + pad + '" y="22" fill="rgba(32,34,37,.48)" font-size="16" font-weight="700">' + escapeHtml(t(currentLessonMode === "lesson" ? "lessonIncomeChartTitle" : "lessonMonthlyIncomeChartTitle")) + '</text>'
-        + '</svg>';
+      return "";
     }
 
     function renderLessons() {
