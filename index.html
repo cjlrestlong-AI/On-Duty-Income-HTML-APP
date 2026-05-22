@@ -946,8 +946,8 @@
       font-size: clamp(1.15rem, 5.3vw, 1.65rem);
       line-height: 1.08;
       font-weight: 800;
-      color: #fff;
-      text-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+      color: #202225;
+      text-shadow: none;
     }
 
     .reward-caption::before {
@@ -958,8 +958,8 @@
       width: 118%;
       height: 118px;
       transform: translateX(-50%);
-      background: radial-gradient(ellipse at 50% 100%, rgba(1, 6, 22, 0.78), rgba(12, 34, 94, 0.34) 44%, transparent 76%);
-      filter: blur(18px);
+      background: radial-gradient(ellipse at 50% 100%, rgba(251, 248, 241, 0.9), rgba(251, 248, 241, 0.42) 44%, transparent 76%);
+      filter: blur(14px);
       z-index: -1;
       pointer-events: none;
     }
@@ -974,18 +974,17 @@
     .reward-quantity {
       font-size: clamp(2.15rem, 11vw, 3.25rem);
       line-height: 0.86;
-      font-weight: 900;
+      font-weight: 860;
       letter-spacing: 0;
-      color: #fff;
-      text-shadow:
-        0 18px 38px rgba(0, 0, 0, 0.55),
-        0 0 22px rgba(0, 229, 255, 0.18);
+      color: #171819;
+      text-shadow: none;
+      font-variant-numeric: tabular-nums;
     }
 
     .reward-unit {
       font-size: inherit;
-      font-weight: 800;
-      color: rgba(226, 241, 255, 0.78);
+      font-weight: 760;
+      color: rgba(32, 34, 37, 0.7);
     }
 
     .reward-name {
@@ -994,8 +993,8 @@
 
     .reward-caption p {
       margin: 6px 0 0;
-      color: rgba(225, 238, 255, 0.62);
-      font-weight: 600;
+      color: rgba(32, 34, 37, 0.54);
+      font-weight: 560;
       font-size: 0.86rem;
       line-height: 1.35;
       max-width: 25em;
@@ -1078,9 +1077,8 @@
     }
 
     .calendar-metric.accent strong { color: #fcd98b; }
-    .calendar-metric.progress strong { color: #67e8f9; }
+    .calendar-metric.progress strong { color: #202225; }
 
-    .calendar-mobile,
     .calendar-mini {
       display: none;
     }
@@ -1140,10 +1138,12 @@
     }
 
     .day-cell.earned {
+      color: #2a2118;
       background:
-        radial-gradient(circle at 50% 115%, rgba(45, 212, 191, 0.22), transparent 62%),
-        linear-gradient(160deg, rgba(14, 116, 144, 0.2), rgba(255, 255, 255, 0.035));
-      border-color: rgba(103, 232, 249, 0.16);
+        radial-gradient(circle at 50% 112%, rgba(240, 223, 182, 0.34), transparent 66%),
+        linear-gradient(145deg, rgba(255, 253, 247, 0.86), rgba(240, 223, 182, 0.22));
+      border-color: rgba(184, 148, 86, 0.24);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.58), 0 8px 16px rgba(184, 148, 86, 0.07);
     }
 
     .day-cell.future {
@@ -1180,10 +1180,12 @@
     }
 
     .day-cell .day-number {
-      font-size: 0.76rem;
-      font-weight: 700;
+      font-size: 0.9rem;
+      font-weight: 820;
       color: rgba(255, 255, 255, 0.7);
       line-height: 1;
+      letter-spacing: 0;
+      font-variant-numeric: tabular-nums;
     }
 
     .day-cell.today .day-number { color: #00e5ff; }
@@ -1197,9 +1199,9 @@
     .day-extra {
       display: block;
       text-align: left;
-      font-size: 0.53rem;
-      line-height: 1.05;
-      font-weight: 850;
+      font-size: 0.62rem;
+      line-height: 1.12;
+      font-weight: 780;
       overflow-wrap: anywhere;
       font-variant-numeric: tabular-nums;
     }
@@ -1237,26 +1239,57 @@
       box-shadow: 0 0 10px rgba(34, 211, 238, 0.34);
     }
 
-    .calendar-detail {
-      margin-top: 14px;
+    .calendar-popover {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: min(328px, calc(100vw - 32px));
       padding: 14px;
-      border-radius: 20px;
+      border-radius: 22px;
       background:
-        radial-gradient(circle at 16% 0%, rgba(250, 204, 21, 0.12), transparent 32%),
-        rgba(3, 10, 28, 0.34);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+        radial-gradient(circle at 18% 0%, rgba(240, 223, 182, 0.42), transparent 34%),
+        linear-gradient(145deg, rgba(255, 253, 247, 0.96), rgba(246, 238, 224, 0.92));
+      border: 1px solid rgba(184, 148, 86, 0.24);
+      box-shadow: 0 24px 58px rgba(92, 73, 55, 0.2), inset 0 1px 0 rgba(255,255,255,0.88);
+      backdrop-filter: blur(18px);
+      opacity: 0;
+      visibility: hidden;
+      transform: translate3d(0, 8px, 0) scale(0.98);
+      transition: opacity 160ms ease, transform 160ms ease, visibility 160ms ease;
+      z-index: 130;
+      pointer-events: none;
     }
 
-    .calendar-detail h3 {
+    .calendar-popover.is-open {
+      opacity: 1;
+      visibility: visible;
+      transform: translate3d(0, 0, 0) scale(1);
+      pointer-events: auto;
+    }
+
+    .calendar-popover::before {
+      content: "";
+      position: absolute;
+      left: var(--arrow-left, 50%);
+      top: -7px;
+      width: 14px;
+      height: 14px;
+      transform: translateX(-50%) rotate(45deg);
+      background: rgba(255, 253, 247, 0.96);
+      border-left: 1px solid rgba(184, 148, 86, 0.2);
+      border-top: 1px solid rgba(184, 148, 86, 0.2);
+    }
+
+    .calendar-popover h3 {
       margin: 0;
-      color: #f8fafc;
+      color: #211f1b;
       font-size: 0.95rem;
       font-weight: 950;
     }
 
-    .calendar-detail .detail-status {
+    .calendar-popover .detail-status {
       margin: 4px 0 12px;
-      color: rgba(220, 242, 255, 0.54);
+      color: rgba(42, 36, 29, 0.54);
       font-size: 0.72rem;
       font-weight: 750;
     }
@@ -1343,119 +1376,20 @@
 
     @media (max-width: 520px) {
       .calendar-grid {
+        display: grid;
+        gap: 4px;
+      }
+
+      .calendar-mini {
         display: none;
       }
 
-      .calendar-mobile {
-        display: flex;
-        gap: 12px;
-        margin: 2px -16px 14px;
-        padding: 2px 16px 12px;
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
-        -webkit-overflow-scrolling: touch;
+      .calendar-popover {
+        width: min(330px, calc(100vw - 28px));
       }
+    }
 
-      .week-card {
-        appearance: none;
-        -webkit-appearance: none;
-        flex: 0 0 min(235px, 78vw);
-        min-height: 142px;
-        border: 1px solid rgba(255, 255, 255, 0.075);
-        border-radius: 24px;
-        padding: 15px;
-        color: inherit;
-        font: inherit;
-        text-align: left;
-        position: relative;
-        overflow: hidden;
-        cursor: pointer;
-        scroll-snap-align: center;
-        background:
-          radial-gradient(circle at 70% 0%, rgba(125, 211, 252, 0.18), transparent 40%),
-          linear-gradient(155deg, rgba(10, 27, 64, 0.9), rgba(11, 13, 40, 0.94));
-        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-        transition: transform 0.22s ease, border-color 0.22s ease, filter 0.22s ease;
-      }
-
-      .week-card.earned {
-        background:
-          radial-gradient(circle at 70% 0%, rgba(45, 212, 191, 0.24), transparent 42%),
-          linear-gradient(155deg, rgba(12, 88, 112, 0.74), rgba(9, 22, 54, 0.94));
-        border-color: rgba(103, 232, 249, 0.2);
-      }
-
-      .week-card.today {
-        border-color: rgba(103, 232, 249, 0.58);
-        box-shadow: 0 0 32px rgba(0, 229, 255, 0.15), 0 18px 40px rgba(0, 0, 0, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.12);
-        animation: calendarPulse 2.6s ease-in-out infinite;
-      }
-
-      .week-card.future {
-        filter: saturate(0.72) brightness(0.74);
-      }
-
-      .week-card.selected {
-        border-color: rgba(252, 211, 77, 0.62);
-      }
-
-      .week-card:hover {
-        transform: translateY(-2px);
-      }
-
-      .week-card-top {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 10px;
-      }
-
-      .week-day {
-        display: block;
-        color: rgba(226, 246, 255, 0.58);
-        font-size: 0.68rem;
-        font-weight: 850;
-      }
-
-      .week-date {
-        display: block;
-        margin-top: 3px;
-        color: #f8fafc;
-        font-size: 2.25rem;
-        line-height: 0.95;
-        font-weight: 950;
-        letter-spacing: 0;
-        font-variant-numeric: tabular-nums;
-      }
-
-      .week-card .boost-badge {
-        font-size: 0.64rem;
-        padding: 5px 7px;
-      }
-
-      .week-amount {
-        display: block;
-        margin-top: 14px;
-        color: #ecfeff;
-        font-size: 1.22rem;
-        font-weight: 950;
-        font-variant-numeric: tabular-nums;
-        overflow-wrap: anywhere;
-      }
-
-      .week-sub {
-        display: block;
-        margin-top: 6px;
-        color: rgba(220, 242, 255, 0.5);
-        font-size: 0.72rem;
-        font-weight: 800;
-      }
-
-      .week-card .today-progress {
-        height: 5px;
-        margin-top: 14px;
-      }
-
+    @media (min-width: 521px) {
       .calendar-mini {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
@@ -1520,8 +1454,8 @@
         box-shadow: 0 0 10px rgba(250, 204, 21, 0.48);
       }
 
-      .calendar-detail {
-        margin-top: 10px;
+      .calendar-popover {
+        width: min(330px, calc(100vw - 28px));
       }
     }
 
@@ -1564,6 +1498,234 @@
 
     .month-card.active p { color: #67e8f9; }
 
+    /* ═══════════════ Lessons Analytics ═══════════════ */
+
+    .lesson-fields[hidden] {
+      display: none;
+    }
+
+    .lesson-fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .lesson-rate-preview {
+      grid-column: 1 / -1;
+      margin: -2px 0 0;
+      color: rgba(32, 34, 37, 0.58);
+      font-size: 0.76rem;
+      font-weight: 760;
+    }
+
+    .lesson-metrics {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .lesson-metric {
+      min-width: 0;
+      border-radius: 18px;
+      padding: 13px 14px;
+      background: rgba(255, 253, 247, 0.66);
+      border: 1px solid rgba(184, 148, 86, 0.13);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.76);
+    }
+
+    .lesson-metric span,
+    .chart-eyebrow {
+      display: block;
+      color: rgba(42, 36, 29, 0.52);
+      font-size: 0.64rem;
+      font-weight: 820;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+
+    .lesson-metric strong {
+      display: block;
+      margin-top: 5px;
+      color: #202225;
+      font-size: 1.05rem;
+      font-weight: 860;
+      font-variant-numeric: tabular-nums;
+      overflow-wrap: anywhere;
+    }
+
+    .lesson-chart-panel {
+      border-radius: 24px;
+      padding: 16px;
+      background:
+        radial-gradient(ellipse at 72% 0%, rgba(240, 223, 182, 0.34), transparent 42%),
+        linear-gradient(145deg, rgba(255, 253, 247, 0.76), rgba(247, 239, 225, 0.58));
+      border: 1px solid rgba(184, 148, 86, 0.14);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+    }
+
+    .lesson-chart-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+
+    .lesson-chart-head h3 {
+      margin: 3px 0 0;
+      color: #202225;
+      font-size: 1rem;
+      line-height: 1.1;
+      font-weight: 860;
+    }
+
+    .lesson-toggle {
+      display: inline-flex;
+      padding: 4px;
+      border-radius: 999px;
+      background: rgba(255, 251, 242, 0.74);
+      border: 1px solid rgba(184, 148, 86, 0.14);
+      flex-shrink: 0;
+    }
+
+    .lesson-toggle button {
+      appearance: none;
+      -webkit-appearance: none;
+      border: 0;
+      border-radius: 999px;
+      padding: 7px 10px;
+      color: rgba(32, 34, 37, 0.5);
+      background: transparent;
+      font: inherit;
+      font-size: 0.68rem;
+      font-weight: 820;
+      cursor: pointer;
+    }
+
+    .lesson-toggle button.active {
+      color: #fbf8f1;
+      background: #202225;
+    }
+
+    .lesson-chart,
+    .lesson-income-chart {
+      min-height: 178px;
+      border-radius: 20px;
+      overflow: hidden;
+      background:
+        linear-gradient(rgba(32,34,37,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(32,34,37,0.035) 1px, transparent 1px),
+        rgba(255, 253, 247, 0.58);
+      background-size: 100% 25%, 20% 100%, auto;
+      border: 1px solid rgba(184, 148, 86, 0.1);
+    }
+
+    .lesson-income-chart {
+      margin-top: 10px;
+      min-height: 142px;
+    }
+
+    .lesson-chart svg,
+    .lesson-income-chart svg {
+      width: 100%;
+      height: 100%;
+      min-height: inherit;
+      display: block;
+    }
+
+    .chart-line {
+      fill: none;
+      stroke: #202225;
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .chart-area {
+      fill: rgba(216, 189, 130, 0.18);
+    }
+
+    .chart-bar {
+      fill: url(#lessonBarGradient);
+    }
+
+    .chart-point-core {
+      fill: #202225;
+      stroke: #f0dfb6;
+      stroke-width: 2.4;
+    }
+
+    .chart-point-halo {
+      fill: rgba(216, 189, 130, 0.42);
+      animation: lessonPointPulse 2.8s ease-in-out infinite;
+      transform-origin: center;
+    }
+
+    .chart-point.is-highlight .chart-point-core {
+      fill: #9b6e39;
+      stroke: #fff4cf;
+    }
+
+    .chart-empty {
+      min-height: 178px;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      color: rgba(32, 34, 37, 0.52);
+      text-align: center;
+      font-size: 0.82rem;
+      font-weight: 720;
+    }
+
+    @keyframes lessonPointPulse {
+      0%, 100% { opacity: 0.25; r: 6; }
+      50% { opacity: 0.78; r: 10; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .chart-point-halo {
+        animation: none;
+        opacity: 0.48;
+      }
+    }
+
+    .lesson-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .lesson-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+      border-radius: 18px;
+      padding: 12px 13px;
+      background: rgba(255, 253, 247, 0.62);
+      border: 1px solid rgba(184, 148, 86, 0.12);
+    }
+
+    .lesson-item strong {
+      color: #202225;
+      font-size: 0.9rem;
+      font-weight: 850;
+    }
+
+    .lesson-item span {
+      display: block;
+      margin-top: 3px;
+      color: rgba(42, 36, 29, 0.52);
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .lesson-item > strong {
+      color: #9b6e39;
+      font-variant-numeric: tabular-nums;
+    }
+
     /* ═══════════════ Bottom Navigation ═══════════════ */
 
     .bottom-nav {
@@ -1571,10 +1733,10 @@
       left: 50%;
       bottom: 16px;
       transform: translateX(-50%);
-      width: min(442px, calc(100% - 28px));
+      width: min(520px, calc(100% - 28px));
       min-height: 66px;
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap: 4px;
       padding: 6px;
       background: rgba(6, 14, 36, 0.6);
@@ -1590,7 +1752,7 @@
       border-radius: var(--radius-sm);
       background: transparent;
       color: rgba(255, 255, 255, 0.5);
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       font-weight: 600;
       display: grid;
       place-items: center;
@@ -1731,8 +1893,8 @@
     }
 
     .field input:focus, .field select:focus, .field textarea:focus {
-      border-color: rgba(0, 229, 255, 0.3);
-      box-shadow: 0 0 20px rgba(0, 229, 255, 0.05);
+      border-color: rgba(184, 148, 86, 0.42);
+      box-shadow: 0 0 0 3px rgba(216, 189, 130, 0.14);
     }
 
     dialog .secondary-button {
@@ -2116,9 +2278,7 @@
     .month-card h3,
     .calendar-metric span,
     .detail-pill span,
-    .calendar-detail .detail-status,
-    .week-day,
-    .week-sub {
+    .calendar-popover .detail-status {
       color: rgba(42, 43, 42, 0.52);
     }
 
@@ -2283,7 +2443,6 @@
     .sheet,
     .month-card,
     .calendar-metric,
-    .calendar-detail,
     .detail-pill,
     .event-item,
     .setup-card,
@@ -2317,13 +2476,11 @@
     .calendar-metric strong,
     .detail-pill strong,
     .event-item strong,
-    .calendar-detail h3,
+    .calendar-popover h3,
     .section-title h2,
     .reward-caption h3,
     .reward-quantity,
-    .reward-name,
-    .week-date,
-    .week-amount {
+    .reward-name {
       color: #202225;
     }
 
@@ -2332,6 +2489,10 @@
     .detail-event strong,
     .event-item > strong:last-child {
       color: #9b6e39;
+    }
+
+    .calendar-metric.progress strong {
+      color: #202225;
     }
 
     .money-stage {
@@ -2375,75 +2536,112 @@
 
     .reward-caption::before {
       background: radial-gradient(ellipse at 50% 100%, rgba(247, 241, 232, 0.92), rgba(247, 241, 232, 0.45) 44%, transparent 76%);
+      filter: blur(12px);
     }
 
     .reward-caption p,
     .reward-unit {
-      color: rgba(32, 34, 37, 0.55);
+      color: rgba(32, 34, 37, 0.5);
     }
 
     .lux-icon {
       filter: drop-shadow(0 22px 28px rgba(72, 56, 42, 0.18));
     }
 
+    .calendar-section .sheet {
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(255, 246, 218, 0.72), transparent 48%),
+        linear-gradient(145deg, rgba(255, 253, 247, 0.9), rgba(248, 240, 226, 0.74));
+      border-color: rgba(184, 148, 86, 0.16);
+      box-shadow: 0 22px 56px rgba(122, 93, 55, 0.11), inset 0 1px 0 rgba(255,255,255,0.9);
+    }
+
+    .calendar-metric {
+      background: rgba(255, 253, 247, 0.58);
+      border-color: rgba(184, 148, 86, 0.12);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.78);
+    }
+
+    .weekday {
+      color: rgba(62, 53, 43, 0.42);
+      font-weight: 720;
+    }
+
     .day-cell,
-    .week-card,
     .mini-day {
       color: #202225;
-      background: rgba(255, 252, 246, 0.48);
-      border-color: rgba(69, 57, 43, 0.1);
+      background:
+        linear-gradient(145deg, rgba(255, 253, 248, 0.82), rgba(246, 238, 224, 0.52));
+      border-color: rgba(184, 148, 86, 0.13);
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.68);
     }
 
     .day-cell.earned,
-    .week-card.earned,
     .mini-day.earned {
-      color: #26332f;
+      color: #2a2118;
       background:
-        radial-gradient(circle at 50% 115%, rgba(111, 148, 138, 0.16), transparent 62%),
-        rgba(247, 250, 244, 0.66);
-      border-color: rgba(111, 148, 138, 0.22);
+        radial-gradient(circle at 50% 112%, rgba(240, 223, 182, 0.34), transparent 66%),
+        linear-gradient(145deg, rgba(255, 253, 247, 0.9), rgba(216, 189, 130, 0.18));
+      border-color: rgba(184, 148, 86, 0.24);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 8px 16px rgba(184, 148, 86, 0.07);
     }
 
     .day-cell.today,
-    .week-card.today,
     .mini-day.today {
       color: #202225;
       background:
-        radial-gradient(circle at 50% 105%, rgba(182, 139, 87, 0.18), transparent 64%),
-        rgba(255, 250, 239, 0.84);
-      border-color: rgba(182, 139, 87, 0.42);
-      box-shadow: 0 0 0 1px rgba(182, 139, 87, 0.08), 0 18px 42px rgba(132, 100, 65, 0.12);
+        radial-gradient(circle at 50% 105%, rgba(216, 189, 130, 0.22), transparent 64%),
+        rgba(255, 250, 239, 0.88);
+      border-color: rgba(184, 148, 86, 0.46);
+      box-shadow: 0 0 0 1px rgba(216, 189, 130, 0.1), 0 18px 42px rgba(184, 148, 86, 0.12);
     }
 
     .day-cell.future,
-    .week-card.future,
     .mini-day.future {
-      background: rgba(232, 224, 211, 0.36);
-      border-color: rgba(69, 57, 43, 0.08);
-      opacity: 0.72;
-      filter: saturate(0.8);
+      background: rgba(255, 251, 242, 0.42);
+      border-color: rgba(184, 148, 86, 0.09);
+      opacity: 0.68;
+      filter: saturate(0.72);
     }
 
     .day-cell.selected,
-    .week-card.selected,
     .mini-day.selected {
-      border-color: rgba(32, 34, 37, 0.36);
-      outline-color: rgba(182, 139, 87, 0.7);
-      box-shadow: 0 0 0 1px rgba(32, 34, 37, 0.08), 0 18px 42px rgba(132, 100, 65, 0.12);
+      border-color: rgba(184, 148, 86, 0.66);
+      outline-color: rgba(216, 189, 130, 0.72);
+      box-shadow: 0 0 0 1px rgba(184, 148, 86, 0.18), 0 18px 42px rgba(184, 148, 86, 0.14);
     }
 
     .day-cell .day-number,
-    .day-cell.today .day-number,
     .day-base,
-    .day-cell.future .day-number,
-    .day-cell.future .day-base {
+    .day-extra {
       color: rgba(32, 34, 37, 0.72);
     }
 
+    .day-cell.earned .day-number,
+    .day-cell.earned .day-base {
+      color: rgba(42, 33, 24, 0.82);
+    }
+
+    .day-cell.earned .day-extra {
+      color: rgba(125, 91, 46, 0.78);
+    }
+
+    .day-cell.today .day-number {
+      color: #9b6e39;
+    }
+
+    .day-cell.future .day-number,
+    .day-cell.future .day-base {
+      color: rgba(32, 34, 37, 0.38);
+    }
+
+    .mini-day.earned {
+      color: #2a2118;
+    }
+
     .boost-badge {
-      color: #332412;
-      background: linear-gradient(135deg, #f4e2bd, #bd8c4f);
+      color: rgba(51, 36, 18, 0.82);
+      background: linear-gradient(135deg, rgba(244, 226, 189, 0.86), rgba(189, 140, 79, 0.62));
       box-shadow: none;
     }
 
@@ -2510,6 +2708,14 @@
       border-color: rgba(32, 34, 37, 0.12);
     }
 
+    .modal-body input:focus,
+    .modal-body textarea:focus,
+    .modal-body select:focus,
+    .setup-card input:focus {
+      border-color: rgba(184, 148, 86, 0.42);
+      box-shadow: 0 0 0 3px rgba(216, 189, 130, 0.14);
+    }
+
     .toast {
       color: #fbf8f1;
       background: rgba(32, 34, 37, 0.9);
@@ -2573,6 +2779,7 @@
       <symbol id="icon-diamond" viewBox="0 0 24 24"><path d="M12 3.5 20.5 12 12 20.5 3.5 12 12 3.5Z"/><path d="M8.5 12 12 7.7l3.5 4.3-3.5 4.3L8.5 12Z"/></symbol>
       <symbol id="icon-calendar" viewBox="0 0 24 24"><path d="M5 6.5h14v13H5z"/><path d="M5 10h14"/><path d="M8 4.5v3"/><path d="M16 4.5v3"/><path d="M8.2 13.2h.1M12 13.2h.1M15.8 13.2h.1M8.2 16.4h.1M12 16.4h.1M15.8 16.4h.1"/></symbol>
       <symbol id="icon-chart" viewBox="0 0 24 24"><path d="M5 19V5"/><path d="M5 19h14"/><path d="M8 16v-4"/><path d="M12 16V8"/><path d="M16 16v-6"/></symbol>
+      <symbol id="icon-lessons" viewBox="0 0 24 24"><path d="M5.5 5.8h8.2a3.8 3.8 0 0 1 3.8 3.8v8.6H9.3a3.8 3.8 0 0 1-3.8-3.8V5.8Z"/><path d="M8.6 9.2h5.4M8.6 12.1h6.8M8.6 15h4.8"/><path d="M17.5 9.6h1.6v8.6h-1.6"/></symbol>
             <!-- Coffee --> <symbol id="icon-coffee" viewBox="0 0 48 48"><rect x="8" y="20" width="28" height="18" rx="4" fill="#7c3aed"/><path d="M36 26h4a4 4 0 010 8h-4" stroke="#a78bfa" stroke-width="2.5" fill="none"/><path d="M12 24h18v8H12z" fill="#c4b5fd" opacity="0.3"/><path d="M16 34c0 2 1 4 4 4s4-2 4-4" stroke="#a78bfa" stroke-width="1.5" fill="none"/><path d="M14 16c2-1.5 2-3 .5-5M20 16c2-1.5 2-3 .5-5" stroke="#a78bfa" stroke-width="2" fill="none" stroke-linecap="round"/></symbol>
       <!-- Burger --> <symbol id="icon-burger" viewBox="0 0 48 48"><path d="M10 22c1-5 6-8 14-8s13 3 14 8H10z" fill="#fbbf24"/><path d="M10 26h28" stroke="#f59e0b" stroke-width="3"/><path d="M12 30h24" stroke="#10b981" stroke-width="4"/><path d="M14 34h20" stroke="#fbbf24" stroke-width="3"/><circle cx="17" cy="24" r="1.5" fill="#f59e0b"/><circle cx="24" cy="24" r="1.5" fill="#f59e0b"/><circle cx="31" cy="24" r="1.5" fill="#f59e0b"/></symbol>
       <!-- Drink --> <symbol id="icon-drink" viewBox="0 0 48 48"><rect x="14" y="8" width="20" height="28" rx="3" fill="#7c3aed"/><path d="M22 8l-3-5h10l-3 5" stroke="#a78bfa" stroke-width="2.5" fill="none"/><circle cx="24" cy="22" r="5" fill="#fbbf24" opacity="0.3"/><path d="M10 36h28" stroke="#7c3aed" stroke-width="2"/></symbol>
@@ -2693,10 +2900,34 @@
       </div>
       <div class="sheet">
         <div class="calendar-summary" id="calendarSummary"></div>
-        <div class="calendar-mobile" id="calendarMobile"></div>
         <div class="calendar-grid" id="calendarGrid"></div>
         <div class="calendar-mini" id="calendarMini"></div>
-        <div class="calendar-detail" id="calendarDetail"></div>
+        <div class="calendar-popover" id="calendarPopover" role="dialog" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section class="lessons-section" id="lessons">
+      <div class="section-title">
+        <h2 id="lessonsSectionTitle">Lessons Analytics</h2>
+        <span id="lessonsSectionHint">Hourly tutoring rate trend</span>
+      </div>
+      <div class="sheet lessons-sheet">
+        <div class="lesson-metrics" id="lessonMetrics"></div>
+        <div class="lesson-chart-panel">
+          <div class="lesson-chart-head">
+            <div>
+              <span class="chart-eyebrow" id="lessonChartEyebrow">Bloomberg-style view</span>
+              <h3 id="lessonChartTitle">Hourly Rate Growth</h3>
+            </div>
+            <div class="lesson-toggle" id="lessonModeToggle" role="tablist" aria-label="Lesson chart mode">
+              <button type="button" class="active" data-lesson-mode="lesson">Per Lesson</button>
+              <button type="button" data-lesson-mode="month">Monthly Avg</button>
+            </div>
+          </div>
+          <div class="lesson-chart" id="lessonChart"></div>
+          <div class="lesson-income-chart" id="lessonIncomeChart"></div>
+        </div>
+        <div class="lesson-list" id="lessonList"></div>
       </div>
     </section>
 
@@ -2725,6 +2956,7 @@
     <a class="active" data-target="home" href="#home"><span class="nav-icon"><svg class="ui-icon"><use href="#icon-home"></use></svg></span><span id="navHome">Home</span></a>
     <a data-target="rewards" href="#rewards"><span class="nav-icon"><svg class="ui-icon"><use href="#icon-diamond"></use></svg></span><span id="navRewards">Rewards</span></a>
     <a data-target="calendar" href="#calendar"><span class="nav-icon"><svg class="ui-icon"><use href="#icon-calendar"></use></svg></span><span id="navCalendar">Calendar</span></a>
+    <a data-target="lessons" href="#lessons"><span class="nav-icon"><svg class="ui-icon"><use href="#icon-lessons"></use></svg></span><span id="navLessons">Lessons</span></a>
     <a data-target="year" href="#year"><span class="nav-icon"><svg class="ui-icon"><use href="#icon-chart"></use></svg></span><span id="navYear">Year</span></a>
   </nav>
 
@@ -2737,12 +2969,24 @@
           <option value="side">Side Income</option>
           <option value="windfall">Windfall</option>
           <option value="yearEnd">Year-end Bonus</option>
+          <option value="tutoring">Tutoring</option>
           <option value="other">Other Income</option>
         </select>
       </div>
       <div class="field">
         <label for="extraAmount" id="extraAmountLabel">Amount HKD</label>
         <input id="extraAmount" type="number" min="1" step="1" placeholder="e.g. 3000" required>
+      </div>
+      <div class="lesson-fields" id="lessonFields" hidden>
+        <div class="field">
+          <label for="lessonDate" id="lessonDateLabel">Lesson date</label>
+          <input id="lessonDate" type="date">
+        </div>
+        <div class="field">
+          <label for="lessonHours" id="lessonHoursLabel">Lesson hours</label>
+          <input id="lessonHours" type="number" min="0.25" step="0.25" placeholder="e.g. 2">
+        </div>
+        <p class="lesson-rate-preview" id="lessonRatePreview">Hourly rate --</p>
       </div>
       <div class="field">
         <label for="extraNote" id="extraNoteLabel">Note</label>
@@ -2787,6 +3031,12 @@
         return [date.getFullYear(), String(date.getMonth() + 1).padStart(2, "0")].join("-");
       }
 
+      function parseLocalDate(value) {
+        const parts = String(value || "").split("-").map(Number);
+        if (parts.length !== 3 || parts.some(function (part) { return !Number.isFinite(part); })) return null;
+        return new Date(parts[0], parts[1] - 1, parts[2], 12, 0, 0, 0);
+      }
+
       function startOfWorkday(date) {
         return new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0);
       }
@@ -2804,6 +3054,9 @@
       }
 
       function eventDate(event) {
+        if (event && event.type === "tutoring" && event.lessonDate) {
+          return parseLocalDate(event.lessonDate) || new Date(event.date);
+        }
         return new Date(event.date);
       }
 
@@ -2874,6 +3127,7 @@
         startOfWorkday: startOfWorkday,
         endOfWorkday: endOfWorkday,
         baseEarnedAt: baseEarnedAt,
+        eventDate: eventDate,
         sumExtraIncome: sumExtraIncome,
         totalsFor: totalsFor,
         convertAmount: convertAmount,
@@ -2942,6 +3196,7 @@
     let currentRewardItems = [];
     let selectedCalendarDateKey = "";
     let expandedCalendarEventKey = "";
+    let currentLessonMode = "lesson";
 
     function loadState() {
       if (memoryStateCache) return { ...defaultState, ...memoryStateCache };
@@ -3009,7 +3264,29 @@
         navHome: "Home",
         navRewards: "Rewards",
         navCalendar: "Calendar",
+        navLessons: "Lessons",
         navYear: "Year",
+        lessonsSectionTitle: "Lessons Analytics",
+        lessonsSectionHint: "Hourly tutoring rate trend",
+        lessonChartEyebrow: "Bloomberg-style view",
+        lessonChartTitle: "Hourly Rate Growth",
+        lessonModeLesson: "Per Lesson",
+        lessonModeMonth: "Monthly Avg",
+        lessonDateLabel: "Lesson date",
+        lessonHoursLabel: "Lesson hours",
+        lessonHoursPlaceholder: "e.g. 2",
+        lessonRatePreview: "Hourly rate {rate}/h",
+        lessonRateEmpty: "Hourly rate --",
+        lessonAvgRate: "Avg hourly",
+        lessonBestRate: "Best hourly",
+        lessonTotalIncome: "Lesson income",
+        lessonTotalHours: "Total hours",
+        lessonLatestRate: "Latest rate",
+        lessonEmptyTitle: "No tutoring lessons yet",
+        lessonEmptyCopy: "Add a tutoring income to start building your hourly-rate curve.",
+        lessonIncomeChartTitle: "Lesson Income",
+        lessonMonthlyIncomeChartTitle: "Monthly Lesson Income",
+        lessonNoData: "Add tutoring income to unlock the trend chart.",
         extraDialogTitle: "Add Extra Income",
         extraTypeLabel: "Income type",
         extraAmountLabel: "Amount HKD",
@@ -3039,7 +3316,7 @@
         weekdays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
         monthSuffix: "M",
         boosted: "boosted",
-        eventTypes: { side: "Side Income", windfall: "Windfall", yearEnd: "Year-end Bonus", other: "Other Income" },
+        eventTypes: { side: "Side Income", windfall: "Windfall", yearEnd: "Year-end Bonus", tutoring: "Tutoring", other: "Other Income" },
         noExtraTitle: "No extra income yet",
         noExtraCopy: "Your next side income, windfall, or bonus will light up here.",
         extraFallback: "Extra Income",
@@ -3048,7 +3325,7 @@
         ratesFailed: "Rate update failed. Using the last successful rates.",
         setupSaved: "Today\'s earnings are now tracking",
         incomeSaved: "Monthly income updated",
-        extraSaved: "added to today",
+        extraSaved: "added",
         earningRate: "Earning",
         perSecond: "/sec",
         ofDaily: "of daily max",
@@ -3072,7 +3349,7 @@
         stageTitle: "HK$10 一張，10 張成捆",
         rewardsTitle: "現在能買什麼",
         rewardHintDefault: "把收入物質化",
-        calendarSectionTitle: "月曆表",
+        calendarSectionTitle: "月曆",
         calendarDefault: "本月收入進度",
         calendarEarnedPct: "已賺",
         calendarRemaining: "剩餘",
@@ -3097,7 +3374,29 @@
         navHome: "首頁",
         navRewards: "可買",
         navCalendar: "月曆",
+        navLessons: "課時",
         navYear: "年表",
+        lessonsSectionTitle: "課時費分析",
+        lessonsSectionHint: "補課時薪增長曲線",
+        lessonChartEyebrow: "Bloomberg 風格視圖",
+        lessonChartTitle: "課時費增長",
+        lessonModeLesson: "每次課程",
+        lessonModeMonth: "每月平均",
+        lessonDateLabel: "補課日期",
+        lessonHoursLabel: "課程時長",
+        lessonHoursPlaceholder: "例如 2",
+        lessonRatePreview: "課時費 {rate}/小時",
+        lessonRateEmpty: "課時費 --",
+        lessonAvgRate: "平均課時費",
+        lessonBestRate: "最高課時費",
+        lessonTotalIncome: "補課收入",
+        lessonTotalHours: "總課時",
+        lessonLatestRate: "最近課時費",
+        lessonEmptyTitle: "還沒有補課記錄",
+        lessonEmptyCopy: "新增一筆補課收入後，這裡會開始生成課時費曲線。",
+        lessonIncomeChartTitle: "補課收入",
+        lessonMonthlyIncomeChartTitle: "每月補課收入",
+        lessonNoData: "添加補課收入後，會生成趨勢圖。",
         extraDialogTitle: "添加額外收入",
         extraTypeLabel: "收入類型",
         extraAmountLabel: "金額 HKD",
@@ -3127,7 +3426,7 @@
         weekdays: ["日", "一", "二", "三", "四", "五", "六"],
         monthSuffix: "月",
         boosted: "有加成",
-        eventTypes: { side: "副業收入", windfall: "意外收入", yearEnd: "年終獎", other: "其他收入" },
+        eventTypes: { side: "副業收入", windfall: "意外收入", yearEnd: "年終獎", tutoring: "補課收入", other: "其他收入" },
         noExtraTitle: "還沒有額外收入",
         noExtraCopy: "下一筆副業、意外收入或年終獎會在這裡閃亮登場。",
         extraFallback: "額外收入",
@@ -3136,7 +3435,7 @@
         ratesFailed: "匯率更新失敗，已使用上次成功匯率",
         setupSaved: "今日到賬開始計算",
         incomeSaved: "月收入已更新",
-        extraSaved: "已加入今日",
+        extraSaved: "已加入",
         earningRate: "正在賺取",
         perSecond: "/秒",
         ofDaily: "／每日上限",
@@ -3181,7 +3480,17 @@
       setText("navHome", t("navHome"));
       setText("navRewards", t("navRewards"));
       setText("navCalendar", t("navCalendar"));
+      setText("navLessons", t("navLessons"));
       setText("navYear", t("navYear"));
+      setText("lessonsSectionTitle", t("lessonsSectionTitle"));
+      setText("lessonsSectionHint", t("lessonsSectionHint"));
+      setText("lessonChartEyebrow", t("lessonChartEyebrow"));
+      setText("lessonChartTitle", t("lessonChartTitle"));
+      const lessonButtons = document.querySelectorAll("#lessonModeToggle [data-lesson-mode]");
+      if (lessonButtons[0]) lessonButtons[0].textContent = t("lessonModeLesson");
+      if (lessonButtons[1]) lessonButtons[1].textContent = t("lessonModeMonth");
+      setText("lessonDateLabel", t("lessonDateLabel"));
+      setText("lessonHoursLabel", t("lessonHoursLabel"));
       setText("extraDialogTitle", t("extraDialogTitle"));
       setText("extraTypeLabel", t("extraTypeLabel"));
       setText("extraAmountLabel", t("extraAmountLabel"));
@@ -3194,11 +3503,14 @@
       setText("cancelIncomeBtn", t("cancel"));
       const ea = document.getElementById("extraAmount");
       if (ea) ea.placeholder = t("extraAmountPlaceholder");
+      const lh = document.getElementById("lessonHours");
+      if (lh) lh.placeholder = t("lessonHoursPlaceholder");
       const en = document.getElementById("extraNote");
       if (en) en.placeholder = t("extraNotePlaceholder");
       document.querySelectorAll("#extraType option").forEach((option) => {
         option.textContent = t("eventTypes")[option.value] || option.textContent;
       });
+      updateLessonFields();
       updateDashboard();
     }
 
@@ -3211,6 +3523,45 @@
         minimumFractionDigits: digits,
         maximumFractionDigits: digits,
       });
+    }
+
+    function formatShortMoney(amountHkd, options = {}) {
+      const currency = options.currency || state.currency;
+      const value = Core.convertAmount(amountHkd, currency, state.rates);
+      const symbol = currency === "HKD" ? "HK$" : currency === "CNY" ? "¥" : "$";
+      const abs = Math.abs(value);
+      const compactValue = abs >= 1000000
+        ? (value / 1000000).toFixed(1).replace(/\.0$/, "") + "M"
+        : abs >= 1000
+          ? (value / 1000).toFixed(1).replace(/\.0$/, "") + "K"
+          : Math.round(value).toLocaleString("en-US");
+      return symbol + compactValue;
+    }
+
+    function updateLessonFields() {
+      const type = document.getElementById("extraType")?.value || "side";
+      const fields = document.getElementById("lessonFields");
+      const lessonDate = document.getElementById("lessonDate");
+      const lessonHours = document.getElementById("lessonHours");
+      const isTutoring = type === "tutoring";
+      if (!fields || !lessonDate || !lessonHours) return;
+      fields.hidden = !isTutoring;
+      lessonDate.required = isTutoring;
+      lessonHours.required = isTutoring;
+      if (isTutoring && !lessonDate.value) lessonDate.value = dateKey(new Date());
+      updateLessonRatePreview();
+    }
+
+    function updateLessonRatePreview() {
+      const preview = document.getElementById("lessonRatePreview");
+      if (!preview) return;
+      const amount = Number(document.getElementById("extraAmount")?.value || 0);
+      const hours = Number(document.getElementById("lessonHours")?.value || 0);
+      if (document.getElementById("extraType")?.value !== "tutoring" || !amount || !hours) {
+        preview.textContent = t("lessonRateEmpty");
+        return;
+      }
+      preview.textContent = t("lessonRatePreview").replace("{rate}", formatMoney(amount / hours));
     }
 
     
@@ -3402,6 +3753,7 @@
         updateMoneyStack(totals.month);
         renderRewards(totals.today);
         renderCalendar(now, activeMonthlyIncome);
+        renderLessons();
         renderYear(now, activeMonthlyIncome);
         renderEvents();
       } catch (e) {
@@ -3811,9 +4163,13 @@
       return new Date(parts[0], parts[1] - 1, parts[2], 12, 0, 0, 0);
     }
 
+    function eventEffectiveDate(event) {
+      return Core.eventDate(event);
+    }
+
     function calendarEventsForDay(date) {
       const key = dateKey(date);
-      return state.extras.filter((event) => dateKey(new Date(event.date)) === key);
+      return state.extras.filter((event) => dateKey(eventEffectiveDate(event)) === key);
     }
 
     function workdayProgress(now) {
@@ -3868,10 +4224,9 @@
       ].join("");
     }
 
-    function renderCalendarDetail(now, monthlyIncomeForView, daily) {
-      const detail = document.getElementById("calendarDetail");
-      if (!detail || !selectedCalendarDateKey) return;
-      const selectedDate = dateFromKey(selectedCalendarDateKey);
+    function calendarDetailMarkup(now, monthlyIncomeForView, daily, key) {
+      if (!key) return "";
+      const selectedDate = dateFromKey(key);
       const todayKey = dateKey(now);
       const selectedKey = dateKey(selectedDate);
       const isToday = selectedKey === todayKey;
@@ -3898,7 +4253,7 @@
       const toggleHtml = events.length > 3
         ? '<button class="detail-toggle" type="button" data-calendar-toggle="events">' + (expanded ? t("calendarShowLess") : t("calendarShowAll").replace("{count}", events.length)) + '</button>'
         : "";
-      detail.innerHTML = '<h3>' + selectedDate.toLocaleDateString(locale, { month: "short", day: "numeric", weekday: "short" }) + '</h3>'
+      return '<h3>' + selectedDate.toLocaleDateString(locale, { month: "short", day: "numeric", weekday: "short" }) + '</h3>'
         + '<p class="detail-status">' + status + '</p>'
         + '<div class="detail-grid">'
         + '<div class="detail-pill"><span>' + t("calendarFixedIncome") + '</span><strong>' + formatMoney(base, { compact: true }) + '</strong></div>'
@@ -3908,28 +4263,52 @@
         + '</div><div class="detail-events">' + eventHtml + toggleHtml + '</div>';
     }
 
+    function renderCalendarPopover(now, monthlyIncomeForView, key) {
+      const popover = document.getElementById("calendarPopover");
+      if (!popover || !key) return;
+      popover.innerHTML = calendarDetailMarkup(now, monthlyIncomeForView, Number(monthlyIncomeForView || 0) / Core.daysInMonth(now), key);
+    }
+
+    function positionCalendarPopover(anchorEl) {
+      const popover = document.getElementById("calendarPopover");
+      if (!popover || !anchorEl) return;
+      const anchor = anchorEl.getBoundingClientRect();
+      const margin = 12;
+      const width = Math.min(328, window.innerWidth - 32);
+      const height = popover.offsetHeight || 260;
+      let left = anchor.left + anchor.width / 2 - width / 2;
+      left = Math.max(margin, Math.min(left, window.innerWidth - width - margin));
+      let top = anchor.bottom + 10;
+      if (top + height > window.innerHeight - margin) top = Math.max(margin, anchor.top - height - 10);
+      popover.style.width = width + "px";
+      popover.style.left = left + "px";
+      popover.style.top = top + "px";
+      popover.style.setProperty("--arrow-left", (anchor.left + anchor.width / 2 - left) + "px");
+    }
+
+    function showCalendarPopover(key, anchorEl) {
+      if (!key || !anchorEl) return;
+      const now = new Date();
+      const activeMonthlyIncome = state.monthlyIncome || 45000;
+      selectedCalendarDateKey = key;
+      document.querySelectorAll("[data-date]").forEach((cell) => {
+        cell.classList.toggle("selected", cell.dataset.date === key);
+      });
+      renderCalendarPopover(now, activeMonthlyIncome, key);
+      positionCalendarPopover(anchorEl);
+      document.getElementById("calendarPopover").classList.add("is-open");
+    }
+
+    function hideCalendarPopover() {
+      const popover = document.getElementById("calendarPopover");
+      if (popover) popover.classList.remove("is-open");
+    }
+
     function renderMobileCalendar(now, monthlyIncomeForView, firstDay, dim) {
-      const mobile = document.getElementById("calendarMobile");
       const mini = document.getElementById("calendarMini");
-      if (!mobile || !mini) return;
+      if (!mini) return;
       const year = now.getFullYear();
       const month = now.getMonth();
-      const weekStart = Math.max(1, now.getDate() - now.getDay());
-      const weekEnd = Math.min(dim, weekStart + 6);
-      const locale = currentLanguage() === "zh" ? "zh-HK" : "en-US";
-      const todayProgress = Math.round(workdayProgress(now) * 100);
-      mobile.innerHTML = Array.from({ length: weekEnd - weekStart + 1 }, (_, index) => {
-        const date = new Date(year, month, weekStart + index, now.getHours(), now.getMinutes(), now.getSeconds());
-        const data = calendarDayData(now, monthlyIncomeForView, date);
-        const classes = ["week-card", calendarStateClass(data), data.extra > 0 ? "has-extra" : "", data.key === selectedCalendarDateKey ? "selected" : ""].filter(Boolean).join(" ");
-        const boost = data.extra > 0 ? '<span class="boost-badge">+' + formatMoney(data.extra, { compact: true }) + '</span>' : "";
-        const progress = data.isToday ? '<span class="today-progress"><span style="width:' + todayProgress + '%"></span></span>' : "";
-        return '<button class="' + classes + '" type="button" data-date="' + data.key + '">'
-          + '<span class="week-card-top"><span><span class="week-day">' + date.toLocaleDateString(locale, { weekday: "short" }) + '</span><span class="week-date">' + data.day + '</span></span>' + boost + '</span>'
-          + '<span class="week-amount">' + formatMoney(data.base + data.extra, { compact: true }) + '</span>'
-          + '<span class="week-sub">' + (data.isToday ? t("calendarDetailToday") : data.isPast ? t("calendarDetailPast") : t("calendarDetailFuture")) + '</span>'
-          + progress + '</button>';
-      }).join("");
       mini.innerHTML = Array.from({ length: firstDay }, () => '<span class="mini-day empty"></span>').join("")
         + Array.from({ length: dim }, (_, index) => {
           const date = new Date(year, month, index + 1, now.getHours(), now.getMinutes(), now.getSeconds());
@@ -3959,16 +4338,16 @@
           const date = new Date(year, month, index + 1, now.getHours(), now.getMinutes(), now.getSeconds());
           const data = calendarDayData(now, monthlyIncomeForView, date);
           const classes = ["day-cell", calendarStateClass(data), data.extra > 0 ? "has-extra" : "", data.key === selectedCalendarDateKey ? "selected" : ""].filter(Boolean).join(" ");
-          const boost = data.extra > 0 ? '<span class="boost-badge">+' + formatMoney(data.extra, { compact: true }) + '</span>' : "";
+          const boost = data.extra > 0 ? '<span class="boost-badge">+' + formatShortMoney(data.extra) + '</span>' : "";
           const progress = data.isToday ? '<span class="today-progress"><span style="width:' + todayProgress + '%"></span></span>' : "";
           return '<button class="' + classes + '" type="button" data-date="' + data.key + '">'
             + '<span class="day-top"><span class="day-number">' + data.day + '</span>' + boost + '</span>'
-            + '<span class="day-base">' + t("calendarBase") + ' ' + formatMoney(data.base, { compact: true }) + '</span>'
-            + (data.extra > 0 ? '<span class="day-extra">' + t("calendarBonus") + ' +' + formatMoney(data.extra, { compact: true }) + '</span>' : "")
+            + '<span class="day-base">' + formatShortMoney(data.base + data.extra) + '</span>'
+            + (data.extra > 0 ? '<span class="day-extra">' + t("calendarBonus") + ' +' + formatShortMoney(data.extra) + '</span>' : "")
             + progress + '</button>';
         }).join("");
       grid.innerHTML = html;
-      renderCalendarDetail(now, monthlyIncomeForView, daily);
+      renderCalendarPopover(now, monthlyIncomeForView, selectedCalendarDateKey);
       document.getElementById("calendarTitle").textContent = currentLanguage() === "zh" ? (year + " / " + (month + 1)) : (now.toLocaleString("en-US", { month: "long" }) + " " + year);
     }
 
@@ -3989,12 +4368,141 @@
     function renderEvents() {
       const list = document.getElementById("eventList");
       const labels = t("eventTypes");
-      const events = state.extras.slice().sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 8);
+      const events = state.extras.slice().sort((a, b) => eventEffectiveDate(b) - eventEffectiveDate(a)).slice(0, 8);
       if (!events.length) {
         list.innerHTML = '<div class="event-item"><div><strong>' + escapeHtml(t("noExtraTitle")) + '</strong><span>' + escapeHtml(t("noExtraCopy")) + '</span></div></div>';
         return;
       }
-      list.innerHTML = events.map((event) => '<div class="event-item"><div><strong>' + (labels[event.type] || t("extraFallback")) + '</strong><span>' + new Date(event.date).toLocaleDateString(currentLanguage() === "zh" ? "zh-HK" : "en-US") + ' · ' + escapeHtml(event.note || t("noNote")) + '</span></div><strong>' + formatMoney(event.amount, { compact: true }) + '</strong></div>').join("");
+      list.innerHTML = events.map((event) => '<div class="event-item"><div><strong>' + (labels[event.type] || t("extraFallback")) + '</strong><span>' + eventEffectiveDate(event).toLocaleDateString(currentLanguage() === "zh" ? "zh-HK" : "en-US") + ' · ' + escapeHtml(event.note || t("noNote")) + '</span></div><strong>' + formatMoney(event.amount, { compact: true }) + '</strong></div>').join("");
+    }
+
+    function tutoringEvents() {
+      return state.extras
+        .filter((event) => event.type === "tutoring" && Number(event.lessonHours || 0) > 0 && Number(event.amount || 0) > 0)
+        .map((event) => ({
+          ...event,
+          effectiveDate: eventEffectiveDate(event),
+          hours: Number(event.lessonHours || 0),
+          hourlyRate: Number(event.hourlyRate || 0) || Number(event.amount || 0) / Number(event.lessonHours || 1),
+        }))
+        .sort((a, b) => a.effectiveDate - b.effectiveDate);
+    }
+
+    function lessonSeries(events) {
+      if (currentLessonMode === "lesson") {
+        return events.map((event, index) => ({
+          label: event.effectiveDate.toLocaleDateString(currentLanguage() === "zh" ? "zh-HK" : "en-US", { month: "short", day: "numeric" }),
+          rate: event.hourlyRate,
+          income: Number(event.amount || 0),
+          key: event.id || String(index),
+        }));
+      }
+      const months = new Map();
+      events.forEach((event) => {
+        const key = event.effectiveDate.getFullYear() + "-" + String(event.effectiveDate.getMonth() + 1).padStart(2, "0");
+        const item = months.get(key) || { label: key, rateTotal: 0, hours: 0, income: 0, count: 0 };
+        item.rateTotal += event.hourlyRate;
+        item.hours += event.hours;
+        item.income += Number(event.amount || 0);
+        item.count += 1;
+        months.set(key, item);
+      });
+      return Array.from(months.values()).map((item) => ({
+        label: item.label,
+        rate: item.count ? item.rateTotal / item.count : 0,
+        income: item.income,
+        key: item.label,
+      }));
+    }
+
+    function smoothPath(points) {
+      if (!points.length) return "";
+      if (points.length === 1) return `M ${points[0].x} ${points[0].y}`;
+      let path = `M ${points[0].x} ${points[0].y}`;
+      for (let i = 1; i < points.length; i++) {
+        const prev = points[i - 1];
+        const current = points[i];
+        const midX = (prev.x + current.x) / 2;
+        path += ` C ${midX} ${prev.y}, ${midX} ${current.y}, ${current.x} ${current.y}`;
+      }
+      return path;
+    }
+
+    function renderLineChart(series) {
+      if (!series.length) return '<div class="chart-empty">' + escapeHtml(t("lessonNoData")) + '</div>';
+      const width = 640, height = 240, pad = 34;
+      const values = series.map((item) => item.rate);
+      const min = Math.min(...values);
+      const max = Math.max(...values);
+      const range = Math.max(1, max - min);
+      const points = series.map((item, index) => {
+        const x = series.length === 1 ? width / 2 : pad + (index * (width - pad * 2)) / (series.length - 1);
+        const y = height - pad - ((item.rate - min) / range) * (height - pad * 2);
+        return { ...item, x: Math.round(x * 10) / 10, y: Math.round(y * 10) / 10 };
+      });
+      const best = Math.max(...values);
+      const lastKey = points[points.length - 1].key;
+      const area = smoothPath(points) + ` L ${points[points.length - 1].x} ${height - pad} L ${points[0].x} ${height - pad} Z`;
+      return '<svg viewBox="0 0 ' + width + ' ' + height + '" role="img" aria-label="' + escapeHtml(t("lessonChartTitle")) + '">'
+        + '<path class="chart-area" d="' + area + '"></path>'
+        + '<path class="chart-line" d="' + smoothPath(points) + '"></path>'
+        + points.map((point, index) => '<g class="chart-point ' + (point.rate === best || point.key === lastKey ? 'is-highlight' : '') + '">'
+          + '<circle class="chart-point-halo" cx="' + point.x + '" cy="' + point.y + '" r="7" style="animation-delay:' + (index * 0.16).toFixed(2) + 's"></circle>'
+          + '<circle class="chart-point-core" cx="' + point.x + '" cy="' + point.y + '" r="' + (point.key === lastKey ? 5.2 : 4.3) + '"></circle>'
+          + '</g>').join("")
+        + '<text x="' + pad + '" y="22" fill="rgba(32,34,37,.48)" font-size="18" font-weight="700">' + escapeHtml(formatMoney(max)) + '/h</text>'
+        + '<text x="' + pad + '" y="' + (height - 10) + '" fill="rgba(32,34,37,.38)" font-size="16" font-weight="700">' + escapeHtml(points[0].label) + '</text>'
+        + '<text x="' + (width - pad) + '" y="' + (height - 10) + '" text-anchor="end" fill="rgba(32,34,37,.38)" font-size="16" font-weight="700">' + escapeHtml(points[points.length - 1].label) + '</text>'
+        + '</svg>';
+    }
+
+    function renderIncomeChart(series) {
+      if (!series.length) return "";
+      const width = 640, height = 170, pad = 28;
+      const max = Math.max(1, ...series.map((item) => item.income));
+      const barW = Math.max(10, (width - pad * 2) / series.length * 0.58);
+      return '<svg viewBox="0 0 ' + width + ' ' + height + '" role="img" aria-label="' + escapeHtml(t(currentLessonMode === "lesson" ? "lessonIncomeChartTitle" : "lessonMonthlyIncomeChartTitle")) + '">'
+        + '<defs><linearGradient id="lessonBarGradient" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#202225"/><stop offset="100%" stop-color="#d8bd82"/></linearGradient></defs>'
+        + series.map((item, index) => {
+          const x = series.length === 1 ? width / 2 - barW / 2 : pad + (index * (width - pad * 2)) / (series.length - 1) - barW / 2;
+          const h = Math.max(8, (item.income / max) * (height - pad * 2));
+          const y = height - pad - h;
+          return '<rect class="chart-bar" x="' + x.toFixed(1) + '" y="' + y.toFixed(1) + '" width="' + barW.toFixed(1) + '" height="' + h.toFixed(1) + '" rx="8"></rect>';
+        }).join("")
+        + '<text x="' + pad + '" y="22" fill="rgba(32,34,37,.48)" font-size="16" font-weight="700">' + escapeHtml(t(currentLessonMode === "lesson" ? "lessonIncomeChartTitle" : "lessonMonthlyIncomeChartTitle")) + '</text>'
+        + '</svg>';
+    }
+
+    function renderLessons() {
+      const metrics = document.getElementById("lessonMetrics");
+      const chart = document.getElementById("lessonChart");
+      const incomeChart = document.getElementById("lessonIncomeChart");
+      const list = document.getElementById("lessonList");
+      if (!metrics || !chart || !incomeChart || !list) return;
+      const events = tutoringEvents();
+      const totalIncome = events.reduce((sum, event) => sum + Number(event.amount || 0), 0);
+      const totalHours = events.reduce((sum, event) => sum + event.hours, 0);
+      const avgRate = totalHours ? totalIncome / totalHours : 0;
+      const bestRate = events.length ? Math.max(...events.map((event) => event.hourlyRate)) : 0;
+      const latestRate = events.length ? events[events.length - 1].hourlyRate : 0;
+      metrics.innerHTML = [
+        ["lessonAvgRate", avgRate ? formatMoney(avgRate) + "/h" : "--"],
+        ["lessonBestRate", bestRate ? formatMoney(bestRate) + "/h" : "--"],
+        ["lessonTotalIncome", formatMoney(totalIncome, { compact: true })],
+        ["lessonTotalHours", totalHours ? totalHours.toFixed(totalHours % 1 ? 1 : 0) + "h" : "--"],
+        ["lessonLatestRate", latestRate ? formatMoney(latestRate) + "/h" : "--"],
+      ].map(([label, value]) => '<article class="lesson-metric"><span>' + t(label) + '</span><strong>' + value + '</strong></article>').join("");
+      const series = lessonSeries(events);
+      chart.innerHTML = renderLineChart(series);
+      incomeChart.innerHTML = renderIncomeChart(series);
+      if (!events.length) {
+        list.innerHTML = '<div class="lesson-item"><div><strong>' + escapeHtml(t("lessonEmptyTitle")) + '</strong><span>' + escapeHtml(t("lessonEmptyCopy")) + '</span></div></div>';
+        return;
+      }
+      list.innerHTML = events.slice().reverse().slice(0, 8).map((event) => {
+        const note = event.note ? " · " + escapeHtml(event.note) : "";
+        return '<article class="lesson-item"><div><strong>' + event.effectiveDate.toLocaleDateString(currentLanguage() === "zh" ? "zh-HK" : "en-US") + '</strong><span>' + event.hours + 'h · ' + formatMoney(event.amount, { compact: true }) + note + '</span></div><strong>' + formatMoney(event.hourlyRate) + '/h</strong></article>';
+      }).join("");
     }
 
     function escapeHtml(value) {
@@ -4056,7 +4564,11 @@
       showToast(t("setupSaved"));
     });
 
-    document.getElementById("addIncomeBtn").addEventListener("click", () => openDialog(document.getElementById("extraDialog")));
+    document.getElementById("addIncomeBtn").addEventListener("click", () => {
+      if (!document.getElementById("lessonDate").value) document.getElementById("lessonDate").value = dateKey(new Date());
+      updateLessonFields();
+      openDialog(document.getElementById("extraDialog"));
+    });
     document.getElementById("headerSettingsBtn").addEventListener("click", openIncomeSettings);
     document.getElementById("refreshRatesBtn").addEventListener("click", () => updateRates(false));
     document.getElementById("languageSelect").addEventListener("change", (event) => {
@@ -4097,10 +4609,21 @@
       const type = document.getElementById("extraType").value;
       const note = document.getElementById("extraNote").value.trim();
       if (!amount || amount <= 0) return;
-      state.extras.push({ id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()), amount, type, note, date: new Date().toISOString() });
+      const incomeEvent = { id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()), amount, type, note, date: new Date().toISOString() };
+      if (type === "tutoring") {
+        const lessonDate = document.getElementById("lessonDate").value;
+        const lessonHours = Number(document.getElementById("lessonHours").value || 0);
+        if (!lessonDate || !lessonHours || lessonHours <= 0) return;
+        incomeEvent.lessonDate = lessonDate;
+        incomeEvent.lessonHours = lessonHours;
+        incomeEvent.hourlyRate = Math.round((amount / lessonHours) * 100) / 100;
+        incomeEvent.date = dateFromKey(lessonDate).toISOString();
+      }
+      state.extras.push(incomeEvent);
       saveState();
       closeDialog(document.getElementById("extraDialog"));
       document.getElementById("extraForm").reset();
+      updateLessonFields();
       celebrate(type, amount);
       updateDashboard();
       showToast(formatMoney(amount, { compact: true }) + " " + t("extraSaved"));
@@ -4108,21 +4631,37 @@
 
     document.getElementById("extraForm").addEventListener("submit", saveExtraIncome);
     document.getElementById("saveExtraBtn").addEventListener("click", saveExtraIncome);
+    document.getElementById("extraType").addEventListener("change", updateLessonFields);
+    document.getElementById("extraAmount").addEventListener("input", updateLessonRatePreview);
+    document.getElementById("lessonHours").addEventListener("input", updateLessonRatePreview);
+    document.getElementById("lessonModeToggle").addEventListener("click", (event) => {
+      const button = event.target.closest("[data-lesson-mode]");
+      if (!button) return;
+      currentLessonMode = button.dataset.lessonMode === "month" ? "month" : "lesson";
+      document.querySelectorAll("#lessonModeToggle [data-lesson-mode]").forEach((item) => item.classList.toggle("active", item === button));
+      renderLessons();
+    });
 
     document.getElementById("calendarGrid").addEventListener("click", (event) => {
       const cell = event.target.closest(".day-cell[data-date]");
       if (!cell) return;
       selectedCalendarDateKey = cell.dataset.date;
       expandedCalendarEventKey = "";
-      updateDashboard();
+      showCalendarPopover(cell.dataset.date, cell);
     });
 
-    document.getElementById("calendarMobile").addEventListener("click", (event) => {
-      const cell = event.target.closest("[data-date]");
+    document.getElementById("calendarGrid").addEventListener("mouseover", (event) => {
+      if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+      const cell = event.target.closest(".day-cell[data-date]");
       if (!cell) return;
-      selectedCalendarDateKey = cell.dataset.date;
       expandedCalendarEventKey = "";
-      updateDashboard();
+      showCalendarPopover(cell.dataset.date, cell);
+    });
+
+    document.getElementById("calendarGrid").addEventListener("focusin", (event) => {
+      const cell = event.target.closest(".day-cell[data-date]");
+      if (!cell) return;
+      showCalendarPopover(cell.dataset.date, cell);
     });
 
     document.getElementById("calendarMini").addEventListener("click", (event) => {
@@ -4130,14 +4669,38 @@
       if (!cell || cell.classList.contains("empty")) return;
       selectedCalendarDateKey = cell.dataset.date;
       expandedCalendarEventKey = "";
-      updateDashboard();
+      showCalendarPopover(cell.dataset.date, cell);
     });
 
-    document.getElementById("calendarDetail").addEventListener("click", (event) => {
+    document.getElementById("calendar").addEventListener("mouseleave", (event) => {
+      if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+      if (event.relatedTarget && document.getElementById("calendarPopover").contains(event.relatedTarget)) return;
+      hideCalendarPopover();
+    });
+
+    document.getElementById("calendarPopover").addEventListener("click", (event) => {
       const toggle = event.target.closest("[data-calendar-toggle]");
       if (!toggle) return;
       expandedCalendarEventKey = expandedCalendarEventKey === selectedCalendarDateKey ? "" : selectedCalendarDateKey;
-      updateDashboard();
+      const anchor = document.querySelector('[data-date="' + selectedCalendarDateKey + '"]');
+      renderCalendarPopover(new Date(), state.monthlyIncome || 45000, selectedCalendarDateKey);
+      if (anchor) positionCalendarPopover(anchor);
+    });
+
+    document.getElementById("calendarPopover").addEventListener("mouseleave", () => {
+      if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) hideCalendarPopover();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") hideCalendarPopover();
+    });
+
+    document.addEventListener("click", (event) => {
+      const calendar = document.getElementById("calendar");
+      const popover = document.getElementById("calendarPopover");
+      if (!popover.classList.contains("is-open")) return;
+      if (calendar.contains(event.target) || popover.contains(event.target)) return;
+      hideCalendarPopover();
     });
 
     document.getElementById("currencyTabs").addEventListener("click", (event) => {
